@@ -1,4 +1,5 @@
 package com.comandocloud.tpintegrador;
+import com.comandocloud.tpintegrador.Persona;
 
 public class Personal extends Persona{
     String Usuario;
@@ -15,6 +16,5 @@ public class Personal extends Persona{
     }
 
     public static void main(String[] args) {
-
     }
 }
