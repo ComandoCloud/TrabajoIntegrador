@@ -1,5 +1,5 @@
 package com.comandocloud.tpintegrador;
-
+import java.sql.SQLException;
 public class Persona {
     int id;
     String nombre;
@@ -20,7 +20,7 @@ public class Persona {
         this.borrado =0;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException,InterruptedException {
 
     }
 

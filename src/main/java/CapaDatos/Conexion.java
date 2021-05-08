@@ -8,66 +8,96 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author ALeeh
  */
 public class Conexion {
-    Connection oCon;
+    Connection oCon = null;
     public static final String Url= "jdbc:mysql://179.51.237.45/db_canchas";
     public static final String Usuario= "root";
     public static final String Clave = "root2020";
-    public PreparedStatement ps;
-    ResultSet rs;
+    public PreparedStatement comando;
+    public ResultSet comandoResult;
     public Conexion(){
         
     }
     
-    //SECCION DE CONEXION
-    public Connection getConection(){
-                try 
-        {
-            Class.forName("com.mysql.jdbc.Driver");
-            oCon = DriverManager.getConnection(this.Url, this.Usuario, this.Clave);
-             //oCon = DriverManager.getConnection("jdbc:mysql://localhost/db_java", "root", "15648836");
-            System.out.println("Conexion exitosa.");
-        } catch (Exception e) 
-        {
-            System.out.println("Conexion fallida.");
-            System.out.println(e.getMessage().toString());
-        }
-        return oCon;
-    }
+//SECCION DE CONEXION
     
-    public Connection Conectar(){
-        Connection con = null;
+    public void Conectar() throws SQLException{
+        if(this.oCon != null && this.oCon.isValid(1))
+        {
+            throw new SQLException("Conexion abierta");          
+        }
         try 
         {
-            con = getConection();
+            if(this.oCon == null)
+            {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                this.oCon = DriverManager.getConnection(this.Url, this.Usuario, this.Clave);
+                System.out.println("Conexion exitosa.");
+            }
         } catch (Exception e) 
         {
-            System.out.println(e.getMessage().toString());
+            throw new SQLException("Error al conectarse con la base de datos");
         }
-        return con;
     }
-    //FIN SECCION DE CONEXION
     
-    public static void main(String[] args) throws SQLException {
-        Conexion oCon = new Conexion();
-
-        Connection con = null;
-                con = oCon.Conectar();
-        oCon.ps = con.prepareStatement("SELECT * FROM personal");
-        oCon.rs = oCon.ps.executeQuery();
-        if(oCon.rs.next()){
-            JOptionPane.showMessageDialog(null, oCon.rs.getString("Nombre") + oCon.rs.getString("Apellido"));
+    public void Desconectar() throws SQLException{
+            if(this.oCon.isValid(3000))
+            {
+                this.oCon = null;
+                this.comando=null;
+                this.comandoResult=null;
+            }
+    }
+    public void CrearComando(String Comando) throws SQLException{
+        this.comando = oCon.prepareStatement(Comando.toString().toLowerCase());
+    }
+    
+    public void EjecutarComando() throws SQLException{
+        this.comandoResult = this.comando.executeQuery();
+        //while(this.comandoResult.next()){
+          //JOptionPane.showMessageDialog(null, this.comandoResult.getString("Nombre") + this.comandoResult.getString("Apellido"));
+        //}
+    }
+    
+    public JTable Tabla() throws SQLException{
+        ResultSetMetaData metaDatos = this.comandoResult.getMetaData();
+        DefaultTableModel dt = new DefaultTableModel();
+        JTable tabla = new JTable();
+        tabla.setModel(dt);
+        int NumColumn = metaDatos.getColumnCount();
+        Object[] nombreColumnas = new Object[NumColumn];
+        Object [] fila = new Object[NumColumn];
+        for(int i=0; i<NumColumn; i++)
+        {
+            nombreColumnas[i] = metaDatos.getColumnLabel(i + 1);
         }
-        else{
-            JOptionPane.showMessageDialog(null,"No se encontraron archivos");
+        dt.setColumnIdentifiers(nombreColumnas);
+        while(this.comandoResult.next())
+        {
+            for (int i=0;i<NumColumn;i++)
+            {
+                fila[i] = this.comandoResult.getObject(i+1);
+            }    
+            dt.addRow(fila);
         }
         
-       con.close();
+
+        return tabla;
+    }
+    
+    
+    //FIN SECCION DE CONEXION
+ 
+    public static void main(String[] args) throws SQLException {
+            
     }
 }
