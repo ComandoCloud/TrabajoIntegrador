@@ -11,6 +11,7 @@ package com.comandocloud.tpintegrador;
  */
 public class Deportes {
     private int deportes;
+    
     private String descripcion;
     private int borrado;  
 
