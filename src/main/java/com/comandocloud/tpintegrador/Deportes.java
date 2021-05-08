@@ -13,4 +13,29 @@ public class Deportes {
     private int deportes;
     private String descripcion;
     private int borrado;  
+
+    public int getDeportes() {
+        return deportes;
+    }
+
+    public void setDeportes(int deportes) {
+        this.deportes = deportes;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public int getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(int borrado) {
+        this.borrado = borrado;
+    }
+    
 }
