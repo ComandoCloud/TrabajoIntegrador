@@ -7,7 +7,7 @@ package com.comandocloud.tpintegrador;
 
 /**
  *
- * @author Irene
+ * @author Irene test
  */
 public class Deportes {
     private int deportes;
