@@ -13,10 +13,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-/**
- *
- * @author ALeeh
- */
+
 public class Conexion {
     Connection oCon = null;
     public static final String Url= "jdbc:mysql://179.51.237.45/db_canchas";
@@ -63,9 +60,6 @@ public class Conexion {
     
     public void EjecutarComando() throws SQLException{
         this.comandoResult = this.comando.executeQuery();
-        //while(this.comandoResult.next()){
-          //JOptionPane.showMessageDialog(null, this.comandoResult.getString("Nombre") + this.comandoResult.getString("Apellido"));
-        //}
     }
     
     public JTable Tabla() throws SQLException{
@@ -77,20 +71,14 @@ public class Conexion {
         Object[] nombreColumnas = new Object[NumColumn];
         Object [] fila = new Object[NumColumn];
         for(int i=0; i<NumColumn; i++)
-        {
             nombreColumnas[i] = metaDatos.getColumnLabel(i + 1);
-        }
         dt.setColumnIdentifiers(nombreColumnas);
         while(this.comandoResult.next())
         {
             for (int i=0;i<NumColumn;i++)
-            {
                 fila[i] = this.comandoResult.getObject(i+1);
-            }    
             dt.addRow(fila);
         }
-        
-
         return tabla;
     }
     

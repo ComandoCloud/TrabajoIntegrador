@@ -19,9 +19,10 @@ public class Persona {
         this.Telefono = Telefono;
         this.borrado =0;
     }
-
+    
     public static void main(String[] args) throws SQLException,InterruptedException {
 
     }
+
 
 }
