@@ -29,13 +29,13 @@ public class frmDeporte extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        btnGuardar = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
-        txtDescripcion = new javax.swing.JTextField();
-        txtBorrado = new javax.swing.JTextField();
-        txtId = new javax.swing.JTextField();
+        btnGuardarD = new javax.swing.JButton();
+        btnModificarD = new javax.swing.JButton();
+        btnEliminarD = new javax.swing.JButton();
+        btnLimpiarD = new javax.swing.JButton();
+        txtDescripcionD = new javax.swing.JTextField();
+        txtBorradoD = new javax.swing.JTextField();
+        txtIdD = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,15 +43,15 @@ public class frmDeporte extends javax.swing.JFrame {
 
         jLabel3.setText("Borrado");
 
-        btnGuardar.setText("Guardar");
+        btnGuardarD.setText("Guardar");
 
-        btnModificar.setText("Modificar");
+        btnModificarD.setText("Modificar");
 
-        btnEliminar.setText("Eliminar");
+        btnEliminarD.setText("Eliminar");
 
-        btnLimpiar.setText("Limpiar");
+        btnLimpiarD.setText("Limpiar");
 
-        txtId.setEnabled(false);
+        txtIdD.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -66,20 +66,20 @@ public class frmDeporte extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addGap(69, 69, 69)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                            .addComponent(txtBorrado))
+                            .addComponent(txtDescripcionD, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                            .addComponent(txtBorradoD))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIdD, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
-                        .addComponent(btnGuardar)
+                        .addComponent(btnGuardarD)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnModificar)
+                        .addComponent(btnModificarD)
                         .addGap(35, 35, 35)
-                        .addComponent(btnEliminar)
+                        .addComponent(btnEliminarD)
                         .addGap(18, 18, 18)
-                        .addComponent(btnLimpiar)))
+                        .addComponent(btnLimpiarD)))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -88,18 +88,18 @@ public class frmDeporte extends javax.swing.JFrame {
                 .addGap(93, 93, 93)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcionD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtBorrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBorradoD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnModificar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnLimpiar))
+                    .addComponent(btnGuardarD)
+                    .addComponent(btnModificarD)
+                    .addComponent(btnEliminarD)
+                    .addComponent(btnLimpiarD))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
@@ -142,14 +142,14 @@ public class frmDeporte extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnEliminar;
-    public javax.swing.JButton btnGuardar;
-    public javax.swing.JButton btnLimpiar;
-    public javax.swing.JButton btnModificar;
+    public javax.swing.JButton btnEliminarD;
+    public javax.swing.JButton btnGuardarD;
+    public javax.swing.JButton btnLimpiarD;
+    public javax.swing.JButton btnModificarD;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    public javax.swing.JTextField txtBorrado;
-    public javax.swing.JTextField txtDescripcion;
-    public javax.swing.JTextField txtId;
+    public javax.swing.JTextField txtBorradoD;
+    public javax.swing.JTextField txtDescripcionD;
+    public javax.swing.JTextField txtIdD;
     // End of variables declaration//GEN-END:variables
 }
