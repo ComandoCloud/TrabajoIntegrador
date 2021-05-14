@@ -2,6 +2,9 @@ package CapaPresentacion;
 
 import com.comandocloud.tpintegrador.Deportes;
 import com.comandocloud.tpintegrador.ResponseObject;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -80,17 +83,22 @@ public class frmDeporte extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarDActionPerformed
-      System.out.println("com.comandocloud.tpintegrador.Cancha.main()");
+      System.out.println("com.comandocloud.tpintegrador.Deportes.main()");
         Deportes oDepor = new Deportes();
         oDepor.setDescripcion(txtDescripcionD.getText());
+       // try {
+            ResponseObject oRespuesta = oDepor.Guardar(oDepor);
+            if(oRespuesta.getCodigoSalida()==0){
+                JOptionPane.showMessageDialog(null,"Se guardó correctamente");
+            }else
+                JOptionPane.showMessageDialog(null," Hubo un problema al guardar el deporte. "+ oRespuesta.getSalida());
         
-        ResponseObject oRespuesta = oDepor.Guardar(oDepor);
-        if(oRespuesta.getCodigoSalida()==0){
-            JOptionPane.showMessageDialog(null,"Se guardó correctamente");
-        }else
-            JOptionPane.showMessageDialog(null," Hubo un problema al guardar la cancha. "+ oRespuesta.getSalida()); 
+       // }catch (SQLException ex) {
+          //  Logger.getLogger(frmDeporte.class.getName()).log(Level.SEVERE, null, ex);
+      // }
     }//GEN-LAST:event_btnGuardarDActionPerformed
-//ME HIZO REMOVER EL TRY }catch(SQLException ex) {
+    
+    //ME HIZO REMOVER EL TRY }catch(SQLException ex) {
     public static void main(String args[]) {
         
         java.awt.EventQueue.invokeLater(() -> {
