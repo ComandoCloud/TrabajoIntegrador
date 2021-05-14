@@ -38,5 +38,9 @@ public class Deportes {
     public void setBorrado(int borrado) {
         this.borrado = borrado;
     }
+
+    public ResponseObject Guardar(Deportes oDepor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

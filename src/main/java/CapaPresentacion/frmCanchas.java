@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-
-
 /**
  *
  * @author Irene
@@ -31,8 +29,7 @@ public class frmCanchas extends javax.swing.JFrame {
         txtAncho = new javax.swing.JTextField();
         txtLargo = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -61,12 +58,10 @@ public class frmCanchas extends javax.swing.JFrame {
             }
         });
 
-        btnModificar.setText("Modificar");
-
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -85,23 +80,17 @@ public class frmCanchas extends javax.swing.JFrame {
                         .addComponent(jLabel6)
                         .addComponent(jLabel8)
                         .addComponent(jLabel7)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbDeporte, 0, 100, Short.MAX_VALUE)
-                            .addComponent(txtDescripcion)
-                            .addComponent(txtAncho)
-                            .addComponent(txtLargo))
-                        .addGap(45, 166, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                        .addComponent(btnModificar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnLimpiar)
-                        .addGap(20, 20, 20))))
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cmbDeporte, 0, 100, Short.MAX_VALUE)
+                        .addComponent(txtDescripcion)
+                        .addComponent(txtAncho)
+                        .addComponent(txtLargo))
+                    .addComponent(btnCancelar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addComponent(btnLimpiar)
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,8 +114,7 @@ public class frmCanchas extends javax.swing.JFrame {
                 .addGap(69, 69, 69)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
-                    .addComponent(btnModificar)
-                    .addComponent(btnEliminar)
+                    .addComponent(btnCancelar)
                     .addComponent(btnLimpiar))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
@@ -158,18 +146,18 @@ public class frmCanchas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         Cancha oCanchita = new Cancha();
-        try { 
+        try {
             ResponseObject oRespuesta = oCanchita.Eliminar(1);
             if(oRespuesta.getCodigoSalida()==0){
                 JOptionPane.showMessageDialog(null,"Se elimino correctamente");
             }else
-                JOptionPane.showMessageDialog(null," Hubo un problema al eliminar la cancha. "+ oRespuesta.getSalida());
+            JOptionPane.showMessageDialog(null," Hubo un problema al eliminar la cancha. "+ oRespuesta.getSalida());
         } catch (SQLException ex) {
             Logger.getLogger(frmCanchas.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     public static void main(String args[]) {
        
@@ -179,10 +167,9 @@ public class frmCanchas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnCancelar;
     public javax.swing.JButton btnGuardar;
     public javax.swing.JButton btnLimpiar;
-    public javax.swing.JButton btnModificar;
     public javax.swing.JComboBox<String> cmbDeporte;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
