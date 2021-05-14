@@ -1,4 +1,4 @@
-package com.comandocloud.tpintegrador;
+package CapaNegocios;
 import java.sql.SQLException;
 public class Persona {
     int id;

@@ -1,6 +1,6 @@
-package com.comandocloud.tpintegrador;
+package CapaNegocios;
 import CapaDatos.Conexion;
-import com.comandocloud.tpintegrador.Persona;
+import CapaNegocios.Persona;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;

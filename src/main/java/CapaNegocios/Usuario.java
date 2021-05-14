@@ -1,4 +1,4 @@
-package com.comandocloud.tpintegrador;
+package CapaNegocios;
 
 public class Usuario extends Persona{
     public Usuario(){

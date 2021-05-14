@@ -1,4 +1,4 @@
-package com.comandocloud.tpintegrador;
+package CapaNegocios;
 
 import CapaDatos.Conexion;
 import java.sql.SQLException;

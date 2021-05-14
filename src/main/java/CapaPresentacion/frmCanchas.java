@@ -1,7 +1,7 @@
 package CapaPresentacion;
 
-import com.comandocloud.tpintegrador.Cancha;
-import com.comandocloud.tpintegrador.ResponseObject;
+import CapaNegocios.Cancha;
+import CapaNegocios.ResponseObject;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
