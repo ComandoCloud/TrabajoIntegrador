@@ -40,9 +40,9 @@ public class Conexion {
                 this.oCon = DriverManager.getConnection(this.Url, this.Usuario, this.Clave);
                 System.out.println("Conexion exitosa.");
             }
-        } catch (Exception e) 
+        } catch (ClassNotFoundException | SQLException e) 
         {
-            throw new SQLException("Error al conectarse con la base de datos");
+            throw new SQLException("Error al conectarse con la base de datos:\n"+e.toString());
         }
     }
     
@@ -57,12 +57,12 @@ public class Conexion {
     public void CrearComando(String Comando) throws SQLException{
         this.comando = oCon.prepareStatement(Comando.toString().toLowerCase());
     }
-    
-    public void EjecutarComando() throws SQLException{
-        this.comandoResult = this.comando.executeQuery();
+    public boolean EjecutarComando() throws SQLException{
+       return this.comando.execute();
     }
     
     public JTable Tabla() throws SQLException{
+        this.comandoResult = this.comando.executeQuery();
         ResultSetMetaData metaDatos = this.comandoResult.getMetaData();
         DefaultTableModel dt = new DefaultTableModel();
         JTable tabla = new JTable();

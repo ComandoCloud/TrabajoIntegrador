@@ -19,7 +19,8 @@ public class Cancha {
                 try{
                     
                     oCon.Conectar();
-                    oCon.CrearComando("INSERT INTO canchas (id_deporte,descripcion,acnho,largo) VALUES (?,?,?,?);");
+                    oCon.CrearComando("INSERT INTO canchas (id_deporte,descripcion,ancho,largo) VALUES (?,?,?,?)");
+                    
                     oCon.comando.setInt(1, oCancha.getId_deporte());
                     oCon.comando.setString(2, oCancha.getDescripcion());
                     oCon.comando.setString(3, oCancha.getAncho());
@@ -38,7 +39,24 @@ public class Cancha {
         }
         return new ResponseObject("Cancha es null: ",-1);
     }
-     public int getId_cancha() {
+    
+    public ResponseObject Eliminar(int idCancha) throws SQLException
+    {
+        try{
+            oCon.Conectar();
+            oCon.CrearComando("update canchas set borrado=1 where id = ?");
+            oCon.comando.setInt(1, idCancha);
+            oCon.EjecutarComando();
+            oCon.Desconectar();
+            return new ResponseObject("Eliminado correctamente",0);
+       }   
+        catch(Exception e){
+            oCon.Desconectar();
+            return new ResponseObject("Error: "+ e.toString(),-1);
+        }
+    }
+    
+    public int getId_cancha() {
         return id_cancha;
     }
 
@@ -94,6 +112,7 @@ public class Cancha {
         oCanchita.setAncho("2");
         oCanchita.setLargo("2");
         ResponseObject oRespuesta = oCanchita.Guardar(oCanchita);
+        System.out.println(oRespuesta.getSalida());
         
     }
 
