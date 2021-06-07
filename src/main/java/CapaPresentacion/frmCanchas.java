@@ -130,8 +130,8 @@ public class frmCanchas extends javax.swing.JFrame {
     System.out.println("com.comandocloud.tpintegrador.Cancha.main()");
         Cancha oCanchita = new Cancha();
         oCanchita.setDescripcion(txtDescripcion.getText());
-        oCanchita.setId_deporte((Integer) cmbDeporte.getSelectedItem());
-        oCanchita.setId_cancha(0);
+        oCanchita.setIdDeporte((Integer) cmbDeporte.getSelectedItem());
+        oCanchita.setIdCancha(0);
         oCanchita.setAncho(txtAncho.getText());
         oCanchita.setLargo(txtLargo.getText());
         try {

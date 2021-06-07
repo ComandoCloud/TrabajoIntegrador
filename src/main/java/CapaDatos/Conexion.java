@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Conexion {
     Connection oCon = null;
-    public static final String Url= "jdbc:mysql://179.51.237.45/db_canchas";
+    public static final String Url= "jdbc:mysql://192.168.100.32/db_canchas";
     public static final String Usuario= "root";
     public static final String Clave = "root2020";
     public PreparedStatement comando;
@@ -61,7 +61,7 @@ public class Conexion {
        return this.comando.execute();
     }
     
-    public JTable Tabla() throws SQLException{
+    public DefaultTableModel Tabla() throws SQLException{
         this.comandoResult = this.comando.executeQuery();
         ResultSetMetaData metaDatos = this.comandoResult.getMetaData();
         DefaultTableModel dt = new DefaultTableModel();
@@ -79,7 +79,8 @@ public class Conexion {
                 fila[i] = this.comandoResult.getObject(i+1);
             dt.addRow(fila);
         }
-        return tabla;
+        //Agrego comentario para subir lo nuevo
+        return dt;
     }
     
     

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public class Personal extends Persona{
@@ -21,9 +22,9 @@ public class Personal extends Persona{
         this.IdPersonalCargo = id_personal_cargo;
     }
     
-    public JTable Listar() throws SQLException, InterruptedException
+    public DefaultTableModel Listar() throws SQLException, InterruptedException
     {
-        JTable dt = new JTable();
+        DefaultTableModel dt = new DefaultTableModel();
         Conexion oCon = new Conexion();          
         oCon.Conectar();
         oCon.CrearComando("SELECT * FROM personal where borrado= ? ");

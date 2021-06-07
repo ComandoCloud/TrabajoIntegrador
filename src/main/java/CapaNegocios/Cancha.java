@@ -5,33 +5,33 @@ import java.sql.SQLException;
 import javax.swing.JTable;
 
 public class Cancha {
-    private int id_cancha;
-    private int id_deporte;
-    private String descripcion;
-    private String ancho;
-    private String largo;
-    private int borrado;
+    private int IdCancha;
+    private int IdDeporte;
+    private String Descripcion;
+    private String Ancho;
+    private String Largo;
+    private int Borrado;
     private Conexion oCon = new Conexion();
     
     public ResponseObject Guardar(Cancha oCancha) throws SQLException {
         if(oCancha!=null){
             int idNuevo=0;
-            if(oCancha.getId_cancha()==0){
+            if(oCancha.getIdCancha()==0){
                 try{
                     
-                    oCon.Conectar();
-                    oCon.CrearComando("INSERT INTO canchas (id_deporte,descripcion,ancho,largo) VALUES (?,?,?,?)");
+                    getoCon().Conectar();
+                    getoCon().CrearComando("INSERT INTO canchas (id_deporte,descripcion,ancho,largo) VALUES (?,?,?,?)");
                     
-                    oCon.comando.setInt(1, oCancha.getId_deporte());
-                    oCon.comando.setString(2, oCancha.getDescripcion());
-                    oCon.comando.setString(3, oCancha.getAncho());
-                    oCon.comando.setString(4, oCancha.getLargo());
-                    oCon.EjecutarComando();
-                    oCon.Desconectar();
+                    getoCon().comando.setInt(1, oCancha.getIdDeporte());
+                    getoCon().comando.setString(2, oCancha.getDescripcion());
+                    getoCon().comando.setString(3, oCancha.getAncho());
+                    getoCon().comando.setString(4, oCancha.getLargo());
+                    getoCon().EjecutarComando();
+                    getoCon().Desconectar();
                     return new ResponseObject("Guardado correctamente",0);
                 }   
                 catch(Exception e) {
-                    oCon.Desconectar();
+                    getoCon().Desconectar();
                     return new ResponseObject("Error: "+ e.toString(),-1);
                 }
             }
@@ -46,14 +46,14 @@ public class Cancha {
         JTable oTabla = new JTable();
         
          try{
-            oCon.Conectar();
-            oCon.CrearComando("SELECT * FROM canchas WHERE borrado=0");
-            oTabla = oCon.Tabla();
-            oCon.Desconectar();
+            getoCon().Conectar();
+            getoCon().CrearComando("SELECT * FROM canchas WHERE borrado=0");
+            //oTabla = oCon.Tabla();
+            getoCon().Desconectar();
             return new ResponseObject("Eliminado correctamente",0,oTabla);
        }   
         catch(Exception e){
-            oCon.Desconectar();
+            getoCon().Desconectar();
             return new ResponseObject("Error: "+ e.toString(),-1, null);
         }
     }
@@ -61,77 +61,125 @@ public class Cancha {
     public ResponseObject Eliminar(int idCancha) throws SQLException
     {
         try{
-            oCon.Conectar();
-            oCon.CrearComando("update canchas set borrado=1 where id = ?");
-            oCon.comando.setInt(1, idCancha);
-            oCon.EjecutarComando();
-            oCon.Desconectar();
+            getoCon().Conectar();
+            getoCon().CrearComando("update canchas set borrado=1 where id = ?");
+            getoCon().comando.setInt(1, idCancha);
+            getoCon().EjecutarComando();
+            getoCon().Desconectar();
             return new ResponseObject("Eliminado correctamente",0);
        }   
         catch(Exception e){
-            oCon.Desconectar();
+            getoCon().Desconectar();
             return new ResponseObject("Error: "+ e.toString(),-1);
         }
     }
     
-    public int getId_cancha() {
-        return id_cancha;
-    }
 
-    public void setId_cancha(int id_canchas) {
-        this.id_cancha = id_canchas;
-    }
-
-    public int getId_deporte() {
-        return id_deporte;
-    }
-
-    public void setId_deporte(int id_deportes) {
-        this.id_deporte = id_deportes;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getAncho() {
-        return ancho;
-    }
-
-    public void setAncho(String ancho) {
-        this.ancho = ancho;
-    }
-
-    public String getLargo() {
-        return largo;
-    }
-
-    public void setLargo(String largo) {
-        this.largo = largo;
-    }
-
-    public int getBorrado() {
-        return borrado;
-    }
-
-    public void setBorrado(int borrado) {
-        this.borrado = borrado;
-    } 
     public static void main(String[] args) throws SQLException,InterruptedException {
         System.out.println("com.comandocloud.tpintegrador.Cancha.main()");
         Cancha oCanchita = new Cancha();
-        oCanchita.setDescripcion("Fultbol 5");
-        oCanchita.setId_deporte(2);
-        oCanchita.setId_cancha(0);
-        oCanchita.setAncho("2");
-        oCanchita.setLargo("2");
+
         ResponseObject oRespuesta = oCanchita.Guardar(oCanchita);
         System.out.println(oRespuesta.getSalida());
         
+    }
+
+    /**
+     * @return the IdCancha
+     */
+    public int getIdCancha() {
+        return IdCancha;
+    }
+
+    /**
+     * @param IdCancha the IdCancha to set
+     */
+    public void setIdCancha(int IdCancha) {
+        this.IdCancha = IdCancha;
+    }
+
+    /**
+     * @return the IdDeporte
+     */
+    public int getIdDeporte() {
+        return IdDeporte;
+    }
+
+    /**
+     * @param IdDeporte the IdDeporte to set
+     */
+    public void setIdDeporte(int IdDeporte) {
+        this.IdDeporte = IdDeporte;
+    }
+
+    /**
+     * @return the Descripcion
+     */
+    public String getDescripcion() {
+        return Descripcion;
+    }
+
+    /**
+     * @param Descripcion the Descripcion to set
+     */
+    public void setDescripcion(String Descripcion) {
+        this.Descripcion = Descripcion;
+    }
+
+    /**
+     * @return the Ancho
+     */
+    public String getAncho() {
+        return Ancho;
+    }
+
+    /**
+     * @param Ancho the Ancho to set
+     */
+    public void setAncho(String Ancho) {
+        this.Ancho = Ancho;
+    }
+
+    /**
+     * @return the Largo
+     */
+    public String getLargo() {
+        return Largo;
+    }
+
+    /**
+     * @param Largo the Largo to set
+     */
+    public void setLargo(String Largo) {
+        this.Largo = Largo;
+    }
+
+    /**
+     * @return the Borrado
+     */
+    public int getBorrado() {
+        return Borrado;
+    }
+
+    /**
+     * @param Borrado the Borrado to set
+     */
+    public void setBorrado(int Borrado) {
+        this.Borrado = Borrado;
+    }
+
+    /**
+     * @return the oCon
+     */
+    public Conexion getoCon() {
+        return oCon;
+    }
+
+    /**
+     * @param oCon the oCon to set
+     */
+    public void setoCon(Conexion oCon) {
+        this.oCon = oCon;
     }
 
 }
