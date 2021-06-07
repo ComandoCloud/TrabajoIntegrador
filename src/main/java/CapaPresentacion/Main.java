@@ -12,8 +12,8 @@ package CapaPresentacion;
 public class Main {
     
     public static void main (String [ ] args) {
-        ABMPersonal frame = new ABMPersonal();
-        frame.setVisible(true);       
+        //ABMPersonal frame = new ABMPersonal();
+        //frame.setVisible(true);       
     
     }
     

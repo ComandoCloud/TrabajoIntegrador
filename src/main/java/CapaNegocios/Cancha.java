@@ -2,6 +2,7 @@ package CapaNegocios;
 
 import CapaDatos.Conexion;
 import java.sql.SQLException;
+import javax.swing.JTable;
 
 public class Cancha {
     private int id_cancha;
@@ -38,6 +39,23 @@ public class Cancha {
                 return new ResponseObject("La cancha ya tiene un Id: ",-1);
         }
         return new ResponseObject("Cancha es null: ",-1);
+    }
+    
+    public ResponseObject Listar ()throws SQLException
+    {
+        JTable oTabla = new JTable();
+        
+         try{
+            oCon.Conectar();
+            oCon.CrearComando("SELECT * FROM canchas WHERE borrado=0");
+            oTabla = oCon.Tabla();
+            oCon.Desconectar();
+            return new ResponseObject("Eliminado correctamente",0,oTabla);
+       }   
+        catch(Exception e){
+            oCon.Desconectar();
+            return new ResponseObject("Error: "+ e.toString(),-1, null);
+        }
     }
     
     public ResponseObject Eliminar(int idCancha) throws SQLException
