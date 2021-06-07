@@ -97,8 +97,18 @@ public class frmDeporte extends javax.swing.JFrame {
           //  Logger.getLogger(frmDeporte.class.getName()).log(Level.SEVERE, null, ex);
       // }
     }//GEN-LAST:event_btnGuardarDActionPerformed
-    
-    //ME HIZO REMOVER EL TRY }catch(SQLException ex) {
+        private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        Deportes oDepor = new Deportes();
+       /** try {
+            ResponseObject oRespuesta = oDepor.Eliminar(1);
+            if(oRespuesta.getCodigoSalida()==0){
+                JOptionPane.showMessageDialog(null,"Se elimino correctamente");
+            }else
+            JOptionPane.showMessageDialog(null," Hubo un problema al eliminar la cancha. "+ oRespuesta.getSalida());
+        } catch (SQLException ex) {
+           Logger.getLogger(frmDeporte.class.getName()).log(Level.SEVERE, null, ex);*/ 
+    } 
+   
     public static void main(String args[]) {
         
         java.awt.EventQueue.invokeLater(() -> {

@@ -37,6 +37,10 @@ public class ReservasEstados {
     public void setBorrado(int borrado) {
         this.borrado = borrado;
     }
+
+    public void setDescripcion(String text) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

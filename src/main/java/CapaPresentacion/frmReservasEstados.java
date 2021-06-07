@@ -1,4 +1,8 @@
 package CapaPresentacion;
+
+import CapaNegocios.ReservasEstados;
+import CapaNegocios.ResponseObject;
+
 /**
  *
  * @author Irene
@@ -67,7 +71,35 @@ public class frmReservasEstados extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void txtLargoActionPerformed(java.awt.event.ActionEvent evt) {                                         
+       
+    }   
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {                                           
+    System.out.println("com.comandocloud.tpintegrador.ReservasEstados.main()");
+        ReservasEstados oReservasEstados = new ReservasEstados();
+         oReservasEstados.setDescripcion(txtDescripcionR.getText());
+      /**  try {
+            ResponseObject oRespuesta = oReservasEstados.Guardar(oReservasEstados);
+            if(oRespuesta.getCodigoSalida()==0){
+                JOptionPane.showMessageDialog(null,"Se guardó correctamente");
+            }else
+                JOptionPane.showMessageDialog(null," Hubo un problema al guardar la cancha. "+ oRespuesta.getSalida());
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(frmReservasEstados.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+    }                                          
+         private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        ReservasEstados oReservasEstados = new ReservasEstados();
+       /** try {
+            ResponseObject oRespuesta = oReservasEstados.Eliminar(1);
+            if(oRespuesta.getCodigoSalida()==0){
+                JOptionPane.showMessageDialog(null,"Se elimino correctamente");
+            }else
+            JOptionPane.showMessageDialog(null," Hubo un problema al eliminar la cancha. "+ oRespuesta.getSalida());
+        } catch (SQLException ex) {
+           Logger.getLogger(frmReservasEstados.class.getName()).log(Level.SEVERE, null, ex);*/ 
+    } 
     public static void main(String args[]) {
         
         java.awt.EventQueue.invokeLater(() -> {
@@ -79,7 +111,7 @@ public class frmReservasEstados extends javax.swing.JFrame {
     public javax.swing.JButton btnCancelarR;
     public javax.swing.JButton btnGuardarR;
     public javax.swing.JButton btnLimpiarR;
-    private javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel1;
     public javax.swing.JTextField txtDescripcionR;
     // End of variables declaration//GEN-END:variables
 }
