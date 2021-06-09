@@ -3,6 +3,7 @@ package CapaNegocios;
 import CapaDatos.Conexion;
 import java.sql.SQLException;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Cancha {
     private int IdCancha;
@@ -36,24 +37,45 @@ public class Cancha {
                 }
             }
             else
-                return new ResponseObject("La cancha ya tiene un Id: ",-1);
+            {
+                try{
+                    
+                    getoCon().Conectar();
+                    getoCon().CrearComando("UPDATE canchas SET id_deporte = ?,descripcion = ?, ancho = ?,largo=? where id = ?");
+                    
+                    getoCon().comando.setInt(1, oCancha.getIdDeporte());
+                    getoCon().comando.setString(2, oCancha.getDescripcion());
+                    getoCon().comando.setString(3, oCancha.getAncho());
+                    getoCon().comando.setString(4, oCancha.getLargo());
+                    getoCon().comando.setInt(5, oCancha.getIdCancha());
+
+                    getoCon().EjecutarComando();
+                    getoCon().Desconectar();
+                    return new ResponseObject("Editado correctamente",0);
+                }   
+                catch(Exception e) {
+                    getoCon().Desconectar();
+                    return new ResponseObject("Error: "+ e.toString(),-1);
+                }
+            }
         }
         return new ResponseObject("Cancha es null: ",-1);
     }
     
     public ResponseObject Listar ()throws SQLException
     {
-        JTable oTabla = new JTable();
+        DefaultTableModel dt = new DefaultTableModel();
         
          try{
-            getoCon().Conectar();
-            getoCon().CrearComando("SELECT * FROM canchas WHERE borrado=0");
-            //oTabla = oCon.Tabla();
-            getoCon().Desconectar();
-            return new ResponseObject("Eliminado correctamente",0,oTabla);
+            Conexion oCon = new Conexion();  
+            oCon.Conectar();
+            oCon.CrearComando("SELECT canchas.*, deportes.descripcion as deporte FROM canchas left join deportes on deportes.id = canchas.id_deporte WHERE canchas.borrado=0");
+            dt = oCon.Tabla();
+            oCon.Desconectar();
+            return new ResponseObject("Eliminado correctamente",0,dt);
        }   
         catch(Exception e){
-            getoCon().Desconectar();
+            oCon.Desconectar();
             return new ResponseObject("Error: "+ e.toString(),-1, null);
         }
     }
@@ -79,7 +101,7 @@ public class Cancha {
         System.out.println("com.comandocloud.tpintegrador.Cancha.main()");
         Cancha oCanchita = new Cancha();
 
-        ResponseObject oRespuesta = oCanchita.Guardar(oCanchita);
+        ResponseObject oRespuesta = oCanchita.Listar();
         System.out.println(oRespuesta.getSalida());
         
     }

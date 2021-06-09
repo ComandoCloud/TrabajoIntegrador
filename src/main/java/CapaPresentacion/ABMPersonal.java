@@ -285,6 +285,7 @@ public class ABMPersonal extends javax.swing.JFrame {
     }
     
     private void asignarDatos(){
+
         dgvPersonal.setModel(modelo);
     }
     

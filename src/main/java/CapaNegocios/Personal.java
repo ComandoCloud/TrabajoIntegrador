@@ -7,7 +7,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-public class Personal extends Persona{
+public class Personal extends Persona {
     private String Usuario;
     private String Password;
     private int IdPersonalCargo;
@@ -38,6 +38,7 @@ public class Personal extends Persona{
     public static void main(String[] args) throws SQLException, InterruptedException {
             Personal oPers = new Personal();
             oPers.Listar();
+            
     }
     
        public ResponseObject Guardar(Personal oPersonal) throws SQLException {
@@ -113,5 +114,7 @@ public class Personal extends Persona{
     public void SetIdPersonalCargo(int IdPersonalCargo) {
         this.IdPersonalCargo = IdPersonalCargo;
     }
+
+
 
 }

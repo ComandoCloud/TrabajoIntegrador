@@ -5,6 +5,10 @@
  */
 package CapaNegocios;
 
+import CapaDatos.Conexion;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Irene test
@@ -43,4 +47,22 @@ public class Deportes {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public ResponseObject Listar ()throws SQLException
+    {
+        DefaultTableModel dt = new DefaultTableModel();
+        Conexion oCon = new Conexion();  
+
+         try{
+           
+            oCon.Conectar();
+            oCon.CrearComando("SELECT * FROM deportes WHERE borrado=0");
+            dt = oCon.Tabla();
+            oCon.Desconectar();
+            return new ResponseObject("",0,dt);
+       }   
+        catch(Exception e){
+            oCon.Desconectar();
+            return new ResponseObject("Error: "+ e.toString(),-1, null);
+        }
+    }
 }

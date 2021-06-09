@@ -2,11 +2,16 @@
 package CapaPresentacion;
 
 import CapaNegocios.Cancha;
+import CapaNegocios.Deportes;
 import CapaNegocios.ResponseObject;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -14,9 +19,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ABMCanchas extends javax.swing.JFrame {
 
-    DefaultTableModel modelo = new DefaultTableModel();
-    Cancha oCan = new Cancha();
+    DefaultTableModel tablaCanchas = new DefaultTableModel();
+    DefaultTableModel tablaDeportes = new DefaultTableModel();
 
+    Cancha oCancha = new Cancha();
+    Cancha oCanchaSeleccionada = new Cancha();
+    Deportes oDeportes = new Deportes();
+    
+    
     public ABMCanchas() throws SQLException, InterruptedException {
         initComponents();
         comenzarCarga();
@@ -43,6 +53,7 @@ public class ABMCanchas extends javax.swing.JFrame {
         dgvCanchas = new javax.swing.JTable();
         lblTelefono1 = new javax.swing.JLabel();
         cboDeporte = new javax.swing.JComboBox<>();
+        btnNuevo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +93,7 @@ public class ABMCanchas extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))
         );
 
+        txtDescripcion.setEnabled(false);
         txtDescripcion.setName("txtDescripcion"); // NOI18N
         txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,6 +104,7 @@ public class ABMCanchas extends javax.swing.JFrame {
         lblPassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblPassword.setText("Ancho:");
 
+        txtAncho.setEnabled(false);
         txtAncho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtAnchoActionPerformed(evt);
@@ -101,8 +114,9 @@ public class ABMCanchas extends javax.swing.JFrame {
         lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblNombre.setText("Largo:");
 
+        txtLargo.setEnabled(false);
+
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnGuardar.setText("Guardar");
         btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnGuardarMouseClicked(evt);
@@ -141,13 +155,31 @@ public class ABMCanchas extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        dgvCanchas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dgvCanchasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(dgvCanchas);
 
         lblTelefono1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTelefono1.setText("Deporte");
 
-        cboDeporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboDeporte.setEnabled(false);
         cboDeporte.setName("cboCargo"); // NOI18N
+
+        btnNuevo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNuevo.setText("Nuevo");
+        btnNuevo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNuevoMouseClicked(evt);
+            }
+        });
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlContenedorLayout = new javax.swing.GroupLayout(pnlContenedor);
         pnlContenedor.setLayout(pnlContenedorLayout);
@@ -156,9 +188,6 @@ public class ABMCanchas extends javax.swing.JFrame {
             .addGroup(pnlContenedorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContenedorLayout.createSequentialGroup()
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47))
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblTelefono1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -170,8 +199,13 @@ public class ABMCanchas extends javax.swing.JFrame {
                             .addComponent(txtAncho, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtLargo, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cboDeporte, 0, 337, Short.MAX_VALUE)
-                            .addComponent(txtDescripcion))
-                        .addGap(18, 18, 18)))
+                            .addComponent(txtDescripcion)))
+                    .addGroup(pnlContenedorLayout.createSequentialGroup()
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
                         .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,8 +239,10 @@ public class ABMCanchas extends javax.swing.JFrame {
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cboDeporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,34 +271,55 @@ public class ABMCanchas extends javax.swing.JFrame {
 
     private void comenzarCarga() throws SQLException, InterruptedException{
         cargarDatos();
+        asignarDatos();
     }
     
     private void cargarDatos() throws SQLException, InterruptedException{
           try {
-            ResponseObject oRes = oCan.Listar();
+            ResponseObject oRes = oCancha.Listar();
+            tablaCanchas = oRes.getJTResultado();
+            ResponseObject oRes2 = oDeportes.Listar();
+            tablaDeportes = oRes2.getJTResultado();
+            
         } catch (SQLException ex) {
             Logger.getLogger(ABMCanchas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     private void asignarDatos(){
-        dgvCanchas.setModel(modelo);
+        dgvCanchas.setModel(tablaCanchas);
+        
+        for(int row = 0;row < tablaDeportes.getRowCount();row++) {
+            for(int col = 0;col < tablaDeportes.getColumnCount();col++) {
+                if(col==1){
+                    cboDeporte.addItem(tablaDeportes.getValueAt(row, col).toString());
+                }
+	}
+}
+        
+        
     }
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
-        Cancha oCancha = new Cancha();
-        oCancha.setIdCancha(0);
+        
         oCancha.setDescripcion(txtDescripcion.getText());
         oCancha.setIdDeporte(0);
         oCancha.setAncho(txtAncho.getText());
         oCancha.setLargo(txtLargo.getText());
+        //obtener el id de deporte seleccionad
+        //String a=jcombobox.getselecteditem().toString();
 
         try {
             ResponseObject oRes = oCancha.Guardar(oCancha);
+            if(oRes.getCodigoSalida()==0){
+                comenzarCarga();
+            }
         } catch (SQLException ex) {
+            Logger.getLogger(ABMCanchas.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
             Logger.getLogger(ABMCanchas.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -273,19 +330,17 @@ public class ABMCanchas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
+        txtAncho.setEnabled(true);
+        txtLargo.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        cboDeporte.setEnabled(true);
+        oCancha.setIdCancha(oCanchaSeleccionada.getIdCancha());
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        Cancha oCancha = new Cancha();
-        int eli= dgvCanchas.getSelectedRowCount();
-       if(eli>=0){
-       modelo.removeRow(eli);
-       }else{
-        JOptionPane.showMessageDialog(null,"NO HAY DATOS QUE ELIMINAR");
-       }
+        
         try {
-            ResponseObject oRes = oCancha.Guardar(oCancha);
+            ResponseObject oRes = oCanchaSeleccionada.Eliminar(oCanchaSeleccionada.getIdCancha());
         } catch (SQLException ex) {
             Logger.getLogger(ABMCanchas.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -294,8 +349,44 @@ public class ABMCanchas extends javax.swing.JFrame {
     private void txtAnchoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnchoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAnchoActionPerformed
+    
+    private void selectItemByString(String s) {
+        for (int i=0; i< cboDeporte.getItemCount(); i++) {
+            if (cboDeporte.getItemAt(i).equals(s)) {
+                cboDeporte.setSelectedIndex(i);
+                break;
+      }
+            
+    }
+    return;
+  }
+    
+    private void dgvCanchasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvCanchasMouseClicked
+        int indiceSelecionado = dgvCanchas.getSelectedRow();
+        oCanchaSeleccionada.setIdCancha(Integer.parseInt(dgvCanchas.getModel().getValueAt(indiceSelecionado, 0).toString()));
+        oCanchaSeleccionada.setIdDeporte(Integer.parseInt(dgvCanchas.getModel().getValueAt(indiceSelecionado, 1).toString()));
+        oCanchaSeleccionada.setDescripcion(dgvCanchas.getModel().getValueAt(indiceSelecionado, 2).toString());
+        oCanchaSeleccionada.setAncho(dgvCanchas.getModel().getValueAt(indiceSelecionado, 3).toString());
+        oCanchaSeleccionada.setLargo(dgvCanchas.getModel().getValueAt(indiceSelecionado, 4).toString());
+        
+        txtAncho.setText(oCanchaSeleccionada.getAncho());
+        txtLargo.setText(oCanchaSeleccionada.getLargo());
+        txtDescripcion.setText(oCanchaSeleccionada.getDescripcion());
+        selectItemByString(dgvCanchas.getModel().getValueAt(indiceSelecionado, 6).toString());
+    }//GEN-LAST:event_dgvCanchasMouseClicked
 
+    private void btnNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNuevoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNuevoMouseClicked
 
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        txtAncho.setEnabled(true);
+        txtLargo.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        cboDeporte.setEnabled(true);
+                
+    }//GEN-LAST:event_btnNuevoActionPerformed
+    
     public static void main(String args[]) {
       
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -315,6 +406,7 @@ public class ABMCanchas extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<String> cboDeporte;
     private javax.swing.JTable dgvCanchas;
     private javax.swing.JScrollPane jScrollPane1;

@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Conexion {
     Connection oCon = null;
-    public static final String Url= "jdbc:mysql://192.168.100.32/db_canchas";
+    public static final String Url= "jdbc:mysql://179.51.237.45/db_canchas";
     public static final String Usuario= "root";
     public static final String Clave = "root2020";
     public PreparedStatement comando;
