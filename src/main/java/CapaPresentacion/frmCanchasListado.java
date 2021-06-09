@@ -1,12 +1,21 @@
 package CapaPresentacion;
+
+import CapaNegocios.ResponseObject;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+//import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Irene
  */
 public class frmCanchasListado extends javax.swing.JFrame {
-
+     //DefaultTableModel model =new  DefaultTableModel();
     public frmCanchasListado() {
         initComponents();
+       // this.TabladeDatos.setModel(model);
     }
 
     @SuppressWarnings("unchecked")
@@ -14,7 +23,7 @@ public class frmCanchasListado extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCanchasListado = new javax.swing.JTable();
+        TabladeDatos = new javax.swing.JTable();
         btnNuevoCL = new javax.swing.JButton();
         btnEditarCL = new javax.swing.JButton();
         btnEliminarCL = new javax.swing.JButton();
@@ -22,7 +31,7 @@ public class frmCanchasListado extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Listado de Canchas");
 
-        tblCanchasListado.setModel(new javax.swing.table.DefaultTableModel(
+        TabladeDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -33,7 +42,7 @@ public class frmCanchasListado extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblCanchasListado);
+        jScrollPane1.setViewportView(TabladeDatos);
 
         btnNuevoCL.setText("Nuevo");
         btnNuevoCL.addActionListener(new java.awt.event.ActionListener() {
@@ -85,7 +94,18 @@ public class frmCanchasListado extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNuevoCLActionPerformed
 
-    
+       /** private void btnEliminarPerformed(java.awt.event.ActionEvent evt) {                                            
+        CanchasListado oCanchasListado = new CanchasListado();
+        try {
+            ResponseObject oRespuesta = oCanchasListado.Eliminar(1);
+            if(oRespuesta.getCodigoSalida()==0){
+                JOptionPane.showMessageDialog(null,"Se elimino correctamente");
+            }else
+            JOptionPane.showMessageDialog(null," Hubo un problema al eliminar la cancha. "+ oRespuesta.getSalida());
+        } catch (SQLException ex) {
+            Logger.getLogger(frmCanchasListado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }  */
     public static void main(String args[]) {
        
         java.awt.EventQueue.invokeLater(() -> {
@@ -94,10 +114,10 @@ public class frmCanchasListado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JTable TabladeDatos;
     public javax.swing.JButton btnEditarCL;
     public javax.swing.JButton btnEliminarCL;
     public javax.swing.JButton btnNuevoCL;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTable tblCanchasListado;
     // End of variables declaration//GEN-END:variables
 }

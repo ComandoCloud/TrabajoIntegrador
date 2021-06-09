@@ -307,7 +307,18 @@ public class ABMPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+       Personal oPersonal = new Personal();
+       int eli= dgvPersonal.getSelectedRowCount();
+       if(eli>=0){
+       modelo.removeRow(eli);
+       }else{
+        JOptionPane.showMessageDialog(null,"NO HAY DATOS QUE ELIMINAR");
+       }
+        try {
+            ResponseObject oRes = oPersonal.Guardar(oPersonal);
+        } catch (SQLException ex) {
+            Logger.getLogger(ABMPersonal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
