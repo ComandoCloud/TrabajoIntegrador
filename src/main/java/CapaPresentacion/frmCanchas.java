@@ -38,6 +38,11 @@ public class frmCanchas extends javax.swing.JFrame {
         jLabel1.setText("Deporte");
 
         cmbDeporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Futbol" }));
+        cmbDeporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbDeporteActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Descripción");
 
@@ -159,6 +164,10 @@ public class frmCanchas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void cmbDeporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDeporteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbDeporteActionPerformed
+
     public static void main(String args[]) {
        
         java.awt.EventQueue.invokeLater(() -> {
@@ -167,7 +176,7 @@ public class frmCanchas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar;
+    public javax.swing.JButton btnCancelar;
     public javax.swing.JButton btnGuardar;
     public javax.swing.JButton btnLimpiar;
     public javax.swing.JComboBox<String> cmbDeporte;
