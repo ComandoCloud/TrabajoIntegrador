@@ -4,9 +4,11 @@
  * and open the template in the editor.
  */
 package CapaPresentacion;
+
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import CapaDatos.Conexion;
+import CapaNegocios.PersonalCargo;
 import CapaNegocios.Personal;
 import CapaNegocios.ResponseObject;
 import java.sql.SQLException;
@@ -20,17 +22,19 @@ import javax.swing.table.DefaultTableModel;
  * @author ALeeh
  */
 public class ABMPersonal extends javax.swing.JFrame {
-    
+
     Personal oPers = new Personal();
     DefaultTableModel modelo = new DefaultTableModel();
+    DefaultTableModel modeloCargos = new DefaultTableModel();
+    PersonalCargo oCargo = new PersonalCargo();
+    Conexion oCon = new Conexion();
+
     /**
      * Creates new form ABMPersonal
      */
     public ABMPersonal() throws SQLException, InterruptedException {
         initComponents();
         comenzarCarga();
-        cargarDatos();
-        asignarDatos();
     }
 
     /**
@@ -62,7 +66,9 @@ public class ABMPersonal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         dgvPersonal = new javax.swing.JTable();
         lblTelefono1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboCargo = new javax.swing.JComboBox<>();
+        lblDNI = new javax.swing.JLabel();
+        txtDni = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -165,8 +171,10 @@ public class ABMPersonal extends javax.swing.JFrame {
         lblTelefono1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTelefono1.setText("Cargo:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setName("cboCargo"); // NOI18N
+        cboCargo.setName("cboCargo"); // NOI18N
+
+        lblDNI.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblDNI.setText("Dni: ");
 
         javax.swing.GroupLayout pnlContenedorLayout = new javax.swing.GroupLayout(pnlContenedor);
         pnlContenedor.setLayout(pnlContenedorLayout);
@@ -176,7 +184,8 @@ public class ABMPersonal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
-                        .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
@@ -200,7 +209,12 @@ public class ABMPersonal extends javax.swing.JFrame {
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
                         .addComponent(lblTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlContenedorLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(lblDNI)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
@@ -218,6 +232,14 @@ public class ABMPersonal extends javax.swing.JFrame {
             .addGroup(pnlContenedorLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlContenedorLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -239,20 +261,17 @@ public class ABMPersonal extends javax.swing.JFrame {
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(4, 4, 4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlContenedorLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(59, 59, 59))))
         );
 
         lblEmail.getAccessibleContext().setAccessibleName("LabelNombre");
@@ -277,29 +296,42 @@ public class ABMPersonal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comenzarCarga() throws SQLException, InterruptedException{
+    private void comenzarCarga() throws SQLException, InterruptedException {
+        cargarDatos();
+    }
 
+    private void cargarDatos() throws SQLException, InterruptedException {
+        modelo = oPers.Listar();
+        modeloCargos = oCargo.Listar();
+        for (int row = 0; row < modeloCargos.getRowCount(); row++) {
+
+            for (int col = 0; col < modeloCargos.getColumnCount(); col++) {
+
+                System.out.println(modeloCargos.getValueAt(row, col));
+
+            }
+
+        }
+
+        asignarDatos();
     }
-    
-    private void cargarDatos() throws SQLException, InterruptedException{
-    }
-    
-    private void asignarDatos(){
+
+    private void asignarDatos() {
 
         dgvPersonal.setModel(modelo);
+
     }
-    
-    
-    
+
+
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-       // JOptionPane.showMessageDialog(null, "Hello World");
-       // Conexion oCon = new Conexion();
-       // oCon.Conectar();
+        // JOptionPane.showMessageDialog(null, "Hello World");
+        // Conexion oCon = new Conexion();
+        // oCon.Conectar();
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -308,13 +340,13 @@ public class ABMPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-       Personal oPersonal = new Personal();
-       int eli= dgvPersonal.getSelectedRowCount();
-       if(eli>=0){
-       modelo.removeRow(eli);
-       }else{
-        JOptionPane.showMessageDialog(null,"NO HAY DATOS QUE ELIMINAR");
-       }
+        Personal oPersonal = new Personal();
+        int eli = dgvPersonal.getSelectedRowCount();
+        if (eli >= 0) {
+            modelo.removeRow(eli);
+        } else {
+            JOptionPane.showMessageDialog(null, "NO HAY DATOS QUE ELIMINAR");
+        }
         try {
             ResponseObject oRes = oPersonal.Guardar(oPersonal);
         } catch (SQLException ex) {
@@ -324,21 +356,24 @@ public class ABMPersonal extends javax.swing.JFrame {
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         Personal oPersonal = new Personal();
-        oPersonal.SetId(0); 
-        oPersonal.SetEmail(txtEmail.getText()); 
-        oPersonal.SetApellido(txtApellido.getText()); 
-        oPersonal.SetNombre(txtNombre.getText()); 
-        oPersonal.SetDni(""); 
-        oPersonal.SetIdPersonalCargo(1); 
-        oPersonal.SetPassword(txtPassword.getText()); 
-        oPersonal.SetTelefono(""); 
+        oPersonal.SetId(0);
+        oPersonal.SetEmail(txtEmail.getText());
+        oPersonal.SetApellido(txtApellido.getText());
+        oPersonal.SetNombre(txtNombre.getText());
+        oPersonal.SetDni("");
+        oPersonal.SetIdPersonalCargo(1);
+        oPersonal.SetPassword(txtPassword.getText());
+        oPersonal.SetTelefono(txtTelefono.getText());
 
         try {
             ResponseObject oRes = oPersonal.Guardar(oPersonal);
+            comenzarCarga();
         } catch (SQLException ex) {
             Logger.getLogger(ABMPersonal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ABMPersonal.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     public static void main(String args[]) {
@@ -367,22 +402,23 @@ public class ABMPersonal extends javax.swing.JFrame {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ABMPersonal.class.getName()).log(Level.SEVERE, null, ex);
                 }
-               
+
             }
-            
+
         });
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<PersonalCargo> cboCargo;
     private javax.swing.JTable dgvPersonal;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblApellido;
+    private javax.swing.JLabel lblDNI;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPassword;
@@ -392,6 +428,7 @@ public class ABMPersonal extends javax.swing.JFrame {
     private javax.swing.JPanel pnlContenedor;
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JTextField txtApellido;
+    private javax.swing.JTextField txtDni;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPassword;

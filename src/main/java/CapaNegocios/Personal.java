@@ -13,7 +13,6 @@ public class Personal extends Persona {
     private int IdPersonalCargo;
     
     public Personal(){
-
     }
     public Personal(String User, String Password, int id_personal_cargo){
         super();
