@@ -15,6 +15,7 @@ public class Persona {
     public Persona(){
 
     }
+    
     public Persona(String Nombre, String Apellido, String Dni, String Mail, String Telefono){
         this.Nombre = Nombre;
         this.Apellido = Apellido;

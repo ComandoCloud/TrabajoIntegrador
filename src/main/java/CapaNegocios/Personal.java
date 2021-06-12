@@ -50,7 +50,7 @@ public class Personal extends Persona {
             if(oPersonal.GetId()==0){
                 try{
                     oCon.Conectar();
-                    oCon.CrearComando("INSERT INTO personal (nombre,apellido,email,telefono,clave,id_personal_cargo) VALUES (?,?,?,?,?,?)");
+                    oCon.CrearComando("INSERT INTO personal (nombre,apellido,email,telefono,clave,id_personal_cargo,dni) VALUES (?,?,?,?,?,?,?)");
                     
                     oCon.comando.setString(1, oPersonal.GetNombre());
                     oCon.comando.setString(2, oPersonal.GetApellido());
@@ -58,7 +58,7 @@ public class Personal extends Persona {
                     oCon.comando.setString(4, oPersonal.GetTelefono());
                     oCon.comando.setString(5, oPersonal.GetPassword());
                     oCon.comando.setInt(6, oPersonal.GetIdPersonalCargo());
-
+                    oCon.comando.setString(7, oPersonal.GetDni());
                     oCon.EjecutarComando();
                     oCon.Desconectar();
                     return new ResponseObject("Guardado correctamente",0);

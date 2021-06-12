@@ -328,6 +328,7 @@ public class ABMPersonal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void comenzarCarga() throws SQLException, InterruptedException {
+        DeshabilitartextBox();
         cargarDatos();
     }
 
@@ -336,7 +337,6 @@ public class ABMPersonal extends javax.swing.JFrame {
         modelo = oPers.Listar();
         modeloCargos = oCargo.Listar();
 
-        System.out.println(modeloCargos.getColumnName(1));
         for (int row = 0; row < modeloCargos.getRowCount(); row++) {
             for (int col = 0; col < modeloCargos.getColumnCount(); col++) {
                 if (col == 0) {
@@ -370,9 +370,27 @@ public class ABMPersonal extends javax.swing.JFrame {
         txtPassword.setEnabled(false);
     }
 
+    private void LimpiarCampos() {
+        txtApellido.setText(" ");
+        txtNombre.setText(" ");
+        txtTelefono.setText(" ");
+        txtDni.setText(" ");
+        txtEmail.setText(" ");
+        txtPassword.setText(" ");
+    }
+
     private void asignarDatos() {
 
         dgvPersonal.setModel(modelo);
+
+        dgvPersonal.getColumnModel().getColumn(0).setMinWidth(0);
+        dgvPersonal.getColumnModel().getColumn(0).setMaxWidth(0);
+
+        dgvPersonal.getColumnModel().getColumn(5).setMinWidth(0);
+        dgvPersonal.getColumnModel().getColumn(5).setMaxWidth(0);
+
+        dgvPersonal.getColumnModel().getColumn(7).setMinWidth(0);
+        dgvPersonal.getColumnModel().getColumn(7).setMaxWidth(0);
 
     }
 
@@ -397,18 +415,22 @@ public class ABMPersonal extends javax.swing.JFrame {
         oPersonalSeleccionado.SetTelefono(dgvPersonal.getModel().getValueAt(indiceSelecionado, 4).toString());
         oPersonalSeleccionado.SetPassword(dgvPersonal.getModel().getValueAt(indiceSelecionado, 6).toString());
         oPersonalSeleccionado.SetIdPersonalCargo(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 7).toString()));
-        
+
+        /*
         PersonalCargo cargoSeleccionado = (PersonalCargo) cboCargo.getSelectedItem();
         int Seleccionado = cargoSeleccionado.getIdCargo();
         oPersonalSeleccionado.SetIdPersonalCargo(Seleccionado);
-        
-        
+         */
         txtEmail.setText(oPersonalSeleccionado.GetEmail());
         txtPassword.setText(oPersonalSeleccionado.GetPassword());
         txtNombre.setText(oPersonalSeleccionado.GetNombre());
         txtApellido.setText(oPersonalSeleccionado.GetApellido());
-        
-       
+        txtTelefono.setText(oPersonalSeleccionado.GetTelefono());
+        txtDni.setText(oPersonalSeleccionado.GetDni());
+
+        oPers.SetId(oPersonalSeleccionado.GetId());
+        HabilitartextBox();
+
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -429,18 +451,23 @@ public class ABMPersonal extends javax.swing.JFrame {
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         oPers = new Personal();
-        oPers.SetId(0);
+        //oPers.SetId(0);
         oPers.SetEmail(txtEmail.getText());
         oPers.SetApellido(txtApellido.getText());
         oPers.SetNombre(txtNombre.getText());
-        oPers.SetDni("");
+        oPers.SetDni(txtDni.getText());
         oPers.SetIdPersonalCargo(1);
         oPers.SetPassword(txtPassword.getText());
         oPers.SetTelefono(txtTelefono.getText());
+        PersonalCargo cargoSeleccionado = (PersonalCargo) cboCargo.getSelectedItem();
+        int Seleccionado = cargoSeleccionado.getIdCargo();
+        oPers.SetIdPersonalCargo(Seleccionado);
 
         try {
             ResponseObject oRes = oPers.Guardar(oPers);
+            LimpiarCampos();
             comenzarCarga();
+
         } catch (SQLException ex) {
             Logger.getLogger(ABMPersonal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -456,10 +483,13 @@ public class ABMPersonal extends javax.swing.JFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
+        oPers.SetId(0);
         HabilitartextBox();
+        LimpiarCampos();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        LimpiarCampos();
         DeshabilitartextBox();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarActionPerformed
