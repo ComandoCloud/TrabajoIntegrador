@@ -31,7 +31,5 @@ public class ReservasEstados {
 
     public void setDescripcion(String text) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
+    }   
 }

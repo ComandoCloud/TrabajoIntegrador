@@ -13,10 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
-/**
- *
- * @author Maximiliano Kiss
- */
+
 public class frmReservas extends javax.swing.JFrame {
 
     DefaultTableModel tablaCanchas = new DefaultTableModel();
@@ -24,8 +21,7 @@ public class frmReservas extends javax.swing.JFrame {
 
     Cancha oCancha = new Cancha();
     Cancha oCanchaSeleccionada = new Cancha();
-    Deportes oDeportes = new Deportes();
-    
+    Deportes oDeportes = new Deportes(); 
     
     public frmReservas() throws SQLException, InterruptedException {
         initComponents();
@@ -268,7 +264,6 @@ public class frmReservas extends javax.swing.JFrame {
 
         dgvCanchas.getColumnModel().getColumn(5).setMinWidth(0);
         dgvCanchas.getColumnModel().getColumn(5).setMaxWidth(0);
-
 }
         
     }
@@ -295,7 +290,6 @@ public class frmReservas extends javax.swing.JFrame {
         } catch (InterruptedException ex) {
             Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -307,8 +301,7 @@ public class frmReservas extends javax.swing.JFrame {
             if (cboDeporte.getItemAt(i).equals(s)) {
                 cboDeporte.setSelectedIndex(i);
                 break;
-      }
-            
+      }         
     }
     return;
   }

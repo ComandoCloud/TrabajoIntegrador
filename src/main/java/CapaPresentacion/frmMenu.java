@@ -6,10 +6,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Irene
- */
 public class frmMenu extends javax.swing.JFrame {
 
     public frmMenu() {
@@ -19,7 +15,7 @@ public class frmMenu extends javax.swing.JFrame {
             jMenuDeportes.setVisible(false);
             jMenuCanchas.setVisible(false);
         }
-        jMenuUsuario.setText(oUsu.GetApellido() + ", " + oUsu.GetNombre()+" | ");
+        txtNombreUsuario.setText(oUsu.GetApellido() + ", " + oUsu.GetNombre()+" | ");
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
     }
@@ -32,6 +28,7 @@ public class frmMenu extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         escritorio = new javax.swing.JDesktopPane();
+        txtNombreUsuario = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuUsuario = new javax.swing.JMenu();
         jMenuCanchas = new javax.swing.JMenu();
@@ -50,15 +47,24 @@ public class frmMenu extends javax.swing.JFrame {
 
         escritorio.setBackground(new java.awt.Color(0, 153, 153));
 
+        txtNombreUsuario.setText("jLabel1");
+
+        escritorio.setLayer(txtNombreUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
         escritorio.setLayout(escritorioLayout);
         escritorioLayout.setHorizontalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 720, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioLayout.createSequentialGroup()
+                .addContainerGap(555, Short.MAX_VALUE)
+                .addComponent(txtNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 292, Short.MAX_VALUE)
+            .addGroup(escritorioLayout.createSequentialGroup()
+                .addComponent(txtNombreUsuario)
+                .addGap(0, 281, Short.MAX_VALUE))
         );
 
         jMenuUsuario.setText("jMenu1");
@@ -165,5 +171,6 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuDeportes;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu jMenuUsuario;
+    private javax.swing.JLabel txtNombreUsuario;
     // End of variables declaration//GEN-END:variables
 }

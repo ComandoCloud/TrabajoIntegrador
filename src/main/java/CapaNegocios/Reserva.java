@@ -26,9 +26,7 @@ public class Reserva {
         oCon.EjecutarComando();
         dt = oCon.Tabla();
         oCon.Desconectar();
-        return true;
-        
-        
+        return true;      
     }
     public int getId() {
         return id;

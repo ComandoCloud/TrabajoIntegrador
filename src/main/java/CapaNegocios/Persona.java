@@ -26,7 +26,6 @@ public class Persona {
         this.Telefono = Telefono;
         this.Borrado =0;
     }
-    
   
     public static void main(String[] args) throws SQLException,InterruptedException {
 
@@ -92,20 +91,11 @@ public class Persona {
         return oCon;
     }
 
-    /**
-     * @return the TipoPersona
-     */
     public int getTipoPersona() {
         return TipoPersona;
     }
 
-    /**
-     * @param TipoPersona the TipoPersona to set
-     */
     public void setTipoPersona(int TipoPersona) {
         this.TipoPersona = TipoPersona;
     }
-
-
-
 }

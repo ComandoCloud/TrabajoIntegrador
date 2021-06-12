@@ -24,8 +24,7 @@ public class Personal extends Persona {
         this.IdPersonalCargo = id_personal_cargo;
     }
     
-    public DefaultTableModel Listar() throws SQLException, InterruptedException
-    {
+    public DefaultTableModel Listar() throws SQLException, InterruptedException{
         DefaultTableModel dt = new DefaultTableModel();
         Conexion oCon = new Conexion();          
         oCon.Conectar();
@@ -39,10 +38,8 @@ public class Personal extends Persona {
     
     public static void main(String[] args) throws SQLException, InterruptedException {
             Personal oPers = new Personal();
-            oPers.Listar();
-            
+            oPers.Listar();       
     }
-    
        public ResponseObject Guardar(Personal oPersonal) throws SQLException {
         if(oPersonal!=null){
             int idNuevo=0;
@@ -75,44 +72,26 @@ public class Personal extends Persona {
         return new ResponseObject("Cancha es null: ",-1);
     }
 
-    /**
-     * @return the Usuario
-     */
     public String GetUsuario() {
         return Usuario;
     }
 
-    /**
-     * @param Usuario the Usuario to set
-     */
     public void SetUsuario(String Usuario) {
         this.Usuario = Usuario;
     }
 
-    /**
-     * @return the Password
-     */
     public String GetPassword() {
         return Password;
     }
 
-    /**
-     * @param Password the Password to set
-     */
     public void SetPassword(String Password) {
         this.Password = Password;
     }
 
-    /**
-     * @return the IdPersonalCargo
-     */
     public int GetIdPersonalCargo() {
         return IdPersonalCargo;
     }
 
-    /**
-     * @param IdPersonalCargo the IdPersonalCargo to set
-     */
     public void SetIdPersonalCargo(int IdPersonalCargo) {
         this.IdPersonalCargo = IdPersonalCargo;
     }

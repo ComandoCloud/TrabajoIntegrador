@@ -73,44 +73,26 @@ public class Usuario extends Persona{
 
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * @param email the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * @return the pass
-     */
     public String getPass() {
         return pass;
     }
 
-    /**
-     * @param pass the pass to set
-     */
     public void setPass(String pass) {
         this.pass = pass;
     }
 
-    /**
-     * @return the oUsuario
-     */
     public static Usuario getoUsuario() {
         return oUsuario;
     }
 
-    /**
-     * @param aoUsuario the oUsuario to set
-     */
     public static void setoUsuario(Usuario aoUsuario) {
         oUsuario = aoUsuario;
     }

@@ -13,10 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
-/**
- *
- * @author Maximiliano Kiss
- */
+
 public class ABMDeportes extends javax.swing.JFrame {
 
     DefaultTableModel tablaDeportes = new DefaultTableModel();
@@ -25,10 +22,8 @@ public class ABMDeportes extends javax.swing.JFrame {
     
     public ABMDeportes() throws SQLException, InterruptedException {
         initComponents();
-        
         comenzarCarga();
     }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -248,14 +243,13 @@ public class ABMDeportes extends javax.swing.JFrame {
         dgvDeportes.getColumnModel().getColumn(2).setMaxWidth(0);
     }
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         
         if(txtDescripcion.getText().isBlank() || txtDescripcion.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Ingrese la descripcion","Error", JOptionPane.INFORMATION_MESSAGE);
-
         }
         else{
             oDeportes.setDeportes(oDeporteSeleccionado.getIdDeportes());
@@ -275,9 +269,7 @@ public class ABMDeportes extends javax.swing.JFrame {
             Logger.getLogger(ABMDeportes.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        }
-        
-       
+        }     
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -327,9 +319,7 @@ public class ABMDeportes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNuevoMouseClicked
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        txtDescripcion.setEnabled(true);
-     
-                
+        txtDescripcion.setEnabled(true);           
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

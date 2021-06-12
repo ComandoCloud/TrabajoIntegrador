@@ -50,10 +50,8 @@ public class PersonalCargo {
         public void setIdCargo(int id){
             this.Id = id;
         }
-        
-            
-    public DefaultTableModel Listar() throws SQLException, InterruptedException
-    {
+               
+    public DefaultTableModel Listar() throws SQLException, InterruptedException{
         DefaultTableModel dt = new DefaultTableModel();
         Conexion oCon = new Conexion();          
         oCon.Conectar();
@@ -64,11 +62,9 @@ public class PersonalCargo {
         oCon.Desconectar();
         return dt;
     }
-    
+  
     @Override
     public String toString(){
         return this.Descripcion;
-    }
-        
-        
+    }     
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package CapaDatos;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,34 +16,27 @@ public class Conexion {
     public static final String Clave = "root2020";
     public PreparedStatement comando;
     public ResultSet comandoResult;
-    public Conexion(){
-        
+    public Conexion(){   
     }
     
-//SECCION DE CONEXION
-    
     public void Conectar() throws SQLException{
-        if(this.oCon != null && this.oCon.isValid(1))
-        {
+        if(this.oCon != null && this.oCon.isValid(1)){
             throw new SQLException("Conexion abierta");          
         }
         try 
         {
-            if(this.oCon == null)
-            {
+            if(this.oCon == null){
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 this.oCon = DriverManager.getConnection(this.Url, this.Usuario, this.Clave);
                 System.out.println("Conexion exitosa.");
             }
-        } catch (ClassNotFoundException | SQLException e) 
-        {
+        } catch (ClassNotFoundException | SQLException e) {
             throw new SQLException("Error al conectarse con la base de datos:\n"+e.toString());
         }
     }
     
     public void Desconectar() throws SQLException{
-            if(this.oCon.isValid(3000))
-            {
+            if(this.oCon.isValid(3000)){
                 this.oCon = null;
                 this.comando=null;
                 this.comandoResult=null;
@@ -73,20 +61,16 @@ public class Conexion {
         for(int i=0; i<NumColumn; i++)
             nombreColumnas[i] = metaDatos.getColumnLabel(i + 1);
         dt.setColumnIdentifiers(nombreColumnas);
-        while(this.comandoResult.next())
-        {
+        while(this.comandoResult.next()){
             for (int i=0;i<NumColumn;i++)
                 fila[i] = this.comandoResult.getObject(i+1);
             dt.addRow(fila);
         }
         //Agrego comentario para subir lo nuevo
         return dt;
-    }
-    
-    
+    }  
     //FIN SECCION DE CONEXION
  
-    public static void main(String[] args) throws SQLException {
-            
+    public static void main(String[] args) throws SQLException {           
     }
 }

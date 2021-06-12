@@ -13,10 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
-/**
- *
- * @author Maximiliano Kiss
- */
+
 public class ABMCanchas extends javax.swing.JFrame {
 
     DefaultTableModel tablaCanchas = new DefaultTableModel();
@@ -24,8 +21,7 @@ public class ABMCanchas extends javax.swing.JFrame {
 
     Cancha oCancha = new Cancha();
     Cancha oCanchaSeleccionada = new Cancha();
-    Deportes oDeportes = new Deportes();
-    
+    Deportes oDeportes = new Deportes(); 
     
     public ABMCanchas() throws SQLException, InterruptedException {
         initComponents();
@@ -311,11 +307,10 @@ public class ABMCanchas extends javax.swing.JFrame {
         dgvCanchas.getColumnModel().getColumn(5).setMaxWidth(0);
 
 }
-        
-        
+             
     }
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
@@ -338,7 +333,6 @@ public class ABMCanchas extends javax.swing.JFrame {
         } catch (InterruptedException ex) {
             Logger.getLogger(ABMCanchas.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -369,7 +363,7 @@ public class ABMCanchas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtAnchoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnchoActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_txtAnchoActionPerformed
     
     private void selectItemByString(String s) {
@@ -377,8 +371,7 @@ public class ABMCanchas extends javax.swing.JFrame {
             if (cboDeporte.getItemAt(i).equals(s)) {
                 cboDeporte.setSelectedIndex(i);
                 break;
-      }
-            
+      }        
     }
     return;
   }
@@ -398,17 +391,16 @@ public class ABMCanchas extends javax.swing.JFrame {
     }//GEN-LAST:event_dgvCanchasMouseClicked
 
     private void btnNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNuevoMouseClicked
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnNuevoMouseClicked
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         txtAncho.setEnabled(true);
         txtLargo.setEnabled(true);
         txtDescripcion.setEnabled(true);
-        cboDeporte.setEnabled(true);
-                
+        cboDeporte.setEnabled(true);            
     }//GEN-LAST:event_btnNuevoActionPerformed
-    
+ 
     public static void main(String args[]) {
       
         java.awt.EventQueue.invokeLater(new Runnable() {

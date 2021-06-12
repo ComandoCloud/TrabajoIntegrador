@@ -19,7 +19,6 @@ public class Cancha {
             int idNuevo=0;
             if(oCancha.getIdCancha()==0){
                 try{
-                    
                     getoCon().Conectar();
                     getoCon().CrearComando("INSERT INTO canchas (id_deporte,descripcion,ancho,largo) VALUES (?,?,?,?)");
                     
@@ -39,7 +38,6 @@ public class Cancha {
             else
             {
                 try{
-                    
                     getoCon().Conectar();
                     getoCon().CrearComando("UPDATE canchas SET id_deporte = ?,descripcion = ?, ancho = ?,largo=? where id = ?");
                     
@@ -80,8 +78,7 @@ public class Cancha {
         }
     }
     
-    public ResponseObject Eliminar(int idCancha) throws SQLException
-    {
+    public ResponseObject Eliminar(int idCancha) throws SQLException{
         try{
             getoCon().Conectar();
             getoCon().CrearComando("update canchas set borrado=1 where id = ?");
@@ -95,7 +92,6 @@ public class Cancha {
             return new ResponseObject("Error: "+ e.toString(),-1);
         }
     }
-    
 
     public static void main(String[] args) throws SQLException,InterruptedException {
         System.out.println("com.comandocloud.tpintegrador.Cancha.main()");
@@ -103,103 +99,60 @@ public class Cancha {
 
         ResponseObject oRespuesta = oCanchita.Listar();
         System.out.println(oRespuesta.getSalida());
-        
     }
 
-    /**
-     * @return the IdCancha
-     */
     public int getIdCancha() {
         return IdCancha;
     }
 
-    /**
-     * @param IdCancha the IdCancha to set
-     */
     public void setIdCancha(int IdCancha) {
         this.IdCancha = IdCancha;
     }
 
-    /**
-     * @return the IdDeporte
-     */
     public int getIdDeporte() {
         return IdDeporte;
     }
 
-    /**
-     * @param IdDeporte the IdDeporte to set
-     */
     public void setIdDeporte(int IdDeporte) {
         this.IdDeporte = IdDeporte;
     }
 
-    /**
-     * @return the Descripcion
-     */
     public String getDescripcion() {
         return Descripcion;
     }
 
-    /**
-     * @param Descripcion the Descripcion to set
-     */
     public void setDescripcion(String Descripcion) {
         this.Descripcion = Descripcion;
     }
 
-    /**
-     * @return the Ancho
-     */
     public String getAncho() {
         return Ancho;
     }
 
-    /**
-     * @param Ancho the Ancho to set
-     */
     public void setAncho(String Ancho) {
         this.Ancho = Ancho;
     }
 
-    /**
-     * @return the Largo
-     */
     public String getLargo() {
         return Largo;
     }
 
-    /**
-     * @param Largo the Largo to set
-     */
     public void setLargo(String Largo) {
         this.Largo = Largo;
     }
 
-    /**
-     * @return the Borrado
-     */
     public int getBorrado() {
         return Borrado;
     }
 
-    /**
-     * @param Borrado the Borrado to set
-     */
     public void setBorrado(int Borrado) {
         this.Borrado = Borrado;
     }
 
-    /**
-     * @return the oCon
-     */
     public Conexion getoCon() {
         return oCon;
     }
 
-    /**
-     * @param oCon the oCon to set
-     */
     public void setoCon(Conexion oCon) {
         this.oCon = oCon;
     }

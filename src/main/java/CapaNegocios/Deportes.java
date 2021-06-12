@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package CapaNegocios;
 
 import CapaDatos.Conexion;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Irene test
- */
 public class Deportes {
     private int idDeportes;
     private String descripcion;
@@ -50,8 +41,7 @@ public class Deportes {
         this.borrado = borrado;
     }
 
-     public ResponseObject Eliminar(int idDeporte) throws SQLException
-    {
+     public ResponseObject Eliminar(int idDeporte) throws SQLException{
         try{
             oCon.Conectar();
             oCon.CrearComando("update deportes set borrado=1 where id = ?");
@@ -71,7 +61,6 @@ public class Deportes {
             int idNuevo=0;
             if(oDeporte.getIdDeportes()==0){
                 try{
-                    
                     oCon.Conectar();
                     oCon.CrearComando("INSERT INTO deportes (descripcion) VALUES (?)");
                     oCon.comando.setString(1, oDeporte.getDescripcion());
@@ -87,7 +76,6 @@ public class Deportes {
             else
             {
                 try{
-                    
                     oCon.Conectar();
                     oCon.CrearComando("UPDATE deportes SET descripcion = ? where id = ?");
                     oCon.comando.setString(1, oDeporte.getDescripcion());
@@ -120,8 +108,7 @@ public class Deportes {
             oCon.Desconectar();
             return new ResponseObject("Error: "+ e.toString(),-1, null);
         }
-    }
-    
+    }  
     @Override
     public String toString(){
         return this.descripcion;

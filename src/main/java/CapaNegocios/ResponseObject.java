@@ -7,13 +7,11 @@ public class ResponseObject {
     private String salida;
     private int codigoSalida;
     private DefaultTableModel JTResultado;
-    
             
     public ResponseObject(String salida, int codigoSalida){
         this.salida = salida;
         this.codigoSalida = codigoSalida;
     }
-    
         public ResponseObject(String salida, int codigoSalida, DefaultTableModel tabla){
         this.salida = salida;
         this.codigoSalida = codigoSalida;
@@ -36,16 +34,10 @@ public class ResponseObject {
         this.codigoSalida = codigoSalida;
     }
 
-    /**
-     * @return the JTResultado
-     */
     public DefaultTableModel getJTResultado() {
         return JTResultado;
     }
 
-    /**
-     * @param JTResultado the JTResultado to set
-     */
     public void setJTResultado(DefaultTableModel JTResultado) {
         this.JTResultado = JTResultado;
     }
