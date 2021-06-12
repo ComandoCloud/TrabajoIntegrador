@@ -19,7 +19,13 @@ public class Deportes {
     private int borrado;  
     private Conexion oCon = new Conexion();
     
-
+    public Deportes (int id, String descripcion){
+        this.idDeportes = id;
+        this.descripcion = descripcion;
+    }
+    public Deportes (){
+        
+    }
     public int getIdDeportes() {
         return idDeportes;
     }
@@ -114,5 +120,10 @@ public class Deportes {
             oCon.Desconectar();
             return new ResponseObject("Error: "+ e.toString(),-1, null);
         }
+    }
+    
+    @Override
+    public String toString(){
+        return this.descripcion;
     }
 }

@@ -8,8 +8,8 @@ public class Usuario extends Persona{
     
     private String email;
     private String pass;
-    
-    
+    private static Usuario oUsuario;
+   
     public Usuario(){
         super();
     }
@@ -37,8 +37,9 @@ public class Usuario extends Persona{
             oUsuario.SetNombre((String)dt.getValueAt(0, 1));
             oUsuario.setEmail(email);
             oUsuario.setPass(pass);
-            oUsuario.SetId((Integer)dt.getValueAt(0, 1));
+            oUsuario.SetId((Integer)dt.getValueAt(0,0));
             oUsuario.SetTelefono((String)dt.getValueAt(0, 4));
+            oUsuario.setTipoPersona(1);
         }
         else{
             try{
@@ -57,10 +58,13 @@ public class Usuario extends Persona{
                 oUsuario.SetNombre((String)dt.getValueAt(0, 1));
                 oUsuario.setEmail(email);
                 oUsuario.setPass(pass);
-                oUsuario.SetId((Integer)dt.getValueAt(0, 1));
+                oUsuario.SetId((Integer)dt.getValueAt(0, 0));
                 oUsuario.SetTelefono((String)dt.getValueAt(0, 4));
-                }
-
+                oUsuario.setTipoPersona(2);
+            }
+            else{
+                return null;
+            }
         }
         return oUsuario;
     }
@@ -95,5 +99,19 @@ public class Usuario extends Persona{
      */
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    /**
+     * @return the oUsuario
+     */
+    public static Usuario getoUsuario() {
+        return oUsuario;
+    }
+
+    /**
+     * @param aoUsuario the oUsuario to set
+     */
+    public static void setoUsuario(Usuario aoUsuario) {
+        oUsuario = aoUsuario;
     }
 }

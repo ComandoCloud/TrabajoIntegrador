@@ -53,8 +53,8 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtEmail" max="32767" attributes="0"/>
-                              <Component id="txtPass" pref="184" max="32767" attributes="0"/>
+                              <Component id="txtEmail" pref="184" max="32767" attributes="0"/>
+                              <Component id="txtPass" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -107,12 +107,12 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtEmail">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jTextField1"/>
+            <Property name="text" type="java.lang.String" value="Aleehmoyya@gmail.com"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="txtPass">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jPasswordField1"/>
+            <Property name="text" type="java.lang.String" value="123"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">

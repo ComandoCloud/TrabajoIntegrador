@@ -55,9 +55,9 @@ public class frmLogin extends javax.swing.JFrame {
 
         jButton2.setText("jButton2");
 
-        txtEmail.setText("jTextField1");
+        txtEmail.setText("Aleehmoyya@gmail.com");
 
-        txtPass.setText("jPasswordField1");
+        txtPass.setText("123");
 
         jLabel2.setText("jLabel2");
 
@@ -87,8 +87,8 @@ public class frmLogin extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtEmail)
-                            .addComponent(txtPass, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)))))
+                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                            .addComponent(txtPass)))))
             .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
@@ -125,13 +125,32 @@ public class frmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEntrarMouseClicked
+
         if(txtEmail.getText().isBlank() || txtEmail.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Ingrese email","Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
         if(txtPass.getPassword().length==0){
             JOptionPane.showMessageDialog(null, "Ingrese clave","Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
-        Usuario oUsuarios = new Usuario();
+        Usuario oUsuarioIniciado = new Usuario();
+        try {
+            oUsuarioIniciado = oUsuarioIniciado.IniciarSesion(txtEmail.getText(), txtPass.getPassword());
+            if(oUsuarioIniciado != null){
+                JOptionPane.showMessageDialog(null, "Bienvenido " + oUsuarioIniciado.GetApellido(),"Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
+                Usuario.setoUsuario(oUsuarioIniciado);
+                frmMenu oMenu  = new frmMenu();
+                oMenu.setVisible(true);
+                this.setVisible(false);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Email y/o contraseña invalida ","Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         
         
     }//GEN-LAST:event_btnEntrarMouseClicked

@@ -10,6 +10,8 @@ public class Persona {
     protected String Email;
     protected String Telefono;
     protected int Borrado;
+    private int TipoPersona;
+    
     private Conexion oCon = new Conexion();
 
     public Persona(){
@@ -88,6 +90,20 @@ public class Persona {
 
     public Conexion GetoCon() {
         return oCon;
+    }
+
+    /**
+     * @return the TipoPersona
+     */
+    public int getTipoPersona() {
+        return TipoPersona;
+    }
+
+    /**
+     * @param TipoPersona the TipoPersona to set
+     */
+    public void setTipoPersona(int TipoPersona) {
+        this.TipoPersona = TipoPersona;
     }
 
 

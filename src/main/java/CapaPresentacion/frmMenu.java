@@ -1,6 +1,7 @@
 
 package CapaPresentacion;
 
+import CapaNegocios.Usuario;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,10 +10,16 @@ import java.util.logging.Logger;
  *
  * @author Irene
  */
-public class Menu extends javax.swing.JFrame {
+public class frmMenu extends javax.swing.JFrame {
 
-    public Menu() {
+    public frmMenu() {
         initComponents();
+        Usuario oUsu =  Usuario.getoUsuario();
+        if(oUsu.getTipoPersona()==2){
+            jMenuDeportes.setVisible(false);
+            jMenuCanchas.setVisible(false);
+        }
+        jMenuUsuario.setText(oUsu.GetApellido() + ", " + oUsu.GetNombre()+" | ");
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
     }
@@ -26,10 +33,11 @@ public class Menu extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         escritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        jMenuUsuario = new javax.swing.JMenu();
+        jMenuCanchas = new javax.swing.JMenu();
+        jMenuDeportes = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
 
         jMenu3.setText("File");
         jMenuBar2.add(jMenu3);
@@ -50,21 +58,21 @@ public class Menu extends javax.swing.JFrame {
         );
         escritorioLayout.setVerticalGroup(
             escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 290, Short.MAX_VALUE)
+            .addGap(0, 292, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        jMenuUsuario.setText("jMenu1");
+        jMenuBar1.add(jMenuUsuario);
 
-        jMenu5.setText("Canchas");
-        jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
+        jMenuCanchas.setText("Canchas");
+        jMenuCanchas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu5MouseClicked(evt);
+                jMenuCanchasMouseClicked(evt);
             }
         });
-        jMenuBar1.add(jMenu5);
+        jMenuBar1.add(jMenuCanchas);
 
-        jMenu2.setText("Deportes");
+        jMenuDeportes.setText("Deportes");
 
         jMenuItem1.setText("Gestion de deportes");
         jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -77,9 +85,12 @@ public class Menu extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenuDeportes.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(jMenuDeportes);
+
+        jMenu6.setText("Reservas");
+        jMenuBar1.add(jMenu6);
 
         setJMenuBar(jMenuBar1);
 
@@ -97,28 +108,15 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
-        ABMCanchas oCanchas;
-        try {
-            oCanchas = new ABMCanchas();
-             oCanchas.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-    }//GEN-LAST:event_jMenu5MouseClicked
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
          ABMDeportes oDeportes;
         try {
             oDeportes = new ABMDeportes();
              oDeportes.setVisible(true);
         } catch (SQLException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -127,31 +125,45 @@ public class Menu extends javax.swing.JFrame {
             ABMPersonal oAbm = new ABMPersonal();
             oAbm.setVisible(true);
         } catch (SQLException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_jMenuItem1MouseClicked
+
+    private void jMenuCanchasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuCanchasMouseClicked
+        ABMCanchas oCanchas;
+        try {
+            oCanchas = new ABMCanchas();
+            oCanchas.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jMenuCanchasMouseClicked
 
     public static void main(String args[]) {
     
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Menu().setVisible(true);
+                new frmMenu().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane escritorio;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenu jMenuCanchas;
+    private javax.swing.JMenu jMenuDeportes;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenu jMenuUsuario;
     // End of variables declaration//GEN-END:variables
 }
