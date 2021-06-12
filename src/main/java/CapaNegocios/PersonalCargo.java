@@ -17,6 +17,12 @@ public class PersonalCargo {
             comenzarCarga();
         }
         
+        public PersonalCargo(int Id,String Descripcion){
+            this.Id = Id;
+            this.Descripcion = Descripcion;
+            comenzarCarga();
+        }
+        
         private void comenzarCarga(){
             cargarDatos();
         }
@@ -57,6 +63,11 @@ public class PersonalCargo {
         dt = oCon.Tabla();
         oCon.Desconectar();
         return dt;
+    }
+    
+    @Override
+    public String toString(){
+        return this.Descripcion;
     }
         
         

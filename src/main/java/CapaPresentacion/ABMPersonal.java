@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,7 +24,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ABMPersonal extends javax.swing.JFrame {
 
-    Personal oPers = new Personal();
+    Personal oPers;
+    Personal oPersonalSeleccionado;
     DefaultTableModel modelo = new DefaultTableModel();
     DefaultTableModel modeloCargos = new DefaultTableModel();
     PersonalCargo oCargo = new PersonalCargo();
@@ -69,6 +71,8 @@ public class ABMPersonal extends javax.swing.JFrame {
         cboCargo = new javax.swing.JComboBox<>();
         lblDNI = new javax.swing.JLabel();
         txtDni = new javax.swing.JTextField();
+        btnNuevo = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,6 +170,11 @@ public class ABMPersonal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        dgvPersonal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dgvPersonalMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(dgvPersonal);
 
         lblTelefono1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -175,6 +184,22 @@ public class ABMPersonal extends javax.swing.JFrame {
 
         lblDNI.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblDNI.setText("Dni: ");
+
+        btnNuevo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlContenedorLayout = new javax.swing.GroupLayout(pnlContenedor);
         pnlContenedor.setLayout(pnlContenedorLayout);
@@ -201,7 +226,10 @@ public class ABMPersonal extends javax.swing.JFrame {
                             .addComponent(lblTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlContenedorLayout.createSequentialGroup()
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
                         .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -218,6 +246,8 @@ public class ABMPersonal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
+                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -233,18 +263,17 @@ public class ABMPersonal extends javax.swing.JFrame {
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(55, 55, 55)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(14, Short.MAX_VALUE))
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -270,8 +299,10 @@ public class ABMPersonal extends javax.swing.JFrame {
                             .addComponent(lblTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(30, 30, 30)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59))))
+                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(49, 49, 49))))
         );
 
         lblEmail.getAccessibleContext().setAccessibleName("LabelNombre");
@@ -301,19 +332,42 @@ public class ABMPersonal extends javax.swing.JFrame {
     }
 
     private void cargarDatos() throws SQLException, InterruptedException {
+        oPers = new Personal();
         modelo = oPers.Listar();
         modeloCargos = oCargo.Listar();
+
+        System.out.println(modeloCargos.getColumnName(1));
         for (int row = 0; row < modeloCargos.getRowCount(); row++) {
-
             for (int col = 0; col < modeloCargos.getColumnCount(); col++) {
-
-                System.out.println(modeloCargos.getValueAt(row, col));
-
+                if (col == 0) {
+                    cboCargo.addItem(new PersonalCargo(
+                            Integer.parseInt(modeloCargos.getValueAt(row, col).toString()),
+                            modeloCargos.getValueAt(row, col + 1).toString())
+                    );
+                }
             }
 
         }
 
         asignarDatos();
+    }
+
+    private void HabilitartextBox() {
+        txtApellido.setEnabled(true);
+        txtNombre.setEnabled(true);
+        txtTelefono.setEnabled(true);
+        txtDni.setEnabled(true);
+        txtEmail.setEnabled(true);
+        txtPassword.setEnabled(true);
+    }
+
+    private void DeshabilitartextBox() {
+        txtApellido.setEnabled(false);
+        txtNombre.setEnabled(false);
+        txtTelefono.setEnabled(false);
+        txtDni.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtPassword.setEnabled(false);
     }
 
     private void asignarDatos() {
@@ -329,13 +383,32 @@ public class ABMPersonal extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        // JOptionPane.showMessageDialog(null, "Hello World");
-        // Conexion oCon = new Conexion();
-        // oCon.Conectar();
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        oPersonalSeleccionado = new Personal();
+        JOptionPane.showMessageDialog(null, "registro Seleccionado");
+        int indiceSelecionado = dgvPersonal.getSelectedRow();
+        oPersonalSeleccionado.SetId(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 0).toString()));
+        oPersonalSeleccionado.SetNombre(dgvPersonal.getModel().getValueAt(indiceSelecionado, 1).toString());
+        oPersonalSeleccionado.SetApellido(dgvPersonal.getModel().getValueAt(indiceSelecionado, 2).toString());
+        oPersonalSeleccionado.SetEmail(dgvPersonal.getModel().getValueAt(indiceSelecionado, 3).toString());
+        oPersonalSeleccionado.SetTelefono(dgvPersonal.getModel().getValueAt(indiceSelecionado, 4).toString());
+        oPersonalSeleccionado.SetPassword(dgvPersonal.getModel().getValueAt(indiceSelecionado, 6).toString());
+        oPersonalSeleccionado.SetIdPersonalCargo(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 7).toString()));
+        
+        PersonalCargo cargoSeleccionado = (PersonalCargo) cboCargo.getSelectedItem();
+        int Seleccionado = cargoSeleccionado.getIdCargo();
+        oPersonalSeleccionado.SetIdPersonalCargo(Seleccionado);
+        
+        
+        txtEmail.setText(oPersonalSeleccionado.GetEmail());
+        txtPassword.setText(oPersonalSeleccionado.GetPassword());
+        txtNombre.setText(oPersonalSeleccionado.GetNombre());
+        txtApellido.setText(oPersonalSeleccionado.GetApellido());
+        
+       
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -355,18 +428,18 @@ public class ABMPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
-        Personal oPersonal = new Personal();
-        oPersonal.SetId(0);
-        oPersonal.SetEmail(txtEmail.getText());
-        oPersonal.SetApellido(txtApellido.getText());
-        oPersonal.SetNombre(txtNombre.getText());
-        oPersonal.SetDni("");
-        oPersonal.SetIdPersonalCargo(1);
-        oPersonal.SetPassword(txtPassword.getText());
-        oPersonal.SetTelefono(txtTelefono.getText());
+        oPers = new Personal();
+        oPers.SetId(0);
+        oPers.SetEmail(txtEmail.getText());
+        oPers.SetApellido(txtApellido.getText());
+        oPers.SetNombre(txtNombre.getText());
+        oPers.SetDni("");
+        oPers.SetIdPersonalCargo(1);
+        oPers.SetPassword(txtPassword.getText());
+        oPers.SetTelefono(txtTelefono.getText());
 
         try {
-            ResponseObject oRes = oPersonal.Guardar(oPersonal);
+            ResponseObject oRes = oPers.Guardar(oPers);
             comenzarCarga();
         } catch (SQLException ex) {
             Logger.getLogger(ABMPersonal.class.getName()).log(Level.SEVERE, null, ex);
@@ -375,6 +448,21 @@ public class ABMPersonal extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnGuardarMouseClicked
+
+    private void dgvPersonalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvPersonalMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_dgvPersonalMouseClicked
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        // TODO add your handling code here:
+        HabilitartextBox();
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        DeshabilitartextBox();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -410,9 +498,11 @@ public class ABMPersonal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnNuevo;
     private javax.swing.JComboBox<PersonalCargo> cboCargo;
     private javax.swing.JTable dgvPersonal;
     private javax.swing.JScrollPane jScrollPane1;

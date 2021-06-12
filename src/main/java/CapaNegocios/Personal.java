@@ -8,12 +8,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public class Personal extends Persona {
+    private int idPersonal;
     private String Usuario;
     private String Password;
     private int IdPersonalCargo;
     
     public Personal(){
+        super();
     }
+    
     public Personal(String User, String Password, int id_personal_cargo){
         super();
         this.Usuario = User;
@@ -113,7 +116,7 @@ public class Personal extends Persona {
     public void SetIdPersonalCargo(int IdPersonalCargo) {
         this.IdPersonalCargo = IdPersonalCargo;
     }
-
+    
 
 
 }

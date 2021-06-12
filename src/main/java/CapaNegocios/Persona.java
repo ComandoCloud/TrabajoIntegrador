@@ -3,13 +3,13 @@ import CapaDatos.Conexion;
 import java.sql.SQLException;
 
 public class Persona {
-    private int Id;
-    private String Nombre;
-    private String Apellido;
-    private String Dni;
-    private String Email;
-    private String Telefono;
-    private int Borrado;
+    protected int Id;
+    protected String Nombre;
+    protected String Apellido;
+    protected String Dni;
+    protected String Email;
+    protected String Telefono;
+    protected int Borrado;
     private Conexion oCon = new Conexion();
 
     public Persona(){
