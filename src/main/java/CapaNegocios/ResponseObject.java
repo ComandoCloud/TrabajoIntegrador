@@ -20,9 +20,6 @@ public class ResponseObject {
         this.JTResultado = tabla;
     }
          
-            
-            
-
     public String getSalida() {
         return salida;
     }
