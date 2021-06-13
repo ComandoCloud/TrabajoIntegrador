@@ -1,21 +1,34 @@
-
 package CapaPresentacion;
 
 import CapaNegocios.Usuario;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 
 public class frmMenu extends javax.swing.JFrame {
 
+    private BufferedImage img;
+
     public frmMenu() {
         initComponents();
-        Usuario oUsu =  Usuario.getoUsuario();
-        if(oUsu.getTipoPersona()==2){
+
+        // A specialized layered pane to be used with JInternalFrames
+       
+
+        Usuario oUsu = Usuario.getoUsuario();
+        if (oUsu.getTipoPersona() == 2) {
             jMenuDeportes.setVisible(false);
             jMenuCanchas.setVisible(false);
         }
-        txtNombreUsuario.setText(oUsu.GetApellido() + ", " + oUsu.GetNombre()+" | ");
+        txtNombreUsuario.setText(oUsu.GetApellido() + ", " + oUsu.GetNombre() + " | ");
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
     }
@@ -117,10 +130,10 @@ public class frmMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-         ABMDeportes oDeportes;
+        ABMDeportes oDeportes;
         try {
             oDeportes = new ABMDeportes();
-             oDeportes.setVisible(true);
+            oDeportes.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -137,7 +150,7 @@ public class frmMenu extends javax.swing.JFrame {
         } catch (InterruptedException ex) {
             Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_jMenuItem1MouseClicked
 
     private void jMenuCanchasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuCanchasMouseClicked
@@ -154,7 +167,7 @@ public class frmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuCanchasMouseClicked
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
-         frmReservas oFrmReservas;
+        frmReservas oFrmReservas;
         try {
             oFrmReservas = new frmReservas();
             oFrmReservas.setVisible(true);
@@ -166,7 +179,7 @@ public class frmMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu6MouseClicked
 
     public static void main(String args[]) {
-    
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new frmMenu().setVisible(true);
