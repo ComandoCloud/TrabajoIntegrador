@@ -6,14 +6,22 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Cancha {
-    private int IdCancha;
-    private int IdDeporte;
-    private String Descripcion;
-    private String Ancho;
-    private String Largo;
-    private int Borrado;
+    private int idCancha;
+    private int idDeporte;
+    private String descripcion;
+    private String ancho;
+    private String largo;
+    private int borrado;
     private Conexion oCon = new Conexion();
     
+    public Cancha(int idCancha, String descripcion){
+        this.idCancha = idCancha;
+        this.descripcion = descripcion;
+        
+    }
+    public Cancha(){
+               
+    }
     public ResponseObject Guardar(Cancha oCancha) throws SQLException {
         if(oCancha!=null){
             int idNuevo=0;
@@ -60,8 +68,7 @@ public class Cancha {
         return new ResponseObject("Cancha es null: ",-1);
     }
     
-    public ResponseObject Listar ()throws SQLException
-    {
+    public ResponseObject Listar ()throws SQLException{
         DefaultTableModel dt = new DefaultTableModel();
         
          try{
@@ -101,53 +108,7 @@ public class Cancha {
         System.out.println(oRespuesta.getSalida());
     }
 
-    public int getIdCancha() {
-        return IdCancha;
-    }
-
-    public void setIdCancha(int IdCancha) {
-        this.IdCancha = IdCancha;
-    }
-
-    public int getIdDeporte() {
-        return IdDeporte;
-    }
-
-    public void setIdDeporte(int IdDeporte) {
-        this.IdDeporte = IdDeporte;
-    }
-
-    public String getDescripcion() {
-        return Descripcion;
-    }
-
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
-    }
-
-    public String getAncho() {
-        return Ancho;
-    }
-
-    public void setAncho(String Ancho) {
-        this.Ancho = Ancho;
-    }
-
-    public String getLargo() {
-        return Largo;
-    }
-
-    public void setLargo(String Largo) {
-        this.Largo = Largo;
-    }
-
-    public int getBorrado() {
-        return Borrado;
-    }
-
-    public void setBorrado(int Borrado) {
-        this.Borrado = Borrado;
-    }
+   
 
     public Conexion getoCon() {
         return oCon;
@@ -157,4 +118,92 @@ public class Cancha {
         this.oCon = oCon;
     }
 
+    /**
+     * @return the idCancha
+     */
+    public int getIdCancha() {
+        return idCancha;
+    }
+
+    /**
+     * @param idCancha the idCancha to set
+     */
+    public void setIdCancha(int idCancha) {
+        this.idCancha = idCancha;
+    }
+
+    /**
+     * @return the idDeporte
+     */
+    public int getIdDeporte() {
+        return idDeporte;
+    }
+
+    /**
+     * @param idDeporte the idDeporte to set
+     */
+    public void setIdDeporte(int idDeporte) {
+        this.idDeporte = idDeporte;
+    }
+
+    /**
+     * @return the descripcion
+     */
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    /**
+     * @param descripcion the descripcion to set
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    /**
+     * @return the ancho
+     */
+    public String getAncho() {
+        return ancho;
+    }
+
+    /**
+     * @param ancho the ancho to set
+     */
+    public void setAncho(String ancho) {
+        this.ancho = ancho;
+    }
+
+    /**
+     * @return the largo
+     */
+    public String getLargo() {
+        return largo;
+    }
+
+    /**
+     * @param largo the largo to set
+     */
+    public void setLargo(String largo) {
+        this.largo = largo;
+    }
+
+    /**
+     * @return the borrado
+     */
+    public int getBorrado() {
+        return borrado;
+    }
+
+    /**
+     * @param borrado the borrado to set
+     */
+    public void setBorrado(int borrado) {
+        this.borrado = borrado;
+    }
+
+    @Override
+    public String toString(){
+        return this.descripcion;
+    }
 }

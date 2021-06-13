@@ -1,8 +1,10 @@
 package CapaNegocios;
+
 import CapaDatos.Conexion;
 import java.sql.SQLException;
 
 public class Persona {
+
     protected int Id;
     protected String Nombre;
     protected String Apellido;
@@ -11,23 +13,23 @@ public class Persona {
     protected String Telefono;
     protected int Borrado;
     private int TipoPersona;
-    
+
     private Conexion oCon = new Conexion();
 
-    public Persona(){
+    public Persona() {
 
     }
-    
-    public Persona(String Nombre, String Apellido, String Dni, String Mail, String Telefono){
+
+    public Persona(String Nombre, String Apellido, String Dni, String Mail, String Telefono) {
         this.Nombre = Nombre;
         this.Apellido = Apellido;
         this.Dni = Dni;
         this.Email = Mail;
         this.Telefono = Telefono;
-        this.Borrado =0;
+        this.Borrado = 0;
     }
-  
-    public static void main(String[] args) throws SQLException,InterruptedException {
+
+    public static void main(String[] args) throws SQLException, InterruptedException {
 
     }
 

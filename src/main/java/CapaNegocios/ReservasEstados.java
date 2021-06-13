@@ -1,24 +1,49 @@
 package CapaNegocios;
 
 public class ReservasEstados {
-    private int reser_est;
-    private String descripción;
+
+    private int id;
+    private String descripcion;
     private int borrado;
 
+    public enum ReservaEstado {
+        RESERVADA(1), LIBRE(2), CANCELADA(3), TERMINADO(4);
+        private int estado; 
+
+        //Añadir un Constructor
+        ReservaEstado(int s) {
+            estado = s;
+        }
+        //Añadir un método
+
+        public int getEstado() {
+            return estado;
+        }
+    }
+
+    public ReservasEstados(int id, String descripcion) {
+        this.id = id;
+        this.descripcion = descripcion;
+    }
+    
+    public ReservasEstados() {
+      
+    }
+
     public int getReser_est() {
-        return reser_est;
+        return id;
     }
 
-    public void setReser_est(int reser_est) {
-        this.reser_est = reser_est;
+    public void setId(int reser_est) {
+        this.id = reser_est;
     }
 
-    public String getDescripción() {
-        return descripción;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescripción(String descripción) {
-        this.descripción = descripción;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public int getBorrado() {
@@ -29,7 +54,4 @@ public class ReservasEstados {
         this.borrado = borrado;
     }
 
-    public void setDescripcion(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }   
 }

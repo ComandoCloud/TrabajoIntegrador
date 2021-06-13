@@ -30,7 +30,6 @@ public class frmMenu extends javax.swing.JFrame {
         escritorio = new javax.swing.JDesktopPane();
         txtNombreUsuario = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenuUsuario = new javax.swing.JMenu();
         jMenuCanchas = new javax.swing.JMenu();
         jMenuDeportes = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -47,6 +46,7 @@ public class frmMenu extends javax.swing.JFrame {
 
         escritorio.setBackground(new java.awt.Color(0, 153, 153));
 
+        txtNombreUsuario.setBackground(new java.awt.Color(255, 255, 255));
         txtNombreUsuario.setText("jLabel1");
 
         escritorio.setLayer(txtNombreUsuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -66,9 +66,6 @@ public class frmMenu extends javax.swing.JFrame {
                 .addComponent(txtNombreUsuario)
                 .addGap(0, 281, Short.MAX_VALUE))
         );
-
-        jMenuUsuario.setText("jMenu1");
-        jMenuBar1.add(jMenuUsuario);
 
         jMenuCanchas.setText("Canchas");
         jMenuCanchas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -96,6 +93,11 @@ public class frmMenu extends javax.swing.JFrame {
         jMenuBar1.add(jMenuDeportes);
 
         jMenu6.setText("Reservas");
+        jMenu6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu6MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu6);
 
         setJMenuBar(jMenuBar1);
@@ -151,6 +153,18 @@ public class frmMenu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuCanchasMouseClicked
 
+    private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
+         frmReservas oFrmReservas;
+        try {
+            oFrmReservas = new frmReservas();
+            oFrmReservas.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenu6MouseClicked
+
     public static void main(String args[]) {
     
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -170,7 +184,6 @@ public class frmMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuCanchas;
     private javax.swing.JMenu jMenuDeportes;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenu jMenuUsuario;
     private javax.swing.JLabel txtNombreUsuario;
     // End of variables declaration//GEN-END:variables
 }

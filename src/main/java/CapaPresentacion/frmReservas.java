@@ -1,28 +1,34 @@
-
 package CapaPresentacion;
 
 import CapaNegocios.Cancha;
-import CapaNegocios.Deportes;
+import CapaNegocios.Reserva;
+import CapaNegocios.ReservasEstados;
 import CapaNegocios.ResponseObject;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import CapaNegocios.Usuario;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class frmReservas extends javax.swing.JFrame {
 
-    DefaultTableModel tablaCanchas = new DefaultTableModel();
-    DefaultTableModel tablaDeportes = new DefaultTableModel();
+    private DefaultTableModel tablaCanchas = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    private DefaultTableModel tablaReservas = new DefaultTableModel();
+    private Reserva oReserva = new Reserva();
+    private Reserva oReservaSeleccionada = new Reserva();
+    private int idCanchaSeleccionada;
+    private Cancha oCanchas = new Cancha();
 
-    Cancha oCancha = new Cancha();
-    Cancha oCanchaSeleccionada = new Cancha();
-    Deportes oDeportes = new Deportes(); 
-    
     public frmReservas() throws SQLException, InterruptedException {
         initComponents();
         comenzarCarga();
@@ -37,15 +43,16 @@ public class frmReservas extends javax.swing.JFrame {
         pnlTitulo = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         lblTitulo = new javax.swing.JLabel();
-        txtDescripcion = new javax.swing.JTextField();
-        lblPassword = new javax.swing.JLabel();
-        txtAncho = new javax.swing.JTextField();
-        btnGuardar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        dgvCanchas = new javax.swing.JTable();
+        dgvReservas = new javax.swing.JTable();
         lblTelefono1 = new javax.swing.JLabel();
-        cboDeporte = new javax.swing.JComboBox<>();
+        cboCancha = new javax.swing.JComboBox<>();
         btnGuardar1 = new javax.swing.JButton();
+        txtDia = new javax.swing.JTextField();
+        txtMes = new javax.swing.JTextField();
+        txtAno = new javax.swing.JTextField();
+        btnGuardar2 = new javax.swing.JButton();
+        btnLiberar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -53,7 +60,7 @@ public class frmReservas extends javax.swing.JFrame {
         pnlContenedor.setName(""); // NOI18N
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblEmail.setText("Fecha:");
+        lblEmail.setText("Fecha (dd-mm-yyyy):");
 
         pnlTitulo.setBackground(new java.awt.Color(0, 153, 153));
 
@@ -71,12 +78,12 @@ public class frmReservas extends javax.swing.JFrame {
         pnlTituloLayout.setHorizontalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTituloLayout.createSequentialGroup()
-                .addGroup(pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlTituloLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jSeparator1))
-                    .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jSeparator1)
                 .addContainerGap())
+            .addGroup(pnlTituloLayout.createSequentialGroup()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlTituloLayout.setVerticalGroup(
             pnlTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -86,38 +93,7 @@ public class frmReservas extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))
         );
 
-        txtDescripcion.setEnabled(false);
-        txtDescripcion.setName("txtDescripcion"); // NOI18N
-        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionActionPerformed(evt);
-            }
-        });
-
-        lblPassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblPassword.setText("Hora:");
-
-        txtAncho.setEnabled(false);
-        txtAncho.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAnchoActionPerformed(evt);
-            }
-        });
-
-        btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnGuardar.setText("Cancelar");
-        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnGuardarMouseClicked(evt);
-            }
-        });
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        dgvCanchas.setModel(new javax.swing.table.DefaultTableModel(
+        dgvReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -128,18 +104,19 @@ public class frmReservas extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        dgvCanchas.addMouseListener(new java.awt.event.MouseAdapter() {
+        dgvReservas.setDoubleBuffered(true);
+        dgvReservas.setShowGrid(true);
+        dgvReservas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dgvCanchasMouseClicked(evt);
+                dgvReservasMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(dgvCanchas);
+        jScrollPane1.setViewportView(dgvReservas);
 
         lblTelefono1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblTelefono1.setText("Cancha");
+        lblTelefono1.setText("Cancha:");
 
-        cboDeporte.setEnabled(false);
-        cboDeporte.setName("cboCargo"); // NOI18N
+        cboCancha.setName("cboCargo"); // NOI18N
 
         btnGuardar1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnGuardar1.setText("Ver disponibilidad");
@@ -154,6 +131,39 @@ public class frmReservas extends javax.swing.JFrame {
             }
         });
 
+        txtDia.setText("01");
+
+        txtMes.setText("06");
+
+        txtAno.setText("2021");
+
+        btnGuardar2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnGuardar2.setText("Reprogramar");
+        btnGuardar2.setEnabled(false);
+        btnGuardar2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGuardar2MouseClicked(evt);
+            }
+        });
+        btnGuardar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardar2ActionPerformed(evt);
+            }
+        });
+
+        btnLiberar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLiberar.setText("Liberar reserva");
+        btnLiberar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLiberarMouseClicked(evt);
+            }
+        });
+        btnLiberar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLiberarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlContenedorLayout = new javax.swing.GroupLayout(pnlContenedor);
         pnlContenedor.setLayout(pnlContenedorLayout);
         pnlContenedorLayout.setHorizontalGroup(
@@ -162,61 +172,71 @@ public class frmReservas extends javax.swing.JFrame {
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(pnlContenedorLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblTelefono1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtAncho, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cboDeporte, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtDescripcion)))
+                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboCancha, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pnlContenedorLayout.createSequentialGroup()
+                                .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(629, 629, 629))
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(66, 66, 66)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(122, 122, 122))
+                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+                            .addComponent(btnGuardar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(pnlContenedorLayout.createSequentialGroup()
+                .addGap(159, 159, 159)
+                .addComponent(btnGuardar2)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlContenedorLayout.createSequentialGroup()
+                    .addGap(20, 20, 20)
+                    .addComponent(btnLiberar)
+                    .addContainerGap(755, Short.MAX_VALUE)))
         );
         pnlContenedorLayout.setVerticalGroup(
             pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContenedorLayout.createSequentialGroup()
                 .addComponent(pnlTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContenedorLayout.createSequentialGroup()
-                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtAncho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboDeporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboCancha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnGuardar2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenedorLayout.createSequentialGroup()
+                    .addContainerGap(558, Short.MAX_VALUE)
+                    .addComponent(btnLiberar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlContenedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlContenedor, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,140 +246,162 @@ public class frmReservas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comenzarCarga() throws SQLException, InterruptedException{
+    private void comenzarCarga() throws SQLException, InterruptedException {
         cargarDatos();
         asignarDatos();
     }
-    
-    private void cargarDatos() throws SQLException, InterruptedException{
-          try {
-            ResponseObject oRes = oCancha.Listar();
-            tablaCanchas = oRes.getJTResultado();
-            ResponseObject oRes2 = oDeportes.Listar();
-            tablaDeportes = oRes2.getJTResultado();
-            
+
+    private void cargarDatos() throws SQLException, InterruptedException {
+        try {
+            ResponseObject oRes2 = oCanchas.Listar();
+            tablaCanchas = oRes2.getJTResultado();
         } catch (SQLException ex) {
             Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void asignarDatos(){
-        dgvCanchas.setModel(tablaCanchas);
-        
-           for (int row = 0; row < tablaDeportes.getRowCount(); row++) {
-            for (int col = 0; col < tablaDeportes.getColumnCount(); col++) {
+
+    private void asignarDatos() {
+        dgvReservas.setModel(tablaReservas);
+        for (int row = 0; row < tablaCanchas.getRowCount(); row++) {
+            for (int col = 0; col < tablaCanchas.getColumnCount(); col++) {
                 if (col == 0) {
-                    cboDeporte.addItem(new Deportes(
-                            Integer.parseInt(tablaDeportes.getValueAt(row, col).toString()),
-                            tablaDeportes.getValueAt(row, col + 1).toString())
+                    cboCancha.addItem(new Cancha(
+                            Integer.parseInt(tablaCanchas.getValueAt(row, col).toString()),
+                            tablaCanchas.getValueAt(row, col + 2).toString())
                     );
                 }
             }
-           
-        dgvCanchas.getColumnModel().getColumn(0).setMinWidth(0);
-        dgvCanchas.getColumnModel().getColumn(0).setMaxWidth(0);
-
-        dgvCanchas.getColumnModel().getColumn(1).setMinWidth(0);
-        dgvCanchas.getColumnModel().getColumn(1).setMaxWidth(0);
-
-        dgvCanchas.getColumnModel().getColumn(5).setMinWidth(0);
-        dgvCanchas.getColumnModel().getColumn(5).setMaxWidth(0);
-}
-        
-    }
-    private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionActionPerformed
-
-    private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
-        
-        oCancha.setDescripcion(txtDescripcion.getText());
-        oCancha.setIdDeporte(0);
-        oCancha.setAncho(txtAncho.getText());
-        Deportes deporteSeleccionado = (Deportes) cboDeporte.getSelectedItem();
-        int Seleccionado = deporteSeleccionado.getIdDeportes();
-        oCancha.setIdDeporte(Seleccionado);
-
-        try {
-            ResponseObject oRes = oCancha.Guardar(oCancha);
-            if(oRes.getCodigoSalida()==0){
-                comenzarCarga();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnGuardarMouseClicked
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        
-    }//GEN-LAST:event_btnGuardarActionPerformed
-    
-    private void selectItemByString(String s) {
-        for (int i=0; i< cboDeporte.getItemCount(); i++) {
-            if (cboDeporte.getItemAt(i).equals(s)) {
-                cboDeporte.setSelectedIndex(i);
-                break;
-      }         
+        if(Usuario.getoUsuario().getTipoPersona()==1)
+            btnLiberar.setVisible(true);
+        else
+            btnLiberar.setVisible(false);
     }
-    return;
-  }
-    
-    private void dgvCanchasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvCanchasMouseClicked
-        int indiceSelecionado = dgvCanchas.getSelectedRow();
-        oCanchaSeleccionada.setIdCancha(Integer.parseInt(dgvCanchas.getModel().getValueAt(indiceSelecionado, 0).toString()));
-        oCanchaSeleccionada.setIdDeporte(Integer.parseInt(dgvCanchas.getModel().getValueAt(indiceSelecionado, 1).toString()));
-        oCanchaSeleccionada.setDescripcion(dgvCanchas.getModel().getValueAt(indiceSelecionado, 2).toString());
-        oCanchaSeleccionada.setAncho(dgvCanchas.getModel().getValueAt(indiceSelecionado, 3).toString());
-        oCanchaSeleccionada.setLargo(dgvCanchas.getModel().getValueAt(indiceSelecionado, 4).toString());
-        
-        txtAncho.setText(oCanchaSeleccionada.getAncho());
-        txtDescripcion.setText(oCanchaSeleccionada.getDescripcion());
-        selectItemByString(dgvCanchas.getModel().getValueAt(indiceSelecionado, 6).toString());
-    }//GEN-LAST:event_dgvCanchasMouseClicked
 
-    private void txtAnchoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnchoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAnchoActionPerformed
+    private void selectItemByString(String s) {
+        for (int i = 0; i < cboCancha.getItemCount(); i++) {
+            if (cboCancha.getItemAt(i).equals(s)) {
+                cboCancha.setSelectedIndex(i);
+                break;
+            }
+        }
+        return;
+    }
+
+    private void dgvReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvReservasMouseClicked
+
+        int[] selectedRows = dgvReservas.getSelectedRows();
+        String fecha = txtAno.getText() + "-" + txtMes.getText() + "-" + txtDia.getText();
+        String fechaSeleccionada = fecha + " " + tablaReservas.getValueAt(selectedRows[0], 0).toString();
+        String estadoActual = tablaReservas.getValueAt(selectedRows[0], 1).toString();
+        if (Usuario.getoUsuario().getTipoPersona() == 2) {
+            if (estadoActual.equals("LIBRE")) {
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                Date parsedDate;
+                ReservasEstados oEstado = new ReservasEstados();
+                int reply = JOptionPane.showConfirmDialog(null, "Esta reservando un turno para el dia " + fecha + " a la hora " + fechaSeleccionada + " ¿Desea continuar?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    try {
+                        parsedDate = dateFormat.parse(fechaSeleccionada);
+                        Timestamp fechaTime = new java.sql.Timestamp(parsedDate.getTime());
+                        ResponseObject oRes = oReserva.Reservar(idCanchaSeleccionada, fechaTime, Usuario.getoUsuario().GetId(), ReservasEstados.ReservaEstado.RESERVADA.getEstado());
+                        if (oRes.getCodigoSalida() == 0) {
+                            JOptionPane.showMessageDialog(null, "Cancha reservada correctamente");
+                            ResponseObject oRes2 = oReserva.getHorarios(idCanchaSeleccionada, fecha);
+                            tablaReservas = oRes2.getJTResultado();
+                            dgvReservas.setModel(tablaReservas);
+                        }
+                    } catch (ParseException ex) {
+                        Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "El turno seleccionado no esta disponible");
+            }
+        } else {
+            if (!estadoActual.equals("RESERVADA")) {
+                btnLiberar.setEnabled(false);
+            }
+            else{
+                btnLiberar.setEnabled(false);
+            }
+        }
+    
+    }//GEN-LAST:event_dgvReservasMouseClicked
 
     private void btnGuardar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardar1MouseClicked
-        // TODO add your handling code here:
+        Cancha oCanchaSeleccionada = (Cancha) cboCancha.getSelectedItem();
+        idCanchaSeleccionada = oCanchaSeleccionada.getIdCancha();
+        String fecha = txtAno.getText() + "-" + txtMes.getText() + "-" + txtDia.getText();
+        try {
+            ResponseObject oRes = oReserva.getHorarios(idCanchaSeleccionada, fecha);
+            tablaReservas = oRes.getJTResultado();
+            dgvReservas.setModel(tablaReservas);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error " + e.toString(), "Bienvenido al sistema", JOptionPane.ERROR);
+        }
     }//GEN-LAST:event_btnGuardar1MouseClicked
+
 
     private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGuardar1ActionPerformed
-    
+
+    private void btnGuardar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardar2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGuardar2MouseClicked
+
+    private void btnGuardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGuardar2ActionPerformed
+
+    private void btnLiberarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLiberarMouseClicked
+        
+    }//GEN-LAST:event_btnLiberarMouseClicked
+
+    private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLiberarActionPerformed
+
     public static void main(String args[]) {
-      
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
                     new frmReservas().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
+
+} catch (SQLException ex) {
+                    Logger.getLogger(frmReservas.class  
+
+.getName()).log(Level.SEVERE, null, ex);
+                }
+
+catch (InterruptedException ex) {
+                    Logger.getLogger(frmReservas.class  
+
+.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnGuardar1;
-    private javax.swing.JComboBox<Deportes> cboDeporte;
-    private javax.swing.JTable dgvCanchas;
+    private javax.swing.JButton btnGuardar2;
+    private javax.swing.JButton btnLiberar;
+    private javax.swing.JComboBox<Cancha> cboCancha;
+    private javax.swing.JTable dgvReservas;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblEmail;
-    private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblTelefono1;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlContenedor;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTextField txtAncho;
-    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtAno;
+    private javax.swing.JTextField txtDia;
+    private javax.swing.JTextField txtMes;
     // End of variables declaration//GEN-END:variables
 }
