@@ -4,6 +4,8 @@ import javax.swing.JOptionPane;
 import CapaNegocios.PersonalCargo;
 import CapaNegocios.Personal;
 import CapaNegocios.ResponseObject;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,17 +23,22 @@ public class ABMPersonal extends javax.swing.JFrame {
     //CONTRUCTOR
     public ABMPersonal() throws SQLException, InterruptedException {
         initComponents();
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        //int height = pantalla.height;
+        //int width = pantalla.width;
+        //setSize(width / 2, height / 2);
+        setLocationRelativeTo(null);
         comenzarCarga();
     }
-    
+
     //METODO QUE SE ENCARGA DE LLAMAR A LOS METODOS DE BUSQUEDA DE DATOS A LA BBDD 
     //Y LUEGO EL METODO PARA MOSTRAR LOS DATOS E INICIALIZAR LOS COMPONENTES 
     private void comenzarCarga() throws SQLException, InterruptedException {
         DeshabilitartextBox();
         cargarDatos();
     }
-    
-     //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
+
+    //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
     private void cargarDatos() throws SQLException, InterruptedException {
         oPers = new Personal();
         ResponseObject oRes = oPers.Listar();
@@ -39,7 +46,6 @@ public class ABMPersonal extends javax.swing.JFrame {
         ResponseObject oRes2 = oCargo.Listar();
         modeloCargos = oRes2.getjTResultado();
 
-       
         //Y LUEGO EL METODO PARA MOSTRAR LOS DATOS E INICIALIZAR LOS COMPONENTES 
         asignarDatos();
     }
@@ -53,6 +59,7 @@ public class ABMPersonal extends javax.swing.JFrame {
         txtEmail.setEnabled(true);
         txtPassword.setEnabled(true);
     }
+
     //DESHABILITA LOS CONTROLES
     private void DeshabilitartextBox() {
         txtApellido.setEnabled(false);
@@ -62,6 +69,7 @@ public class ABMPersonal extends javax.swing.JFrame {
         txtEmail.setEnabled(false);
         txtPassword.setEnabled(false);
     }
+
     //LIMPIA LOS CONTROLES
     private void LimpiarCampos() {
         txtApellido.setText("");
@@ -74,7 +82,7 @@ public class ABMPersonal extends javax.swing.JFrame {
 
     //METODOS PARA MOSTRAR LOS DATOS DEVUELTOS EN LA CAPA NEGOCIOS Y PARA INICIALIZAR LA FUENTE DE INFORMACION DE LOS CONTROLES 
     private void asignarDatos() {
-         for (int row = 0; row < modeloCargos.getRowCount(); row++) {
+        for (int row = 0; row < modeloCargos.getRowCount(); row++) {
             for (int col = 0; col < modeloCargos.getColumnCount(); col++) {
                 if (col == 0) {
                     cboCargo.addItem(new PersonalCargo(
@@ -416,7 +424,7 @@ public class ABMPersonal extends javax.swing.JFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         //PREPARA LOS OBJETOS PARA LUEGO LLAMAR AL MEOTODO GUARDAR
         oPersonalSeleccionado = new Personal();
-        
+
         int indiceSelecionado = dgvPersonal.getSelectedRow();
         oPersonalSeleccionado.setId(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 0).toString()));
         oPersonalSeleccionado.setNombre(dgvPersonal.getModel().getValueAt(indiceSelecionado, 1).toString());

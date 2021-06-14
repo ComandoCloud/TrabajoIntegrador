@@ -1,6 +1,8 @@
 package CapaPresentacion;
 
 import CapaNegocios.Usuario;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +13,11 @@ public class frmLogin extends javax.swing.JFrame {
     //CONTRUCTOR
     public frmLogin() {
         initComponents();
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        //int height = pantalla.height;
+        //int width = pantalla.width;
+        //setSize(width / 2, height / 2);
+        setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -129,31 +136,30 @@ public class frmLogin extends javax.swing.JFrame {
 
     private void btnEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEntrarMouseClicked
         //VALIDA LOS CAMPOS EMAIL Y CLAVE 
-        if(txtEmail.getText().isBlank() || txtEmail.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Ingrese email","Error", JOptionPane.INFORMATION_MESSAGE);
+        if (txtEmail.getText().isBlank() || txtEmail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese email", "Error", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        if(txtPass.getPassword().length==0){
-            JOptionPane.showMessageDialog(null, "Ingrese clave","Error", JOptionPane.INFORMATION_MESSAGE);
+        if (txtPass.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(null, "Ingrese clave", "Error", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         Usuario oUsuarioIniciado = new Usuario();
         try {
             //LLAMA AL METODO INICIAR SESION Y SI EL RESULTADO NO ES NULO LE DA LA BIENVENIDA Y MUESTRA EL MENU PRINCIPAL
             oUsuarioIniciado = oUsuarioIniciado.IniciarSesion(txtEmail.getText(), txtPass.getPassword());
-            if(oUsuarioIniciado != null){
-                JOptionPane.showMessageDialog(null, "Bienvenido " + oUsuarioIniciado.getApellido(),"Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
+            if (oUsuarioIniciado != null) {
+                JOptionPane.showMessageDialog(null, "Bienvenido " + oUsuarioIniciado.getApellido(), "Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
                 Usuario.setoUsuario(oUsuarioIniciado);
-                frmMenu oMenu  = new frmMenu();
+                frmMenu oMenu = new frmMenu();
                 oMenu.setVisible(true);
                 this.setVisible(false);
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Email y/o contraseña invalida ","Error", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Email y/o contraseña invalida ", "Error", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }         
+        }
     }//GEN-LAST:event_btnEntrarMouseClicked
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
@@ -161,7 +167,7 @@ public class frmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     public static void main(String args[]) {
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new frmLogin().setVisible(true);

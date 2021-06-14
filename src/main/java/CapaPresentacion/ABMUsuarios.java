@@ -5,6 +5,8 @@ import CapaNegocios.PersonalCargo;
 import CapaNegocios.Personal;
 import CapaNegocios.ResponseObject;
 import CapaNegocios.Usuario;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,14 +22,20 @@ public class ABMUsuarios extends javax.swing.JFrame {
     //CONTRUCTOR
     public ABMUsuarios() throws SQLException, InterruptedException {
         initComponents();
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        //int height = pantalla.height;
+        //int width = pantalla.width;
+        //setSize(width / 2, height / 2);
+        setLocationRelativeTo(null);
         comenzarCarga();
     }
-    
+
     //METODO QUE SE ENCARGA DE LLAMAR A LOS METODOS DE BUSQUEDA DE DATOS A LA BBDD 
     private void comenzarCarga() throws SQLException, InterruptedException {
         DeshabilitartextBox();
         cargarDatos();
     }
+
     //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
     private void cargarDatos() throws SQLException, InterruptedException {
         oUsu = new Usuario();
@@ -35,7 +43,7 @@ public class ABMUsuarios extends javax.swing.JFrame {
         modelo = oRes.getjTResultado();
         asignarDatos();
     }
-    
+
     //HABILITA LOS CONTROLES
     private void HabilitartextBox() {
         txtApellido.setEnabled(true);
@@ -62,18 +70,18 @@ public class ABMUsuarios extends javax.swing.JFrame {
         txtEmail.setText(" ");
         txtPassword.setText(" ");
     }
-    
+
     //METODOS PARA MOSTRAR LOS DATOS DEVUELTOS EN LA CAPA NEGOCIOS Y PARA INICIALIZAR LA FUENTE DE INFORMACION DE LOS CONTROLES 
     private void asignarDatos() {
         //ASIGNA LA INFORMACION DEVUELTA POR LA CAPA NEGOCIOS A LA GRILLA DEL FORMULARIO
         dgvPersonal.setModel(modelo);
-         //CONFIGURA LA GRILLA OCULANDO LAS COLUMNAS NO NECESARIAS
+        //CONFIGURA LA GRILLA OCULANDO LAS COLUMNAS NO NECESARIAS
         dgvPersonal.getColumnModel().getColumn(0).setMinWidth(0);
         dgvPersonal.getColumnModel().getColumn(0).setMaxWidth(0);
         dgvPersonal.getColumnModel().getColumn(5).setMinWidth(0);
         dgvPersonal.getColumnModel().getColumn(5).setMaxWidth(0);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -419,8 +427,6 @@ public class ABMUsuarios extends javax.swing.JFrame {
         oUsu.setId(oUsuarioSeleccionado.getId());
         HabilitartextBox();
     }//GEN-LAST:event_btnEditarMouseClicked
-
-    
 
     public static void main(String args[]) {
         try {

@@ -5,6 +5,8 @@ import CapaNegocios.Reserva;
 import CapaNegocios.ReservasEstados;
 import CapaNegocios.ResponseObject;
 import CapaNegocios.Usuario;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -27,6 +29,11 @@ public class frmReservas extends javax.swing.JFrame {
     //CONSTRUCTOR
     public frmReservas() throws SQLException, InterruptedException {
         initComponents();
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        //int height = pantalla.height;
+        //int width = pantalla.width;
+        //setSize(width / 2, height / 2);
+        setLocationRelativeTo(null);
         comenzarCarga();
     }
 
@@ -242,7 +249,7 @@ public class frmReservas extends javax.swing.JFrame {
         asignarDatos();
     }
 
-     //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
+    //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
     private void cargarDatos() throws SQLException, InterruptedException {
         try {
             ResponseObject oRes2 = oCanchas.Listar();
@@ -251,7 +258,7 @@ public class frmReservas extends javax.swing.JFrame {
             Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     //EL METODO PARA MOSTRAR LOS DATOS E INICIALIZAR LOS COMPONENTES 
     private void asignarDatos() {
         dgvReservas.setModel(tablaReservas);
@@ -287,7 +294,7 @@ public class frmReservas extends javax.swing.JFrame {
     }
 
     private void dgvReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvReservasMouseClicked
-        
+
         //EBVENTO CLICK, SI ES UN USUAEIO AL HACER CLICK EN UN TURNO LIBRE, PREGUNTA SI LO QUIERE RESERVAR
         int[] selectedRows = dgvReservas.getSelectedRows();
         String fecha = txtAno.getText() + "-" + txtMes.getText() + "-" + txtDia.getText();

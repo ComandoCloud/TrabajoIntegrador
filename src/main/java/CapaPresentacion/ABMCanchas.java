@@ -3,6 +3,8 @@ package CapaPresentacion;
 import CapaNegocios.Cancha;
 import CapaNegocios.Deportes;
 import CapaNegocios.ResponseObject;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +24,11 @@ public class ABMCanchas extends javax.swing.JFrame {
     //CONTRUCTOR
     public ABMCanchas() throws SQLException, InterruptedException {
         initComponents();
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        //int height = pantalla.height;
+        //int width = pantalla.width;
+        //setSize(width / 2, height / 2);
+        setLocationRelativeTo(null);
         comenzarCarga();
     }
 
