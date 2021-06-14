@@ -1,5 +1,0 @@
-package CapaDatos;
-
-class statement {
-    
-}
