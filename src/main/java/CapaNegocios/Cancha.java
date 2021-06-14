@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
-public class Cancha{
+public class Cancha implements IOperacionesBasicas<Object>{
 
     //REGION DE PROPIEDADES
     private int idCancha;
@@ -32,21 +32,22 @@ public class Cancha{
     //METODO PARA INSERTAR O EDITAR UN REGISTRO EN LA TABLA CANCHAS, SI EL OBEJETO oCancha TIENE Id>0 QUIERE DECIR QUE YA EXISTE POR LO TANTO SE HARA UN UPDATE
     //SI TIENE id = 0 POR ENDE AUN NO EXISTE POR LO TANTO SE INSERTARA EN LA BASE DE DATOS
     //SE USA ESTA LOGICA EN TODO EL PROYECTO, EN TODOS LOS METODOS GUARDAR
-    public ResponseObject Guardar(Cancha oCancha) throws SQLException {
+    @Override
+    public ResponseObject Guardar(Object oCancha) throws SQLException {
         //VALIDACION PARA EVITAR UNA EXCEPCION DE NULLPOINTER
         if (oCancha != null) {
             int idNuevo = 0;
-            if (oCancha.getIdCancha() == 0) {
+            if (this.getIdCancha() == 0) {
                 try {
                     //SE ABRE UNA CONEXION A LA BBDD
                     oCon.Conectar();
                     //SE CREA UNA ESTRUCTURA DE CONSULTA SQL, EN ESTE CASO UNA INSERSION 
                     oCon.CrearComando("INSERT INTO canchas (id_deporte,descripcion,ancho,largo) VALUES (?,?,?,?)");
                     //SE TERMINA DE PREPARAR LA CONSULTA REEMPLAZANDO LOS SIGNOS DE INTERROGACION POR CADA DATO CORRESPONDIENTE
-                    oCon.comando.setInt(1, oCancha.getIdDeporte());
-                    oCon.comando.setString(2, oCancha.getDescripcion());
-                    oCon.comando.setString(3, oCancha.getAncho());
-                    oCon.comando.setString(4, oCancha.getLargo());
+                    oCon.comando.setInt(1, this.getIdDeporte());
+                    oCon.comando.setString(2, this.getDescripcion());
+                    oCon.comando.setString(3, this.getAncho());
+                    oCon.comando.setString(4, this.getLargo());
                     //UNA VEZ DEFINIDA LA CONSULTA, ES EJECUTADA POR EL MOTOR
                     oCon.EjecutarComando();
                     //CIERRA A CONEXION A LA BBDD
@@ -63,11 +64,11 @@ public class Cancha{
                 try {
                     oCon.Conectar();
                     oCon.CrearComando("UPDATE canchas SET id_deporte = ?,descripcion = ?, ancho = ?,largo=? where id = ?");
-                    oCon.comando.setInt(1, oCancha.getIdDeporte());
-                    oCon.comando.setString(2, oCancha.getDescripcion());
-                    oCon.comando.setString(3, oCancha.getAncho());
-                    oCon.comando.setString(4, oCancha.getLargo());
-                    oCon.comando.setInt(5, oCancha.getIdCancha());
+                    oCon.comando.setInt(1, this.getIdDeporte());
+                    oCon.comando.setString(2, this.getDescripcion());
+                    oCon.comando.setString(3, this.getAncho());
+                    oCon.comando.setString(4, this.getLargo());
+                    oCon.comando.setInt(5, this.getIdCancha());
                     oCon.EjecutarComando();
                     oCon.Desconectar();
                     return new ResponseObject("Editado correctamente", 0);
@@ -81,6 +82,7 @@ public class Cancha{
     }
 
     //METODO PARA LISTAR INFORMACION, EN ESTE CASO CANCHAS Y OTROS DATOS 
+    @Override
     public ResponseObject Listar() throws SQLException {
         //CREO UNA INSTACIA DE UNA "TABLA" LA CUAL SERA NUTRIDA POR EL RESULTADO DE LA CONSULTA A LA BASE DE DATOS
         DefaultTableModel dt = new DefaultTableModel();
@@ -103,6 +105,7 @@ public class Cancha{
         }
     }
 
+    @Override
     public ResponseObject Eliminar(int idCancha) throws SQLException {
         try {
             //SE ESTABLECE UNA COMUNICACION CON LA BASE DE DATOS
@@ -177,6 +180,4 @@ public class Cancha{
         return this.descripcion;
     }
 
-
-    
 }
