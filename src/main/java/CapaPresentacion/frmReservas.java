@@ -321,7 +321,7 @@ public class frmReservas extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "El turno seleccionado no esta disponible");
             }
         } else {
-            if (!estadoActual.equals("RESERVADA")) {
+            if (estadoActual.equals("RESERVADA")) {
                 btnLiberar.setEnabled(true);
             } else {
                 btnLiberar.setEnabled(false);

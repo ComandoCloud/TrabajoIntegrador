@@ -39,6 +39,11 @@ public class frmLogin extends javax.swing.JFrame {
                 btnEntrarMouseClicked(evt);
             }
         });
+        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntrarActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Salir");
 
@@ -150,6 +155,10 @@ public class frmLogin extends javax.swing.JFrame {
             Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
         }         
     }//GEN-LAST:event_btnEntrarMouseClicked
+
+    private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEntrarActionPerformed
 
     public static void main(String args[]) {
         
