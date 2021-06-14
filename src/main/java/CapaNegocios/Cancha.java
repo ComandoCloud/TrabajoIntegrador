@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
-public class Cancha implements IOperacionesBasicas<Object> {
+public class Cancha{
 
     //REGION DE PROPIEDADES
     private int idCancha;
@@ -177,60 +177,6 @@ public class Cancha implements IOperacionesBasicas<Object> {
         return this.descripcion;
     }
 
-    @Override
-    public ResponseObject Guardar(Object objeto) {
-        //VALIDACION PARA EVITAR UNA EXCEPCION DE NULLPOINTER
-        if (objeto != null) {
-            int idNuevo = 0;
-            if (this.getIdCancha()== 0) {
-                try {
-                    //SE ABRE UNA CONEXION A LA BBDD
-                    oCon.Conectar();
-                    //SE CREA UNA ESTRUCTURA DE CONSULTA SQL, EN ESTE CASO UNA INSERSION 
-                    oCon.CrearComando("INSERT INTO canchas (id_deporte,descripcion,ancho,largo) VALUES (?,?,?,?)");
-                    //SE TERMINA DE PREPARAR LA CONSULTA REEMPLAZANDO LOS SIGNOS DE INTERROGACION POR CADA DATO CORRESPONDIENTE
-                    oCon.comando.setInt(1, this.getIdDeporte());
-                    oCon.comando.setString(2, this.getDescripcion());
-                    oCon.comando.setString(3, this.getAncho());
-                    oCon.comando.setString(4, this.getLargo());
-                    //UNA VEZ DEFINIDA LA CONSULTA, ES EJECUTADA POR EL MOTOR
-                    oCon.EjecutarComando();
-                    //CIERRA A CONEXION A LA BBDD
-                    oCon.Desconectar();
-                    //RETORNA UN OBJETO CREADO PARA ALMACENAR MAS DE UN TIPO DE RESPUESTA
-                    return new ResponseObject("Guardado correctamente", 0);
-                } catch (Exception e) {
-                    try {
-                        //SI LLEGO A ESTE PUNTO ES PORQUE HUBO UNA EXCPCION (UN ERROR AL INSERTAR EL REGISTRO O PREPARAR LA CONSULTA), ENTONCES CERRAMOS LA CONEXION
-                        oCon.Desconectar();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Cancha.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    //RETORNA UN OBJETO CREADO PARA ALMACENAR MAS DE UN TIPO DE RESPUESTA, EN ESTE CASO DEVUELVE EL MENSAJE DE LA EXEPCION Y UN CODIGO QUE HACE REFERENCUA A LA MISMA
-                    return new ResponseObject("Error: " + e.toString(), -1);
-                }
-            } else {
-                try {
-                    oCon.Conectar();
-                    oCon.CrearComando("UPDATE canchas SET id_deporte = ?,descripcion = ?, ancho = ?,largo=? where id = ?");
-                    oCon.comando.setInt(1, this.getIdDeporte());
-                    oCon.comando.setString(2, this.getDescripcion());
-                    oCon.comando.setString(3, this.getAncho());
-                    oCon.comando.setString(4, this.getLargo());
-                    oCon.comando.setInt(5, this.getIdCancha());
-                    oCon.EjecutarComando();
-                    oCon.Desconectar();
-                    return new ResponseObject("Editado correctamente", 0);
-                } catch (SQLException  e) {
-                    try {
-                        oCon.Desconectar();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Cancha.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    return new ResponseObject("Error: " + e.toString(), -1);
-                }
-            }
-        }
-        return new ResponseObject("Cancha es null: ", -1);
-    }
+
+    
 }
