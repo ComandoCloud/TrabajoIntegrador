@@ -1,17 +1,10 @@
 package CapaPresentacion;
 
 import CapaNegocios.Usuario;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
 
 public class frmMenu extends javax.swing.JFrame {
 
@@ -28,7 +21,7 @@ public class frmMenu extends javax.swing.JFrame {
             jMenuDeportes.setVisible(false);
             jMenuCanchas.setVisible(false);
         }
-        txtNombreUsuario.setText(oUsu.GetApellido() + ", " + oUsu.GetNombre() + " | ");
+        txtNombreUsuario.setText(oUsu.getApellido() + ", " + oUsu.getNombre() + " | ");
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
     }

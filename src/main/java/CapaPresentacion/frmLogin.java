@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 public class frmLogin extends javax.swing.JFrame {
 
+    //CONTRUCTOR
     public frmLogin() {
         initComponents();
     }
@@ -122,7 +123,7 @@ public class frmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEntrarMouseClicked
-
+        //VALIDA LOS CAMPOS EMAIL Y CLAVE 
         if(txtEmail.getText().isBlank() || txtEmail.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Ingrese email","Error", JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -133,9 +134,10 @@ public class frmLogin extends javax.swing.JFrame {
         }
         Usuario oUsuarioIniciado = new Usuario();
         try {
+            //LLAMA AL METODO INICIAR SESION Y SI EL RESULTADO NO ES NULO LE DA LA BIENVENIDA Y MUESTRA EL MENU PRINCIPAL
             oUsuarioIniciado = oUsuarioIniciado.IniciarSesion(txtEmail.getText(), txtPass.getPassword());
             if(oUsuarioIniciado != null){
-                JOptionPane.showMessageDialog(null, "Bienvenido " + oUsuarioIniciado.GetApellido(),"Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Bienvenido " + oUsuarioIniciado.getApellido(),"Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
                 Usuario.setoUsuario(oUsuarioIniciado);
                 frmMenu oMenu  = new frmMenu();
                 oMenu.setVisible(true);

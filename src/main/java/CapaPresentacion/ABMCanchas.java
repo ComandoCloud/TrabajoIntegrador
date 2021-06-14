@@ -1,28 +1,25 @@
-
 package CapaPresentacion;
 
 import CapaNegocios.Cancha;
 import CapaNegocios.Deportes;
 import CapaNegocios.ResponseObject;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class ABMCanchas extends javax.swing.JFrame {
 
-    DefaultTableModel tablaCanchas = new DefaultTableModel();
-    DefaultTableModel tablaDeportes = new DefaultTableModel();
+    //REGION DE PROPIEDADES
+    private DefaultTableModel tablaCanchas = new DefaultTableModel();
+    private DefaultTableModel tablaDeportes = new DefaultTableModel();
 
-    Cancha oCancha = new Cancha();
-    Cancha oCanchaSeleccionada = new Cancha();
-    Deportes oDeportes = new Deportes(); 
-    
+    private Cancha oCancha = new Cancha();
+    private Cancha oCanchaSeleccionada = new Cancha();
+    private Deportes oDeportes = new Deportes();
+
+    //CONTRUCTOR
     public ABMCanchas() throws SQLException, InterruptedException {
         initComponents();
         comenzarCarga();
@@ -267,27 +264,32 @@ public class ABMCanchas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comenzarCarga() throws SQLException, InterruptedException{
+    //METODO QUE SE ENCARGA DE LLAMAR A LOS METODOS DE BUSQUEDA DE DATOS A LA BBDD 
+    //Y LUEGO EL METODO PARA MOSTRAR LOS DATOS E INICIALIZAR LOS COMPONENTES 
+    private void comenzarCarga() throws SQLException, InterruptedException {
         cargarDatos();
         asignarDatos();
     }
-    
-    private void cargarDatos() throws SQLException, InterruptedException{
-          try {
+
+    //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
+    private void cargarDatos() throws SQLException, InterruptedException {
+        try {
             ResponseObject oRes = oCancha.Listar();
-            tablaCanchas = oRes.getJTResultado();
+            tablaCanchas = oRes.getjTResultado();
             ResponseObject oRes2 = oDeportes.Listar();
-            tablaDeportes = oRes2.getJTResultado();
-            
+            tablaDeportes = oRes2.getjTResultado();
+
         } catch (SQLException ex) {
             Logger.getLogger(ABMCanchas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void asignarDatos(){
+
+    //METODOS PARA MOSTRAR LOS DATOS DEVUELTOS EN LA CAPA NEGOCIOS Y PARA INICIALIZAR LA FUENTE DE INFORMACION DE LOS CONTROLES 
+    private void asignarDatos() {
+        //ASIGNA LA INFORMACION DEVUELTA POR LA CAPA NEGOCIOS A LA GRILLA DEL FORMULARIO
         dgvCanchas.setModel(tablaCanchas);
-        
-           for (int row = 0; row < tablaDeportes.getRowCount(); row++) {
+        //SE RECORRE LA TABLA DEPORTES PARA AGREGARLOS AL JCOMBOBOX
+        for (int row = 0; row < tablaDeportes.getRowCount(); row++) {
             for (int col = 0; col < tablaDeportes.getColumnCount(); col++) {
                 if (col == 0) {
                     cboDeporte.addItem(new Deportes(
@@ -296,25 +298,22 @@ public class ABMCanchas extends javax.swing.JFrame {
                     );
                 }
             }
-           
-        dgvCanchas.getColumnModel().getColumn(0).setMinWidth(0);
-        dgvCanchas.getColumnModel().getColumn(0).setMaxWidth(0);
-
-        dgvCanchas.getColumnModel().getColumn(1).setMinWidth(0);
-        dgvCanchas.getColumnModel().getColumn(1).setMaxWidth(0);
-
-        dgvCanchas.getColumnModel().getColumn(5).setMinWidth(0);
-        dgvCanchas.getColumnModel().getColumn(5).setMaxWidth(0);
-
-}
-             
+            //CONFIGURA LA GRILLA OCULANDO LAS COLUMNAS NO NECESARIAS
+            dgvCanchas.getColumnModel().getColumn(0).setMinWidth(0);
+            dgvCanchas.getColumnModel().getColumn(0).setMaxWidth(0);
+            dgvCanchas.getColumnModel().getColumn(1).setMinWidth(0);
+            dgvCanchas.getColumnModel().getColumn(1).setMaxWidth(0);
+            dgvCanchas.getColumnModel().getColumn(5).setMinWidth(0);
+            dgvCanchas.getColumnModel().getColumn(5).setMaxWidth(0);
+        }
     }
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        
+
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
-        
+
+        //LLENA EL OBJETO PARA LUEGO USAR SUS METODOS
         oCancha.setDescripcion(txtDescripcion.getText());
         oCancha.setIdDeporte(0);
         oCancha.setAncho(txtAncho.getText());
@@ -324,9 +323,13 @@ public class ABMCanchas extends javax.swing.JFrame {
         oCancha.setIdDeporte(Seleccionado);
 
         try {
+            //LLAMA AL METODO GUARDAR DE LA CAPA NEGOCIOS
             ResponseObject oRes = oCancha.Guardar(oCancha);
-            if(oRes.getCodigoSalida()==0){
+            if (oRes.getCodigoSalida() == 0) {
+                //SI NO HUBO ERRORES SE VUELVE A CARGAR LA INFORMACION PARA ACTUALIZAR LA GRILLA
                 comenzarCarga();
+            } else {
+                JOptionPane.showMessageDialog(null, oRes.getSalida(), "", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ABMCanchas.class.getName()).log(Level.SEVERE, null, ex);
@@ -336,10 +339,11 @@ public class ABMCanchas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        //HABILITA LOS CONTROLES PARA PODER MODIFICAR LOS DATOS 
         txtAncho.setEnabled(true);
         txtLargo.setEnabled(true);
         txtDescripcion.setEnabled(true);
@@ -348,13 +352,13 @@ public class ABMCanchas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        
+        //METODO QUE LLAMA AL METODO ELIMINAR DEL OBJETO
         try {
             ResponseObject oRes = oCanchaSeleccionada.Eliminar(oCanchaSeleccionada.getIdCancha());
-            if(oRes.getCodigoSalida()>=0){
-                    comenzarCarga();
+            if (oRes.getCodigoSalida() == 0) {
+                //SI NO HUBO ERRORES SE VUELVE A CARGAR LA INFORMACION PARA ACTUALIZAR LA GRILLA
+                comenzarCarga();
             }
-            
         } catch (SQLException ex) {
             Logger.getLogger(ABMCanchas.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -363,27 +367,28 @@ public class ABMCanchas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtAnchoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnchoActionPerformed
-       
+
     }//GEN-LAST:event_txtAnchoActionPerformed
-    
+
     private void selectItemByString(String s) {
-        for (int i=0; i< cboDeporte.getItemCount(); i++) {
+        for (int i = 0; i < cboDeporte.getItemCount(); i++) {
             if (cboDeporte.getItemAt(i).equals(s)) {
                 cboDeporte.setSelectedIndex(i);
                 break;
-      }        
+            }
+        }
+        return;
     }
-    return;
-  }
-    
+
     private void dgvCanchasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvCanchasMouseClicked
+        //CADA VEX QUE SE SELECCIONA UN REGISTRO EN LA GRILLA DE CANCHAS SE ACTUALIZAN LOS CONTROLES
         int indiceSelecionado = dgvCanchas.getSelectedRow();
         oCanchaSeleccionada.setIdCancha(Integer.parseInt(dgvCanchas.getModel().getValueAt(indiceSelecionado, 0).toString()));
         oCanchaSeleccionada.setIdDeporte(Integer.parseInt(dgvCanchas.getModel().getValueAt(indiceSelecionado, 1).toString()));
         oCanchaSeleccionada.setDescripcion(dgvCanchas.getModel().getValueAt(indiceSelecionado, 2).toString());
         oCanchaSeleccionada.setAncho(dgvCanchas.getModel().getValueAt(indiceSelecionado, 3).toString());
         oCanchaSeleccionada.setLargo(dgvCanchas.getModel().getValueAt(indiceSelecionado, 4).toString());
-        
+
         txtAncho.setText(oCanchaSeleccionada.getAncho());
         txtLargo.setText(oCanchaSeleccionada.getLargo());
         txtDescripcion.setText(oCanchaSeleccionada.getDescripcion());
@@ -391,18 +396,19 @@ public class ABMCanchas extends javax.swing.JFrame {
     }//GEN-LAST:event_dgvCanchasMouseClicked
 
     private void btnNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNuevoMouseClicked
-        
+
     }//GEN-LAST:event_btnNuevoMouseClicked
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        //SE HABILITAN TODOS LOS CONTROLES
         txtAncho.setEnabled(true);
         txtLargo.setEnabled(true);
         txtDescripcion.setEnabled(true);
-        cboDeporte.setEnabled(true);            
+        cboDeporte.setEnabled(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
- 
+
     public static void main(String args[]) {
-      
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {

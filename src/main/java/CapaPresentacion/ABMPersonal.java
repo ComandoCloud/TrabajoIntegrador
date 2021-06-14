@@ -1,30 +1,99 @@
 package CapaPresentacion;
 
-import java.awt.Color;
 import javax.swing.JOptionPane;
-import CapaDatos.Conexion;
 import CapaNegocios.PersonalCargo;
 import CapaNegocios.Personal;
 import CapaNegocios.ResponseObject;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class ABMPersonal extends javax.swing.JFrame {
 
-    Personal oPers;
-    Personal oPersonalSeleccionado;
-    DefaultTableModel modelo = new DefaultTableModel();
-    DefaultTableModel modeloCargos = new DefaultTableModel();
-    PersonalCargo oCargo = new PersonalCargo();
-    Conexion oCon = new Conexion();
+    //REGION DE PROPIEDADES
+    private Personal oPers;
+    private Personal oPersonalSeleccionado;
+    private DefaultTableModel modelo = new DefaultTableModel();
+    private DefaultTableModel modeloCargos = new DefaultTableModel();
+    private PersonalCargo oCargo = new PersonalCargo();
 
+    //CONTRUCTOR
     public ABMPersonal() throws SQLException, InterruptedException {
         initComponents();
         comenzarCarga();
+    }
+    
+    //METODO QUE SE ENCARGA DE LLAMAR A LOS METODOS DE BUSQUEDA DE DATOS A LA BBDD 
+    //Y LUEGO EL METODO PARA MOSTRAR LOS DATOS E INICIALIZAR LOS COMPONENTES 
+    private void comenzarCarga() throws SQLException, InterruptedException {
+        DeshabilitartextBox();
+        cargarDatos();
+    }
+    
+     //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
+    private void cargarDatos() throws SQLException, InterruptedException {
+        oPers = new Personal();
+        ResponseObject oRes = oPers.Listar();
+        modelo = oRes.getjTResultado();
+        ResponseObject oRes2 = oCargo.Listar();
+        modeloCargos = oRes2.getjTResultado();
+
+       
+        //Y LUEGO EL METODO PARA MOSTRAR LOS DATOS E INICIALIZAR LOS COMPONENTES 
+        asignarDatos();
+    }
+
+    //HABILITA LOS CONTROLES
+    private void HabilitartextBox() {
+        txtApellido.setEnabled(true);
+        txtNombre.setEnabled(true);
+        txtTelefono.setEnabled(true);
+        txtDni.setEnabled(true);
+        txtEmail.setEnabled(true);
+        txtPassword.setEnabled(true);
+    }
+    //DESHABILITA LOS CONTROLES
+    private void DeshabilitartextBox() {
+        txtApellido.setEnabled(false);
+        txtNombre.setEnabled(false);
+        txtTelefono.setEnabled(false);
+        txtDni.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtPassword.setEnabled(false);
+    }
+    //LIMPIA LOS CONTROLES
+    private void LimpiarCampos() {
+        txtApellido.setText("");
+        txtNombre.setText("");
+        txtTelefono.setText("");
+        txtDni.setText("");
+        txtEmail.setText("");
+        txtPassword.setText("");
+    }
+
+    //METODOS PARA MOSTRAR LOS DATOS DEVUELTOS EN LA CAPA NEGOCIOS Y PARA INICIALIZAR LA FUENTE DE INFORMACION DE LOS CONTROLES 
+    private void asignarDatos() {
+         for (int row = 0; row < modeloCargos.getRowCount(); row++) {
+            for (int col = 0; col < modeloCargos.getColumnCount(); col++) {
+                if (col == 0) {
+                    cboCargo.addItem(new PersonalCargo(
+                            Integer.parseInt(modeloCargos.getValueAt(row, col).toString()),
+                            modeloCargos.getValueAt(row, col + 1).toString())
+                    );
+                }
+            }
+
+        }
+        //ASIGNA LA INFORMACION DEVUELTA POR LA CAPA NEGOCIOS A LA GRILLA DEL FORMULARIO
+        dgvPersonal.setModel(modelo);
+        //CONFIGURA LA GRILLA OCULANDO LAS COLUMNAS NO NECESARIAS
+        dgvPersonal.getColumnModel().getColumn(0).setMinWidth(0);
+        dgvPersonal.getColumnModel().getColumn(0).setMaxWidth(0);
+        dgvPersonal.getColumnModel().getColumn(5).setMinWidth(0);
+        dgvPersonal.getColumnModel().getColumn(5).setMaxWidth(0);
+        dgvPersonal.getColumnModel().getColumn(7).setMinWidth(0);
+        dgvPersonal.getColumnModel().getColumn(7).setMaxWidth(0);
     }
 
     @SuppressWarnings("unchecked")
@@ -310,6 +379,7 @@ public class ABMPersonal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //LAMA A LOS METODOS PARA CANCELAR Y LIMPIAR LOS CONTROLES
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         LimpiarCampos();
         DeshabilitartextBox();
@@ -317,8 +387,8 @@ public class ABMPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-
-        oPers.SetId(0);
+        //SE HABILITAN TODOS LOS CONTROLES
+        oPers.setId(0);
         HabilitartextBox();
         LimpiarCampos();
     }//GEN-LAST:event_btnNuevoActionPerformed
@@ -328,6 +398,7 @@ public class ABMPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_dgvPersonalMouseClicked
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        //METODO QUE LLAMA AL METODO ELIMINAR DEL OBJETO
         Personal oPersonal = new Personal();
         int eli = dgvPersonal.getSelectedRowCount();
         if (eli >= 0) {
@@ -343,25 +414,26 @@ public class ABMPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        //PREPARA LOS OBJETOS PARA LUEGO LLAMAR AL MEOTODO GUARDAR
         oPersonalSeleccionado = new Personal();
-        JOptionPane.showMessageDialog(null, "registro Seleccionado");
+        
         int indiceSelecionado = dgvPersonal.getSelectedRow();
-        oPersonalSeleccionado.SetId(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 0).toString()));
-        oPersonalSeleccionado.SetNombre(dgvPersonal.getModel().getValueAt(indiceSelecionado, 1).toString());
-        oPersonalSeleccionado.SetApellido(dgvPersonal.getModel().getValueAt(indiceSelecionado, 2).toString());
-        oPersonalSeleccionado.SetEmail(dgvPersonal.getModel().getValueAt(indiceSelecionado, 3).toString());
-        oPersonalSeleccionado.SetTelefono(dgvPersonal.getModel().getValueAt(indiceSelecionado, 4).toString());
-        oPersonalSeleccionado.SetPassword(dgvPersonal.getModel().getValueAt(indiceSelecionado, 6).toString());
-        oPersonalSeleccionado.SetIdPersonalCargo(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 7).toString()));
+        oPersonalSeleccionado.setId(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 0).toString()));
+        oPersonalSeleccionado.setNombre(dgvPersonal.getModel().getValueAt(indiceSelecionado, 1).toString());
+        oPersonalSeleccionado.setApellido(dgvPersonal.getModel().getValueAt(indiceSelecionado, 2).toString());
+        oPersonalSeleccionado.setEmail(dgvPersonal.getModel().getValueAt(indiceSelecionado, 3).toString());
+        oPersonalSeleccionado.setTelefono(dgvPersonal.getModel().getValueAt(indiceSelecionado, 4).toString());
+        oPersonalSeleccionado.setPassword(dgvPersonal.getModel().getValueAt(indiceSelecionado, 6).toString());
+        oPersonalSeleccionado.setIdPersonalCargo(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 7).toString()));
 
-        txtEmail.setText(oPersonalSeleccionado.GetEmail());
-        txtPassword.setText(oPersonalSeleccionado.GetPassword());
-        txtNombre.setText(oPersonalSeleccionado.GetNombre());
-        txtApellido.setText(oPersonalSeleccionado.GetApellido());
-        txtTelefono.setText(oPersonalSeleccionado.GetTelefono());
-        txtDni.setText(oPersonalSeleccionado.GetDni());
+        txtEmail.setText(oPersonalSeleccionado.getEmail());
+        txtPassword.setText(oPersonalSeleccionado.getPassword());
+        txtNombre.setText(oPersonalSeleccionado.getNombre());
+        txtApellido.setText(oPersonalSeleccionado.getApellido());
+        txtTelefono.setText(oPersonalSeleccionado.getTelefono());
+        txtDni.setText(oPersonalSeleccionado.getDni());
 
-        oPers.SetId(oPersonalSeleccionado.GetId());
+        oPers.setId(oPersonalSeleccionado.getId());
         HabilitartextBox();
 
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -371,17 +443,17 @@ public class ABMPersonal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
-
-        oPers.SetEmail(txtEmail.getText());
-        oPers.SetApellido(txtApellido.getText());
-        oPers.SetNombre(txtNombre.getText());
-        oPers.SetDni(txtDni.getText());
-        oPers.SetIdPersonalCargo(1);
-        oPers.SetPassword(txtPassword.getText());
-        oPers.SetTelefono(txtTelefono.getText());
+        //LLAMA AL MEOTODO GUARDAR
+        oPers.setEmail(txtEmail.getText());
+        oPers.setApellido(txtApellido.getText());
+        oPers.setNombre(txtNombre.getText());
+        oPers.setDni(txtDni.getText());
+        oPers.setIdPersonalCargo(1);
+        oPers.setPassword(txtPassword.getText());
+        oPers.setTelefono(txtTelefono.getText());
         PersonalCargo cargoSeleccionado = (PersonalCargo) cboCargo.getSelectedItem();
-        int Seleccionado = cargoSeleccionado.getIdCargo();
-        oPers.SetIdPersonalCargo(Seleccionado);
+        int Seleccionado = cargoSeleccionado.getId();
+        oPers.setIdPersonalCargo(Seleccionado);
 
         try {
             ResponseObject oRes = oPers.Guardar(oPers);
@@ -403,72 +475,6 @@ public class ABMPersonal extends javax.swing.JFrame {
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
 
     }//GEN-LAST:event_txtEmailActionPerformed
-
-    private void comenzarCarga() throws SQLException, InterruptedException {
-        DeshabilitartextBox();
-        cargarDatos();
-    }
-
-    private void cargarDatos() throws SQLException, InterruptedException {
-        oPers = new Personal();
-        modelo = oPers.Listar();
-        modeloCargos = oCargo.Listar();
-
-        for (int row = 0; row < modeloCargos.getRowCount(); row++) {
-            for (int col = 0; col < modeloCargos.getColumnCount(); col++) {
-                if (col == 0) {
-                    cboCargo.addItem(new PersonalCargo(
-                            Integer.parseInt(modeloCargos.getValueAt(row, col).toString()),
-                            modeloCargos.getValueAt(row, col + 1).toString())
-                    );
-                }
-            }
-
-        }
-
-        asignarDatos();
-    }
-
-    private void HabilitartextBox() {
-        txtApellido.setEnabled(true);
-        txtNombre.setEnabled(true);
-        txtTelefono.setEnabled(true);
-        txtDni.setEnabled(true);
-        txtEmail.setEnabled(true);
-        txtPassword.setEnabled(true);
-    }
-
-    private void DeshabilitartextBox() {
-        txtApellido.setEnabled(false);
-        txtNombre.setEnabled(false);
-        txtTelefono.setEnabled(false);
-        txtDni.setEnabled(false);
-        txtEmail.setEnabled(false);
-        txtPassword.setEnabled(false);
-    }
-
-    private void LimpiarCampos() {
-        txtApellido.setText(" ");
-        txtNombre.setText(" ");
-        txtTelefono.setText(" ");
-        txtDni.setText(" ");
-        txtEmail.setText(" ");
-        txtPassword.setText(" ");
-    }
-
-    private void asignarDatos() {
-
-        dgvPersonal.setModel(modelo);
-
-        dgvPersonal.getColumnModel().getColumn(0).setMinWidth(0);
-        dgvPersonal.getColumnModel().getColumn(0).setMaxWidth(0);
-
-        dgvPersonal.getColumnModel().getColumn(5).setMinWidth(0);
-        dgvPersonal.getColumnModel().getColumn(5).setMaxWidth(0);
-
-        dgvPersonal.getColumnModel().getColumn(7).setMinWidth(0);
-        dgvPersonal.getColumnModel().getColumn(7).setMaxWidth(0);
-    }
 
     public static void main(String args[]) {
         try {

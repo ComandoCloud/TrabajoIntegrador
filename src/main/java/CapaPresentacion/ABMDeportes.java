@@ -1,29 +1,26 @@
-
 package CapaPresentacion;
 
 import CapaNegocios.Deportes;
 import CapaNegocios.ResponseObject;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class ABMDeportes extends javax.swing.JFrame {
 
-    DefaultTableModel tablaDeportes = new DefaultTableModel();
-    Deportes oDeportes = new Deportes();
-    Deportes oDeporteSeleccionado = new Deportes();
-    
+    //REGION DE PROPIEDADES
+    private DefaultTableModel tablaDeportes = new DefaultTableModel();
+    private Deportes oDeportes = new Deportes();
+    private Deportes oDeporteSeleccionado = new Deportes();
+
+    //CONTRUCTOR
     public ABMDeportes() throws SQLException, InterruptedException {
         initComponents();
         comenzarCarga();
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -222,90 +219,95 @@ public class ABMDeportes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comenzarCarga() throws SQLException, InterruptedException{
+    //METODO QUE SE ENCARGA DE LLAMAR A LOS METODOS DE BUSQUEDA DE DATOS A LA BBDD 
+    //Y LUEGO EL METODO PARA MOSTRAR LOS DATOS E INICIALIZAR LOS COMPONENTES 
+    private void comenzarCarga() throws SQLException, InterruptedException {
         cargarDatos();
         asignarDatos();
     }
-    
-    private void cargarDatos() throws SQLException, InterruptedException{
-          try {
+
+    //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
+    private void cargarDatos() throws SQLException, InterruptedException {
+        try {
             ResponseObject oRes = oDeportes.Listar();
-            tablaDeportes = oRes.getJTResultado();
-            
+            tablaDeportes = oRes.getjTResultado();
+
         } catch (SQLException ex) {
             Logger.getLogger(ABMDeportes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void asignarDatos(){
+    //METODOS PARA MOSTRAR LOS DATOS DEVUELTOS EN LA CAPA NEGOCIOS Y PARA INICIALIZAR LA FUENTE DE INFORMACION DE LOS CONTROLES 
+
+    private void asignarDatos() {
+        //ASIGNA LA INFORMACION DEVUELTA POR LA CAPA NEGOCIOS A LA GRILLA DEL FORMULARIO
         dgvDeportes.setModel(tablaDeportes);
         dgvDeportes.getColumnModel().getColumn(2).setMinWidth(0);
         dgvDeportes.getColumnModel().getColumn(2).setMaxWidth(0);
     }
     private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        
+
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
-        
-        if(txtDescripcion.getText().isBlank() || txtDescripcion.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Ingrese la descripcion","Error", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else{
+        //LLENA EL OBJETO PARA LUEGO USAR SUS METODOS
+        if (txtDescripcion.getText().isBlank() || txtDescripcion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese la descripcion", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } else {
             oDeportes.setDeportes(oDeporteSeleccionado.getIdDeportes());
             oDeportes.setDescripcion(txtDescripcion.getText());
             ResponseObject oRes;
             try {
+                //LLAMA AL METODO GUARDAR DE LA CAPA NEGOCIOS
                 oRes = oDeportes.Guardar(oDeportes);
-                if(oRes.getCodigoSalida()==0){
+                if (oRes.getCodigoSalida() == 0) {
+                    //SI NO HUBO ERRORES SE VUELVE A CARGAR LA INFORMACION PARA ACTUALIZAR LA GRILLA
                     comenzarCarga();
+                } else {
+                    JOptionPane.showMessageDialog(null, oRes.getSalida(), "", JOptionPane.INFORMATION_MESSAGE);
                 }
-                else{
-                    JOptionPane.showMessageDialog(null, oRes.getSalida(),"", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                Logger.getLogger(ABMDeportes.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ABMDeportes.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ABMDeportes.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ABMDeportes.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-        
-        }     
     }//GEN-LAST:event_btnGuardarMouseClicked
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-      
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        
+        //HABILITA LOS CONTROLES PARA PODER MODIFICAR LOS DATOS 
         txtDescripcion.setEnabled(true);
         oDeportes.setDeportes(oDeporteSeleccionado.getIdDeportes());
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        
-    ResponseObject oRes;
+        //METODO QUE LLAMA AL METODO ELIMINAR DEL OBJETO
+        ResponseObject oRes;
         try {
             oRes = oDeportes.Eliminar(oDeporteSeleccionado.getIdDeportes());
-            if(oRes.getCodigoSalida()>=0){
+            if (oRes.getCodigoSalida() == 0) {
                 try {
+                    //SI NO HUBO ERRORES SE VUELVE A CARGAR LA INFORMACION PARA ACTUALIZAR LA GRILLA
                     comenzarCarga();
                 } catch (SQLException ex) {
                     Logger.getLogger(ABMDeportes.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ABMDeportes.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            else{
-                JOptionPane.showMessageDialog(null, oRes.getSalida(),"", JOptionPane.INFORMATION_MESSAGE);
-
+            } else {
+                JOptionPane.showMessageDialog(null, oRes.getSalida(), "", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ABMDeportes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
-        
+
     private void dgvDeportesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvDeportesMouseClicked
+        //CADA VEX QUE SE SELECCIONA UN REGISTRO EN LA GRILLA DE CANCHAS SE ACTUALIZAN LOS CONTROLES
         int indiceSelecionado = dgvDeportes.getSelectedRow();
         oDeporteSeleccionado.setDeportes(Integer.parseInt(dgvDeportes.getModel().getValueAt(indiceSelecionado, 0).toString()));
         oDeporteSeleccionado.setDescripcion(dgvDeportes.getModel().getValueAt(indiceSelecionado, 1).toString());
@@ -313,13 +315,17 @@ public class ABMDeportes extends javax.swing.JFrame {
     }//GEN-LAST:event_dgvDeportesMouseClicked
 
     private void btnNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNuevoMouseClicked
+        //SE HABILITAN TODOS LOS CONTROLES
         txtDescripcion.setEnabled(true);
         txtDescripcion.setText("");
         txtDescripcion.requestFocus();
     }//GEN-LAST:event_btnNuevoMouseClicked
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        txtDescripcion.setEnabled(true);           
+        //SE HABILITAN TODOS LOS CONTROLES
+        txtDescripcion.setEnabled(true);
+        txtDescripcion.setText("");
+        txtDescripcion.requestFocus();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -327,9 +333,9 @@ public class ABMDeportes extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
     }//GEN-LAST:event_formWindowClosing
-    
+
     public static void main(String args[]) {
-      
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {

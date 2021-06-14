@@ -17,18 +17,14 @@ import javax.swing.table.DefaultTableModel;
 
 public class frmReservas extends javax.swing.JFrame {
 
-    private DefaultTableModel tablaCanchas = new DefaultTableModel() {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    };
+    private DefaultTableModel tablaCanchas = new DefaultTableModel();
     private DefaultTableModel tablaReservas = new DefaultTableModel();
     private Reserva oReserva = new Reserva();
     private Reserva oReservaSeleccionada = new Reserva();
     private int idCanchaSeleccionada;
     private Cancha oCanchas = new Cancha();
 
+    //CONSTRUCTOR
     public frmReservas() throws SQLException, InterruptedException {
         initComponents();
         comenzarCarga();
@@ -47,11 +43,11 @@ public class frmReservas extends javax.swing.JFrame {
         dgvReservas = new javax.swing.JTable();
         lblTelefono1 = new javax.swing.JLabel();
         cboCancha = new javax.swing.JComboBox<>();
-        btnGuardar1 = new javax.swing.JButton();
+        btnVerDisponibilidad = new javax.swing.JButton();
         txtDia = new javax.swing.JTextField();
         txtMes = new javax.swing.JTextField();
         txtAno = new javax.swing.JTextField();
-        btnGuardar2 = new javax.swing.JButton();
+        btnReprogramar = new javax.swing.JButton();
         btnLiberar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -118,16 +114,16 @@ public class frmReservas extends javax.swing.JFrame {
 
         cboCancha.setName("cboCargo"); // NOI18N
 
-        btnGuardar1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnGuardar1.setText("Ver disponibilidad");
-        btnGuardar1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnVerDisponibilidad.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnVerDisponibilidad.setText("Ver disponibilidad");
+        btnVerDisponibilidad.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnGuardar1MouseClicked(evt);
+                btnVerDisponibilidadMouseClicked(evt);
             }
         });
-        btnGuardar1.addActionListener(new java.awt.event.ActionListener() {
+        btnVerDisponibilidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardar1ActionPerformed(evt);
+                btnVerDisponibilidadActionPerformed(evt);
             }
         });
 
@@ -137,17 +133,17 @@ public class frmReservas extends javax.swing.JFrame {
 
         txtAno.setText("2021");
 
-        btnGuardar2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnGuardar2.setText("Reprogramar");
-        btnGuardar2.setEnabled(false);
-        btnGuardar2.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnReprogramar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnReprogramar.setText("Reprogramar");
+        btnReprogramar.setEnabled(false);
+        btnReprogramar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnGuardar2MouseClicked(evt);
+                btnReprogramarMouseClicked(evt);
             }
         });
-        btnGuardar2.addActionListener(new java.awt.event.ActionListener() {
+        btnReprogramar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardar2ActionPerformed(evt);
+                btnReprogramarActionPerformed(evt);
             }
         });
 
@@ -192,17 +188,13 @@ public class frmReservas extends javax.swing.JFrame {
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
                         .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
-                            .addComponent(btnGuardar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(pnlContenedorLayout.createSequentialGroup()
-                .addGap(159, 159, 159)
-                .addComponent(btnGuardar2)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlContenedorLayout.createSequentialGroup()
-                    .addGap(20, 20, 20)
-                    .addComponent(btnLiberar)
-                    .addContainerGap(755, Short.MAX_VALUE)))
+                            .addComponent(btnVerDisponibilidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlContenedorLayout.createSequentialGroup()
+                        .addComponent(btnLiberar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReprogramar)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         pnlContenedorLayout.setVerticalGroup(
             pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,17 +211,14 @@ public class frmReservas extends javax.swing.JFrame {
                     .addComponent(lblTelefono1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cboCancha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnVerDisponibilidad, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnGuardar2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnReprogramar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLiberar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContenedorLayout.createSequentialGroup()
-                    .addContainerGap(558, Short.MAX_VALUE)
-                    .addComponent(btnLiberar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -246,20 +235,24 @@ public class frmReservas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //METODO QUE SE ENCARGA DE LLAMAR A LOS METODOS DE BUSQUEDA DE DATOS A LA BBDD 
+    //Y LUEGO EL METODO PARA MOSTRAR LOS DATOS E INICIALIZAR LOS COMPONENTES 
     private void comenzarCarga() throws SQLException, InterruptedException {
         cargarDatos();
         asignarDatos();
     }
 
+     //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
     private void cargarDatos() throws SQLException, InterruptedException {
         try {
             ResponseObject oRes2 = oCanchas.Listar();
-            tablaCanchas = oRes2.getJTResultado();
+            tablaCanchas = oRes2.getjTResultado();
         } catch (SQLException ex) {
             Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    //EL METODO PARA MOSTRAR LOS DATOS E INICIALIZAR LOS COMPONENTES 
     private void asignarDatos() {
         dgvReservas.setModel(tablaReservas);
         for (int row = 0; row < tablaCanchas.getRowCount(); row++) {
@@ -272,10 +265,15 @@ public class frmReservas extends javax.swing.JFrame {
                 }
             }
         }
-        if(Usuario.getoUsuario().getTipoPersona()==1)
+        //SI EL USUARIO ES PERSONAL PPUEDE LIBERAR CUALQUIER TURNO
+        if (Usuario.getoUsuario().getTipoPersona() == 1) {
             btnLiberar.setVisible(true);
-        else
+            btnLiberar.setEnabled(true);
+        } else {
             btnLiberar.setVisible(false);
+            btnLiberar.setEnabled(false);
+
+        }
     }
 
     private void selectItemByString(String s) {
@@ -289,7 +287,8 @@ public class frmReservas extends javax.swing.JFrame {
     }
 
     private void dgvReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvReservasMouseClicked
-
+        
+        //EBVENTO CLICK, SI ES UN USUAEIO AL HACER CLICK EN UN TURNO LIBRE, PREGUNTA SI LO QUIERE RESERVAR
         int[] selectedRows = dgvReservas.getSelectedRows();
         String fecha = txtAno.getText() + "-" + txtMes.getText() + "-" + txtDia.getText();
         String fechaSeleccionada = fecha + " " + tablaReservas.getValueAt(selectedRows[0], 0).toString();
@@ -300,16 +299,16 @@ public class frmReservas extends javax.swing.JFrame {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
                 Date parsedDate;
                 ReservasEstados oEstado = new ReservasEstados();
-                int reply = JOptionPane.showConfirmDialog(null, "Esta reservando un turno para el dia " + fecha + " a la hora " + fechaSeleccionada + " ¿Desea continuar?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+                int reply = JOptionPane.showConfirmDialog(null, "Esta reservando un turno para el dia " + fecha + " ¿Desea continuar?", "Confirmacion", JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     try {
                         parsedDate = dateFormat.parse(fechaSeleccionada);
                         Timestamp fechaTime = new java.sql.Timestamp(parsedDate.getTime());
-                        ResponseObject oRes = oReserva.Reservar(idCanchaSeleccionada, fechaTime, Usuario.getoUsuario().GetId(), ReservasEstados.ReservaEstado.RESERVADA.getEstado());
+                        ResponseObject oRes = oReserva.Reservar(idCanchaSeleccionada, fechaTime, Usuario.getoUsuario().getId(), ReservasEstados.ReservaEstado.RESERVADA.getEstado());
                         if (oRes.getCodigoSalida() == 0) {
                             JOptionPane.showMessageDialog(null, "Cancha reservada correctamente");
                             ResponseObject oRes2 = oReserva.getHorarios(idCanchaSeleccionada, fecha);
-                            tablaReservas = oRes2.getJTResultado();
+                            tablaReservas = oRes2.getjTResultado();
                             dgvReservas.setModel(tablaReservas);
                         }
                     } catch (ParseException ex) {
@@ -323,43 +322,44 @@ public class frmReservas extends javax.swing.JFrame {
             }
         } else {
             if (!estadoActual.equals("RESERVADA")) {
-                btnLiberar.setEnabled(false);
-            }
-            else{
+                btnLiberar.setEnabled(true);
+            } else {
                 btnLiberar.setEnabled(false);
             }
         }
-    
+
     }//GEN-LAST:event_dgvReservasMouseClicked
 
-    private void btnGuardar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardar1MouseClicked
+    private void btnVerDisponibilidadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVerDisponibilidadMouseClicked
         Cancha oCanchaSeleccionada = (Cancha) cboCancha.getSelectedItem();
         idCanchaSeleccionada = oCanchaSeleccionada.getIdCancha();
         String fecha = txtAno.getText() + "-" + txtMes.getText() + "-" + txtDia.getText();
         try {
+            //BUSCA LOS TURNOS PARA LA FECHA Y CANCHA SELECCIONADAS
             ResponseObject oRes = oReserva.getHorarios(idCanchaSeleccionada, fecha);
-            tablaReservas = oRes.getJTResultado();
+            tablaReservas = oRes.getjTResultado();
+            //MUESTRA EL RESULTADO EN LA GRILLA
             dgvReservas.setModel(tablaReservas);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error " + e.toString(), "Bienvenido al sistema", JOptionPane.ERROR);
         }
-    }//GEN-LAST:event_btnGuardar1MouseClicked
+    }//GEN-LAST:event_btnVerDisponibilidadMouseClicked
 
 
-    private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
+    private void btnVerDisponibilidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerDisponibilidadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardar1ActionPerformed
+    }//GEN-LAST:event_btnVerDisponibilidadActionPerformed
 
-    private void btnGuardar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardar2MouseClicked
+    private void btnReprogramarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReprogramarMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardar2MouseClicked
+    }//GEN-LAST:event_btnReprogramarMouseClicked
 
-    private void btnGuardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar2ActionPerformed
+    private void btnReprogramarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReprogramarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardar2ActionPerformed
+    }//GEN-LAST:event_btnReprogramarActionPerformed
 
     private void btnLiberarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLiberarMouseClicked
-        
+
     }//GEN-LAST:event_btnLiberarMouseClicked
 
     private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
@@ -372,25 +372,21 @@ public class frmReservas extends javax.swing.JFrame {
                 try {
                     new frmReservas().setVisible(true);
 
-} catch (SQLException ex) {
-                    Logger.getLogger(frmReservas.class  
-
-.getName()).log(Level.SEVERE, null, ex);
-                }
-
-catch (InterruptedException ex) {
-                    Logger.getLogger(frmReservas.class  
-
-.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(frmReservas.class
+                            .getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(frmReservas.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGuardar1;
-    private javax.swing.JButton btnGuardar2;
     private javax.swing.JButton btnLiberar;
+    private javax.swing.JButton btnReprogramar;
+    private javax.swing.JButton btnVerDisponibilidad;
     private javax.swing.JComboBox<Cancha> cboCancha;
     private javax.swing.JTable dgvReservas;
     private javax.swing.JScrollPane jScrollPane1;

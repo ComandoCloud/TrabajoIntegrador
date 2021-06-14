@@ -1,8 +1,6 @@
 package CapaPresentacion;
 
-import java.awt.Color;
 import javax.swing.JOptionPane;
-import CapaDatos.Conexion;
 import CapaNegocios.PersonalCargo;
 import CapaNegocios.Personal;
 import CapaNegocios.ResponseObject;
@@ -10,24 +8,72 @@ import CapaNegocios.Usuario;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class ABMUsuarios extends javax.swing.JFrame {
 
-    Usuario oUsu;
-    Usuario oUsuarioSeleccionado;
-    DefaultTableModel modelo = new DefaultTableModel();
-    DefaultTableModel modeloCargos = new DefaultTableModel();
-    PersonalCargo oCargo = new PersonalCargo();
-    Conexion oCon = new Conexion();
+    //REGION DE PROPIEDADES
+    private Usuario oUsu;
+    private Usuario oUsuarioSeleccionado;
+    private DefaultTableModel modelo = new DefaultTableModel();
 
+    //CONTRUCTOR
     public ABMUsuarios() throws SQLException, InterruptedException {
         initComponents();
         comenzarCarga();
     }
+    
+    //METODO QUE SE ENCARGA DE LLAMAR A LOS METODOS DE BUSQUEDA DE DATOS A LA BBDD 
+    private void comenzarCarga() throws SQLException, InterruptedException {
+        DeshabilitartextBox();
+        cargarDatos();
+    }
+    //LLAMA A LOS METODOS DE LA CAPA NEGOCIOS
+    private void cargarDatos() throws SQLException, InterruptedException {
+        oUsu = new Usuario();
+        ResponseObject oRes = oUsu.Listar();
+        modelo = oRes.getjTResultado();
+        asignarDatos();
+    }
+    
+    //HABILITA LOS CONTROLES
+    private void HabilitartextBox() {
+        txtApellido.setEnabled(true);
+        txtNombre.setEnabled(true);
+        txtTelefono.setEnabled(true);
+        txtEmail.setEnabled(true);
+        txtPassword.setEnabled(true);
+    }
 
+    //DESHABILITA LOS CONTROLES
+    private void DeshabilitartextBox() {
+        txtApellido.setEnabled(false);
+        txtNombre.setEnabled(false);
+        txtTelefono.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtPassword.setEnabled(false);
+    }
+
+    //LIMPIA LOS CONTROLES
+    private void LimpiarCampos() {
+        txtApellido.setText(" ");
+        txtNombre.setText(" ");
+        txtTelefono.setText(" ");
+        txtEmail.setText(" ");
+        txtPassword.setText(" ");
+    }
+    
+    //METODOS PARA MOSTRAR LOS DATOS DEVUELTOS EN LA CAPA NEGOCIOS Y PARA INICIALIZAR LA FUENTE DE INFORMACION DE LOS CONTROLES 
+    private void asignarDatos() {
+        //ASIGNA LA INFORMACION DEVUELTA POR LA CAPA NEGOCIOS A LA GRILLA DEL FORMULARIO
+        dgvPersonal.setModel(modelo);
+         //CONFIGURA LA GRILLA OCULANDO LAS COLUMNAS NO NECESARIAS
+        dgvPersonal.getColumnModel().getColumn(0).setMinWidth(0);
+        dgvPersonal.getColumnModel().getColumn(0).setMaxWidth(0);
+        dgvPersonal.getColumnModel().getColumn(5).setMinWidth(0);
+        dgvPersonal.getColumnModel().getColumn(5).setMaxWidth(0);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -60,7 +106,7 @@ public class ABMUsuarios extends javax.swing.JFrame {
         pnlContenedor.setName(""); // NOI18N
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblEmail.setText("Email");
+        lblEmail.setText("Email:");
 
         txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,9 +232,8 @@ public class ABMUsuarios extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
                         .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(16, 16, 16)
                         .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlContenedorLayout.createSequentialGroup()
                         .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,6 +332,7 @@ public class ABMUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //LAMA A LOS METODOS PARA CANCELAR Y LIMPIAR LOS CONTROLES
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         LimpiarCampos();
         DeshabilitartextBox();
@@ -294,8 +340,8 @@ public class ABMUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-
-        oUsu.SetId(0);
+        //SE HABILITAN TODOS LOS CONTROLES
+        oUsu.setId(0);
         HabilitartextBox();
         LimpiarCampos();
     }//GEN-LAST:event_btnNuevoActionPerformed
@@ -305,15 +351,10 @@ public class ABMUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_dgvPersonalMouseClicked
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        //METODO QUE LLAMA AL METODO ELIMINAR DEL OBJETO
         Personal oPersonal = new Personal();
-        int eli = dgvPersonal.getSelectedRowCount();
-        if (eli >= 0) {
-            modelo.removeRow(eli);
-        } else {
-            JOptionPane.showMessageDialog(null, "NO HAY DATOS QUE ELIMINAR");
-        }
         try {
-            ResponseObject oRes = oPersonal.Guardar(oPersonal);
+            ResponseObject oRes = oPersonal.Eliminar(oPersonal.getId());
         } catch (SQLException ex) {
             Logger.getLogger(ABMUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -331,11 +372,11 @@ public class ABMUsuarios extends javax.swing.JFrame {
     private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
         //oUsu = new Usuario();
 
-        oUsu.SetEmail(txtEmail.getText());
-        oUsu.SetApellido(txtApellido.getText());
-        oUsu.SetNombre(txtNombre.getText());
+        oUsu.setEmail(txtEmail.getText());
+        oUsu.setApellido(txtApellido.getText());
+        oUsu.setNombre(txtNombre.getText());
         oUsu.setPass(txtPassword.getText());
-        oUsu.SetTelefono(txtTelefono.getText());
+        oUsu.setTelefono(txtTelefono.getText());
 
         try {
             ResponseObject oRes = oUsu.Guardar(oUsu);
@@ -359,72 +400,27 @@ public class ABMUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnEditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarMouseClicked
-        // TODO add your handling code here:
+        //PREPARA LOS OBJETOS PARA LUEGO LLAMAR AL MEOTODO GUARDAR
         oUsuarioSeleccionado = new Usuario();
         int indiceSelecionado = dgvPersonal.getSelectedRow();
-        oUsuarioSeleccionado.SetId(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 0).toString()));
-        oUsuarioSeleccionado.SetNombre(dgvPersonal.getModel().getValueAt(indiceSelecionado, 1).toString());
-        oUsuarioSeleccionado.SetApellido(dgvPersonal.getModel().getValueAt(indiceSelecionado, 2).toString());
-        oUsuarioSeleccionado.SetEmail(dgvPersonal.getModel().getValueAt(indiceSelecionado, 3).toString());
-        oUsuarioSeleccionado.SetTelefono(dgvPersonal.getModel().getValueAt(indiceSelecionado, 4).toString());
+        oUsuarioSeleccionado.setId(Integer.parseInt(dgvPersonal.getModel().getValueAt(indiceSelecionado, 0).toString()));
+        oUsuarioSeleccionado.setNombre(dgvPersonal.getModel().getValueAt(indiceSelecionado, 1).toString());
+        oUsuarioSeleccionado.setApellido(dgvPersonal.getModel().getValueAt(indiceSelecionado, 2).toString());
+        oUsuarioSeleccionado.setEmail(dgvPersonal.getModel().getValueAt(indiceSelecionado, 3).toString());
+        oUsuarioSeleccionado.setTelefono(dgvPersonal.getModel().getValueAt(indiceSelecionado, 4).toString());
         oUsuarioSeleccionado.setPass(dgvPersonal.getModel().getValueAt(indiceSelecionado, 6).toString());
 
-        txtEmail.setText(oUsuarioSeleccionado.GetEmail());
+        txtEmail.setText(oUsuarioSeleccionado.getEmail());
         txtPassword.setText(oUsuarioSeleccionado.getPass());
-        txtNombre.setText(oUsuarioSeleccionado.GetNombre());
-        txtApellido.setText(oUsuarioSeleccionado.GetApellido());
-        txtTelefono.setText(oUsuarioSeleccionado.GetTelefono());
+        txtNombre.setText(oUsuarioSeleccionado.getNombre());
+        txtApellido.setText(oUsuarioSeleccionado.getApellido());
+        txtTelefono.setText(oUsuarioSeleccionado.getTelefono());
 
-        oUsu.SetId(oUsuarioSeleccionado.GetId());
+        oUsu.setId(oUsuarioSeleccionado.getId());
         HabilitartextBox();
     }//GEN-LAST:event_btnEditarMouseClicked
 
-    private void comenzarCarga() throws SQLException, InterruptedException {
-        DeshabilitartextBox();
-        cargarDatos();
-    }
-
-    private void cargarDatos() throws SQLException, InterruptedException {
-        oUsu = new Usuario();
-        modelo = oUsu.Listar();
-
-        asignarDatos();
-    }
-
-    private void HabilitartextBox() {
-        txtApellido.setEnabled(true);
-        txtNombre.setEnabled(true);
-        txtTelefono.setEnabled(true);
-        txtEmail.setEnabled(true);
-        txtPassword.setEnabled(true);
-    }
-
-    private void DeshabilitartextBox() {
-        txtApellido.setEnabled(false);
-        txtNombre.setEnabled(false);
-        txtTelefono.setEnabled(false);
-        txtEmail.setEnabled(false);
-        txtPassword.setEnabled(false);
-    }
-
-    private void LimpiarCampos() {
-        txtApellido.setText(" ");
-        txtNombre.setText(" ");
-        txtTelefono.setText(" ");
-        txtEmail.setText(" ");
-        txtPassword.setText(" ");
-    }
-
-    private void asignarDatos() {
-
-        dgvPersonal.setModel(modelo);
-
-        dgvPersonal.getColumnModel().getColumn(0).setMinWidth(0);
-        dgvPersonal.getColumnModel().getColumn(0).setMaxWidth(0);
-
-        dgvPersonal.getColumnModel().getColumn(5).setMinWidth(0);
-        dgvPersonal.getColumnModel().getColumn(5).setMaxWidth(0);
-    }
+    
 
     public static void main(String args[]) {
         try {
