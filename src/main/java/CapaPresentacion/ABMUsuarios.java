@@ -108,7 +108,7 @@ public class ABMUsuarios extends javax.swing.JFrame {
         btnNuevo = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnlContenedor.setBackground(new java.awt.Color(0, 153, 153));
         pnlContenedor.setName(""); // NOI18N

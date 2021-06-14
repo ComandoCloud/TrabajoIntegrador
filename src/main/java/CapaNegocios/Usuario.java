@@ -4,7 +4,7 @@ import CapaDatos.Conexion;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
-public class Usuario extends Persona {
+public class Usuario extends Persona implements IOperacionesBasicas<Object> {
 
     //REGION DE PROPIEDADES
     private String pass;
@@ -86,7 +86,8 @@ public class Usuario extends Persona {
     }
 
     //METODO PARA LISTAR INFORMACION, EN ESTE CASO USUARIOS 
-    public ResponseObject Listar() throws SQLException, InterruptedException {
+    @Override
+    public ResponseObject Listar() throws SQLException {
         DefaultTableModel dt = new DefaultTableModel();
         try {
             //SE ESTABLECE UNA COMUNICACION CON LA BASE DE DATOS
@@ -110,21 +111,22 @@ public class Usuario extends Persona {
     //METODO PARA INSERTAR O EDITAR UN REGISTRO EN LA TABLA usuarios, SI EL OBEJETO oUsuario TIENE Id>0 QUIERE DECIR QUE YA EXISTE POR LO TANTO SE HARA UN UPDATE
     //SI TIENE id = 0 POR ENDE AUN NO EXISTE POR LO TANTO SE INSERTARA EN LA BASE DE DATOS
     //SE USA ESTA LOGICA EN TODO EL PROYECTO, EN TODOS LOS METODOS GUARDAR
-    public ResponseObject Guardar(Usuario oUsuario) throws SQLException {
+    @Override
+    public ResponseObject Guardar(Object oUsuario) throws SQLException {
         if (oUsuario != null) {
             int idNuevo = 0;
-            if (oUsuario.getId() == 0) {
+            if (this.getId() == 0) {
                 try {
                     //SE ABRE UNA CONEXION A LA BBDD
                     getoCon().Conectar();
                     //SE CREA UNA ESTRUCTURA DE CONSULTA SQL, EN ESTE CASO UNA INSERSION 
                     getoCon().CrearComando("INSERT INTO usuarios (nombre,apellido,email,telefono,clave) VALUES (?,?,?,?,?)");
                     //SE TERMINA DE PREPARAR LA CONSULTA REEMPLAZANDO LOS SIGNOS DE INTERROGACION POR CADA DATO CORRESPONDIENTE
-                    getoCon().comando.setString(1, oUsuario.getNombre());
-                    getoCon().comando.setString(2, oUsuario.getApellido());
-                    getoCon().comando.setString(3, oUsuario.getEmail());
-                    getoCon().comando.setString(4, oUsuario.getTelefono());
-                    getoCon().comando.setString(5, oUsuario.getPass());
+                    getoCon().comando.setString(1, this.getNombre());
+                    getoCon().comando.setString(2, this.getApellido());
+                    getoCon().comando.setString(3, this.getEmail());
+                    getoCon().comando.setString(4, this.getTelefono());
+                    getoCon().comando.setString(5, this.getPass());
                     //UNA VEZ DEFINIDA LA CONSULTA, ES EJECUTADA POR EL MOTOR
                     getoCon().EjecutarComando();
                     //CIERRA A CONEXION A LA BBDD
@@ -142,12 +144,12 @@ public class Usuario extends Persona {
                     
                     getoCon().Conectar();
                     getoCon().CrearComando("UPDATE usuarios SET nombre = ?,apellido = ?, email = ?,telefono=?,clave=? where id = ?");
-                    getoCon().comando.setString(1, oUsuario.getNombre());
-                    getoCon().comando.setString(2, oUsuario.getApellido());
-                    getoCon().comando.setString(3, oUsuario.getEmail());
-                    getoCon().comando.setString(4, oUsuario.getTelefono());
-                    getoCon().comando.setString(5, oUsuario.getPass());
-                    getoCon().comando.setInt(6, oUsuario.getId());
+                    getoCon().comando.setString(1, this.getNombre());
+                    getoCon().comando.setString(2, this.getApellido());
+                    getoCon().comando.setString(3, this.getEmail());
+                    getoCon().comando.setString(4, this.getTelefono());
+                    getoCon().comando.setString(5, this.getPass());
+                    getoCon().comando.setInt(6, this.getId());
                     getoCon().EjecutarComando();
                     getoCon().Desconectar();
                     return new ResponseObject("Editado correctamente", 0);
@@ -160,6 +162,25 @@ public class Usuario extends Persona {
         return new ResponseObject("Usuario es null: ", -1);
     }
 
+    @Override
+    public ResponseObject Eliminar(int idPersonal) throws SQLException {
+        try {
+            //SE ESTABLECE UNA COMUNICACION CON LA BASE DE DATOS
+            getoCon().Conectar();
+            //PREPARAMOS LA CONSULTA O QUERY IMPLEMENTANDO UNA IDEA DE BORRADO LOGICO, LOS REGISTROS QUE ESTAN CON BORRADO=0 SON LOS QUE TIENEN QUE ESTAR VISIBLES Y/O ACCESIBLE POR LO TANTO SI QUEREOS "ELIMINAR UN REGISTRO LOGICAMENTE", ACTUALIZAMOS EL VALOR BORRADO EN 1
+            getoCon().CrearComando("update perrosnal set borrado=1 where id = ?");
+            getoCon().comando.setInt(1, idPersonal);
+            getoCon().EjecutarComando();
+            //DESCONECTAMOS LA BASE DE DATOS
+            getoCon().Desconectar();
+            return new ResponseObject("Eliminado correctamente", 0);
+        } catch (Exception e) {
+            //SI LLEGO A ESTE PUNTO ES PORQUE HUBO UNA EXCPCION ENTONCES CERRAMOS LA CONEXION
+            getoCon().Desconectar();
+            //RETORNA UN OBJETO CREADO PARA ALMACENAR MAS DE UN TIPO DE RESPUESTA, EN ESTE CASO DEVUELVE EL MENSAJE DE LA EXEPCION Y UN CODIGO QUE HACE REFERENCUA A LA MISMA
+            return new ResponseObject("Error: " + e.toString(), -1);
+        }
+    }
     //GETTERS Y SETTERS
     public String getPass() {
         return this.pass;

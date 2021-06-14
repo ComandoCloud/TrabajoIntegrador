@@ -4,7 +4,7 @@ import CapaDatos.Conexion;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
-public class Deportes {
+public class Deportes implements IOperacionesBasicas<Object> {
 
     //REGION DE PROPIEDADES
     private int idDeportes;
@@ -26,18 +26,19 @@ public class Deportes {
     //METODO PARA INSERTAR O EDITAR UN REGISTRO EN LA TABLA DEPORTES, SI EL OBEJETO oDeporte TIENE Id>0 QUIERE DECIR QUE YA EXISTE POR LO TANTO SE HARA UN UPDATE
     //SI TIENE id = 0 POR ENDE AUN NO EXISTE POR LO TANTO SE INSERTARA EN LA BASE DE DATOS
     //SE USA ESTA LOGICA EN TODO EL PROYECTO, EN TODOS LOS METODOS GUARDAR
-    public ResponseObject Guardar(Deportes oDeporte) throws SQLException {
+    @Override
+    public ResponseObject Guardar(Object oDeporte) throws SQLException {
         //VALIDACION PARA EVITAR UNA EXCEPCION DE NULLPOINTER
         if (oDeporte != null) {
             int idNuevo = 0;
-            if (oDeporte.getIdDeportes() == 0) {
+            if (this.getIdDeportes() == 0) {
                 try {
                     //SE ABRE UNA CONEXION A LA BBDD
                     oCon.Conectar();
                     //SE CREA UNA ESTRUCTURA DE CONSULTA SQL, EN ESTE CASO UNA INSERSION 
                     oCon.CrearComando("INSERT INTO deportes (descripcion) VALUES (?)");
                     //SE TERMINA DE PREPARAR LA CONSULTA REEMPLAZANDO LOS SIGNOS DE INTERROGACION POR CADA DATO CORRESPONDIENTE
-                    oCon.comando.setString(1, oDeporte.getDescripcion());
+                    oCon.comando.setString(1, this.getDescripcion());
                     //UNA VEZ DEFINIDA LA CONSULTA, ES EJECUTADA POR EL MOTOR
                     oCon.EjecutarComando();
                     //CIERRA A CONEXION A LA BBDD
@@ -57,8 +58,8 @@ public class Deportes {
                     oCon.Conectar();
                     oCon.CrearComando("UPDATE deportes SET descripcion = ? where id = ?");
                     //SE TERMINA DE PREPARAR LA CONSULTA REEMPLAZANDO LOS SIGNOS DE INTERROGACION POR CADA DATO CORRESPONDIENTE
-                    oCon.comando.setString(1, oDeporte.getDescripcion());
-                    oCon.comando.setInt(2, oDeporte.getIdDeportes());
+                    oCon.comando.setString(1, this.getDescripcion());
+                    oCon.comando.setInt(2, this.getIdDeportes());
                     //UNA VEZ DEFINIDA LA CONSULTA, ES EJECUTADA POR EL MOTOR
                     oCon.EjecutarComando();
                     //CIERRA A CONEXION A LA BBDD
@@ -77,6 +78,7 @@ public class Deportes {
     }
 
     //METODO PARA LISTAR INFORMACION, EN ESTE CASO DEPORTES 
+    @Override
     public ResponseObject Listar() throws SQLException {
         //CREO UNA INSTACIA DE UNA "TABLA" LA CUAL SERA NUTRIDA POR EL RESULTADO DE LA CONSULTA A LA BASE DE DATOS
         DefaultTableModel dt = new DefaultTableModel();
@@ -98,7 +100,8 @@ public class Deportes {
             return new ResponseObject("Error: " + e.toString(), -1, null);
         }
     }
-
+    
+    @Override
     public ResponseObject Eliminar(int idDeporte) throws SQLException {
         try {
             //SE ESTABLECE UNA COMUNICACION CON LA BASE DE DATOS
