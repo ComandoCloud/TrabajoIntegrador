@@ -1,23 +1,26 @@
 package CapaNegocios;
 
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+//CLASE USADA PARA LA DEVUCION DE OTROS METODOS DE OTRAS CLASES, COONTIENE VARIOS ATRIBUTOS DE 
+//VARIOS TIPOS DISTINTOS PARA QUE SE ADAPTE A DIFERENTES CIRCUNSTANCIAS
 public class ResponseObject {
+
     private String salida;
     private int codigoSalida;
-    private DefaultTableModel JTResultado;
-            
-    public ResponseObject(String salida, int codigoSalida){
+    private DefaultTableModel jTResultado;
+
+    public ResponseObject(String salida, int codigoSalida) {
         this.salida = salida;
         this.codigoSalida = codigoSalida;
     }
-        public ResponseObject(String salida, int codigoSalida, DefaultTableModel tabla){
+
+    public ResponseObject(String salida, int codigoSalida, DefaultTableModel tabla) {
         this.salida = salida;
         this.codigoSalida = codigoSalida;
-        this.JTResultado = tabla;
+        this.jTResultado = tabla;
     }
-         
+
     public String getSalida() {
         return salida;
     }
@@ -29,16 +32,16 @@ public class ResponseObject {
     public int getCodigoSalida() {
         return codigoSalida;
     }
-    
+
     void setCodigoSalida(int codigoSalida) {
         this.codigoSalida = codigoSalida;
     }
 
-    public DefaultTableModel getJTResultado() {
-        return JTResultado;
+    public DefaultTableModel getjTResultado() {
+        return jTResultado;
     }
 
-    public void setJTResultado(DefaultTableModel JTResultado) {
-        this.JTResultado = JTResultado;
+    public void setjTResultado(DefaultTableModel jTResultado) {
+        this.jTResultado = jTResultado;
     }
 }

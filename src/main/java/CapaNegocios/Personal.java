@@ -11,22 +11,22 @@ import javax.swing.table.TableModel;
 public class Personal extends Persona {
 
     private int idPersonal;
-    private String Usuario;
-    private String Password;
-    private int IdPersonalCargo;
+    private String usuario;
+    private String password;
+    private int idPersonalCargo;
 
     public Personal() {
         super();
     }
 
-    public Personal(String User, String Password, int id_personal_cargo) {
+    public Personal(String user, String password, int idPersonalCargo) {
         super();
-        this.Usuario = User;
-        this.Password = Password;
-        this.IdPersonalCargo = id_personal_cargo;
+        this.usuario = user;
+        this.password = password;
+        this.idPersonalCargo = idPersonalCargo;
     }
 
-    public DefaultTableModel Listar() throws SQLException, InterruptedException {
+    public ResponseObject Listar() throws SQLException, InterruptedException {
         DefaultTableModel dt = new DefaultTableModel();
         Conexion oCon = new Conexion();
         oCon.Conectar();
@@ -35,57 +35,60 @@ public class Personal extends Persona {
         oCon.EjecutarComando();
         dt = oCon.Tabla();
         oCon.Desconectar();
-        return dt;
+        return new ResponseObject("",0,dt);
     }
-
-    public static void main(String[] args) throws SQLException, InterruptedException {
-        Personal oPers = new Personal();
-        oPers.Listar();
-    }
-
+    
+    //REGION DE METODOS
+    //METODO PARA INSERTAR O EDITAR UN REGISTRO EN LA TABLA PERSONAL, SI EL OBEJETO oPersonal TIENE Id>0 QUIERE DECIR QUE YA EXISTE POR LO TANTO SE HARA UN UPDATE
+    //SI TIENE id = 0 POR ENDE AUN NO EXISTE POR LO TANTO SE INSERTARA EN LA BASE DE DATOS
+    //SE USA ESTA LOGICA EN TODO EL PROYECTO, EN TODOS LOS METODOS GUARDAR
     public ResponseObject Guardar(Personal oPersonal) throws SQLException {
+        //VALIDACION PARA EVITAR UNA EXCEPCION DE NULLPOINTER
         if (oPersonal != null) {
             int idNuevo = 0;
-            Conexion oCon = GetoCon();
-            if (oPersonal.GetId() == 0) {
+            if (oPersonal.getId() == 0) {
                 try {
-                    oCon.Conectar();
-                    oCon.CrearComando("INSERT INTO personal (nombre,apellido,email,telefono,clave,id_personal_cargo,dni) VALUES (?,?,?,?,?,?,?)");
-
-                    oCon.comando.setString(1, oPersonal.GetNombre());
-                    oCon.comando.setString(2, oPersonal.GetApellido());
-                    oCon.comando.setString(3, oPersonal.GetEmail());
-                    oCon.comando.setString(4, oPersonal.GetTelefono());
-                    oCon.comando.setString(5, oPersonal.GetPassword());
-                    oCon.comando.setInt(6, oPersonal.GetIdPersonalCargo());
-                    oCon.comando.setString(7, oPersonal.GetDni());
-                    oCon.EjecutarComando();
-                    oCon.Desconectar();
+                    //SE ABRE UNA CONEXION A LA BBDD
+                    getoCon().Conectar();
+                    //SE CREA UNA ESTRUCTURA DE CONSULTA SQL, EN ESTE CASO UNA INSERSION 
+                    getoCon().CrearComando("INSERT INTO personal (nombre,apellido,email,telefono,clave,id_personal_cargo,dni) VALUES (?,?,?,?,?,?,?)");
+                     //SE TERMINA DE PREPARAR LA CONSULTA REEMPLAZANDO LOS SIGNOS DE INTERROGACION POR CADA DATO CORRESPONDIENTE
+                    getoCon().comando.setString(1, oPersonal.getNombre());
+                    getoCon().comando.setString(2, oPersonal.getApellido());
+                    getoCon().comando.setString(3, oPersonal.getEmail());
+                    getoCon().comando.setString(4, oPersonal.getTelefono());
+                    getoCon().comando.setString(5, oPersonal.getPassword());
+                    getoCon().comando.setInt(6, oPersonal.getIdPersonalCargo());
+                    getoCon().comando.setString(7, oPersonal.getDni());
+                    //UNA VEZ DEFINIDA LA CONSULTA, ES EJECUTADA POR EL MOTOR
+                    getoCon().EjecutarComando();
+                    //CIERRA A CONEXION A LA BBDD
+                    getoCon().Desconectar();
+                     //RETORNA UN OBJETO CREADO PARA ALMACENAR MAS DE UN TIPO DE RESPUESTA
                     return new ResponseObject("Guardado correctamente", 0);
                 } catch (Exception e) {
-                    oCon.Desconectar();
-                    String error = e.toString();
+                     //SI LLEGO A ESTE PUNTO ES PORQUE HUBO UNA EXCPCION (UN ERROR AL INSERTAR EL REGISTRO O PREPARAR LA CONSULTA), ENTONCES CERRAMOS LA CONEXION
+                    getoCon().Desconectar();
+                    //RETORNA UN OBJETO CREADO PARA ALMACENAR MAS DE UN TIPO DE RESPUESTA, EN ESTE CASO DEVUELVE EL MENSAJE DE LA EXEPCION Y UN CODIGO QUE HACE REFERENCUA A LA MISMA
                     return new ResponseObject("Error: " + e.toString(), -1);
                 }
             } else {
                 try {
-                    oCon.Conectar();
-                    oCon.CrearComando("UPDATE personal SET nombre = ?,apellido = ?, email = ?,telefono=?,clave=?, id_personal_cargo = ?, dni = ? where id = ?");
-
-                    oCon.comando.setString(1, oPersonal.GetNombre());
-                    oCon.comando.setString(2, oPersonal.GetApellido());
-                    oCon.comando.setString(3, oPersonal.GetEmail());
-                    oCon.comando.setString(4, oPersonal.GetTelefono());
-                    oCon.comando.setString(5, oPersonal.GetPassword());
-                    oCon.comando.setInt(6, oPersonal.GetIdPersonalCargo());
-                    oCon.comando.setString(7, oPersonal.GetDni());
-                    oCon.comando.setInt(8, oPersonal.GetId());
-
-                    oCon.EjecutarComando();
-                    oCon.Desconectar();
+                    getoCon().Conectar();
+                    getoCon().CrearComando("UPDATE personal SET nombre = ?,apellido = ?, email = ?,telefono=?,clave=?, id_personal_cargo = ?, dni = ? where id = ?");
+                    getoCon().comando.setString(1, oPersonal.getNombre());
+                    getoCon().comando.setString(2, oPersonal.getApellido());
+                    getoCon().comando.setString(3, oPersonal.getEmail());
+                    getoCon().comando.setString(4, oPersonal.getTelefono());
+                    getoCon().comando.setString(5, oPersonal.getPassword());
+                    getoCon().comando.setInt(6, oPersonal.getIdPersonalCargo());
+                    getoCon().comando.setString(7, oPersonal.getDni());
+                    getoCon().comando.setInt(8, oPersonal.getId());
+                    getoCon().EjecutarComando();
+                    getoCon().Desconectar();
                     return new ResponseObject("Editado correctamente", 0);
                 } catch (Exception e) {
-                    oCon.Desconectar();
+                    getoCon().Desconectar();
                     return new ResponseObject("Error: " + e.toString(), -1);
                 }
             }
@@ -93,28 +96,56 @@ public class Personal extends Persona {
         return new ResponseObject("Cancha es null: ", -1);
     }
 
-    public String GetUsuario() {
-        return Usuario;
+    public ResponseObject Eliminar(int idPersonal) throws SQLException {
+        try {
+            //SE ESTABLECE UNA COMUNICACION CON LA BASE DE DATOS
+            getoCon().Conectar();
+            //PREPARAMOS LA CONSULTA O QUERY IMPLEMENTANDO UNA IDEA DE BORRADO LOGICO, LOS REGISTROS QUE ESTAN CON BORRADO=0 SON LOS QUE TIENEN QUE ESTAR VISIBLES Y/O ACCESIBLE POR LO TANTO SI QUEREOS "ELIMINAR UN REGISTRO LOGICAMENTE", ACTUALIZAMOS EL VALOR BORRADO EN 1
+            getoCon().CrearComando("update perrosnal set borrado=1 where id = ?");
+            getoCon().comando.setInt(1, idPersonal);
+            getoCon().EjecutarComando();
+            //DESCONECTAMOS LA BASE DE DATOS
+            getoCon().Desconectar();
+            return new ResponseObject("Eliminado correctamente", 0);
+        } catch (Exception e) {
+            //SI LLEGO A ESTE PUNTO ES PORQUE HUBO UNA EXCPCION ENTONCES CERRAMOS LA CONEXION
+            getoCon().Desconectar();
+            //RETORNA UN OBJETO CREADO PARA ALMACENAR MAS DE UN TIPO DE RESPUESTA, EN ESTE CASO DEVUELVE EL MENSAJE DE LA EXEPCION Y UN CODIGO QUE HACE REFERENCUA A LA MISMA
+            return new ResponseObject("Error: " + e.toString(), -1);
+        }
+    }
+    
+    //REGION DE GETTERS Y SETTERS
+    public int getIdPersonal() {
+        return idPersonal;
     }
 
-    public void SetUsuario(String Usuario) {
-        this.Usuario = Usuario;
+    public void setIdPersonal(int idPersonal) {
+        this.idPersonal = idPersonal;
     }
 
-    public String GetPassword() {
-        return Password;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void SetPassword(String Password) {
-        this.Password = Password;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
-    public int GetIdPersonalCargo() {
-        return IdPersonalCargo;
+    public String getPassword() {
+        return password;
     }
 
-    public void SetIdPersonalCargo(int IdPersonalCargo) {
-        this.IdPersonalCargo = IdPersonalCargo;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getIdPersonalCargo() {
+        return idPersonalCargo;
+    }
+
+    public void setIdPersonalCargo(int idPersonalCargo) {
+        this.idPersonalCargo = idPersonalCargo;
     }
 
 }

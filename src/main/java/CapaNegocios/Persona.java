@@ -1,103 +1,104 @@
 package CapaNegocios;
 
 import CapaDatos.Conexion;
-import java.sql.SQLException;
 
 public class Persona {
 
-    protected int Id;
-    protected String Nombre;
-    protected String Apellido;
-    protected String Dni;
-    protected String Email;
-    protected String Telefono;
-    protected int Borrado;
-    private int TipoPersona;
-
+    //REGION DE PROPIEDADES
+    private int id;
+    private String nombre;
+    private String apellido;
+    private String dni;
+    private String email;
+    private String telefono;
+    private int borrado;
+    private int tipoPersona;
     private Conexion oCon = new Conexion();
 
+    //CONSTRUCTORES
     public Persona() {
 
     }
 
-    public Persona(String Nombre, String Apellido, String Dni, String Mail, String Telefono) {
-        this.Nombre = Nombre;
-        this.Apellido = Apellido;
-        this.Dni = Dni;
-        this.Email = Mail;
-        this.Telefono = Telefono;
-        this.Borrado = 0;
+    public Persona(String nombre, String apellido, String dni, String mail, String telefono, int tipoPersona, int borrado) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.email = mail;
+        this.telefono = telefono;
+        this.borrado = borrado;
+        this.tipoPersona = tipoPersona;
     }
 
-    public static void main(String[] args) throws SQLException, InterruptedException {
-
+    public int getId() {
+        return id;
     }
 
-    public int GetId() {
-        return Id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void SetId(int Id) {
-        this.Id = Id;
+    public String getNombre() {
+        return nombre;
     }
 
-    public String GetNombre() {
-        return Nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public void SetNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public String getApellido() {
+        return apellido;
     }
 
-    public String GetApellido() {
-        return Apellido;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
-    public void SetApellido(String Apellido) {
-        this.Apellido = Apellido;
+    public String getDni() {
+        return dni;
     }
 
-    public String GetDni() {
-        return Dni;
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
-    public void SetDni(String Dni) {
-        this.Dni = Dni;
+    public String getEmail() {
+        return email;
     }
 
-    public String GetEmail() {
-        return Email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void SetEmail(String Email) {
-        this.Email = Email;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public String GetTelefono() {
-        return Telefono;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    public void SetTelefono(String Telefono) {
-        this.Telefono = Telefono;
+    public int getBorrado() {
+        return borrado;
     }
 
-    public int GetBorrado() {
-        return Borrado;
-    }
-
-    public void SetBorrado(int Borrado) {
-        this.Borrado = Borrado;
-    }
-
-    public Conexion GetoCon() {
-        return oCon;
+    public void setBorrado(int borrado) {
+        this.borrado = borrado;
     }
 
     public int getTipoPersona() {
-        return TipoPersona;
+        return tipoPersona;
     }
 
-    public void setTipoPersona(int TipoPersona) {
-        this.TipoPersona = TipoPersona;
+    public void setTipoPersona(int tipoPersona) {
+        this.tipoPersona = tipoPersona;
+    }
+
+    public Conexion getoCon() {
+        return oCon;
+    }
+
+    public void setoCon(Conexion oCon) {
+        this.oCon = oCon;
     }
 }
