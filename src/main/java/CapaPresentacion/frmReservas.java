@@ -2,6 +2,7 @@ package CapaPresentacion;
 
 import CapaNegocios.Cancha;
 import CapaNegocios.Reserva;
+import CapaNegocios.ReservaRun;
 import CapaNegocios.ReservasEstados;
 import CapaNegocios.ResponseObject;
 import CapaNegocios.Usuario;
@@ -16,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import jdk.jfr.Timespan;
 
 public class frmReservas extends javax.swing.JFrame {
 
@@ -25,7 +27,7 @@ public class frmReservas extends javax.swing.JFrame {
     private Reserva oReservaSeleccionada = new Reserva();
     private int idCanchaSeleccionada;
     private Cancha oCanchas = new Cancha();
-
+    
     //CONSTRUCTOR
     public frmReservas() throws SQLException, InterruptedException {
         initComponents();
@@ -311,8 +313,16 @@ public class frmReservas extends javax.swing.JFrame {
                     try {
                         parsedDate = dateFormat.parse(fechaSeleccionada);
                         Timestamp fechaTime = new java.sql.Timestamp(parsedDate.getTime());
-                        ResponseObject oRes = oReserva.Reservar(idCanchaSeleccionada, fechaTime, Usuario.getoUsuario().getId(), ReservasEstados.ReservaEstado.RESERVADA.getEstado());
-                        if (oRes.getCodigoSalida() == 0) {
+                        oReserva.setIdCancha(idCanchaSeleccionada);
+                        oReserva.setIdUsuario(Usuario.getoUsuario().getId());
+                        oReserva.setFechaHora(fechaTime);
+                        oReserva.setIdReservaEstado(ReservasEstados.ReservaEstado.RESERVADA.getEstado());
+                        ReservaRun hiloReserva = new ReservaRun(oReserva);
+                        Thread hiloSecundario = new Thread(hiloReserva);
+                        hiloSecundario.start();
+                        //ResponseObject oRes = oReserva.Reservar();
+                        hiloSecundario.join();
+                        if (hiloReserva.getResultado().getCodigoSalida() == 0) {
                             JOptionPane.showMessageDialog(null, "Cancha reservada correctamente");
                             ResponseObject oRes2 = oReserva.getHorarios(idCanchaSeleccionada, fecha);
                             tablaReservas = oRes2.getjTResultado();
@@ -321,6 +331,8 @@ public class frmReservas extends javax.swing.JFrame {
                     } catch (ParseException ex) {
                         Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (SQLException ex) {
+                        Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InterruptedException ex) {
                         Logger.getLogger(frmReservas.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }

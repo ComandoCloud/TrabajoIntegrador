@@ -6,8 +6,11 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import jdk.jfr.Timespan;
+
+
 
 public class Reserva {
 
@@ -94,7 +97,7 @@ public class Reserva {
     }
 
     //METODO PARA RESERVAR TURNO PARA UNA CANCHA EN UNA DETERMINADA FECHA Y HORA
-    public ResponseObject Reservar(int idCancha, Timestamp fecha, int idUsuario, int estado) throws SQLException {
+    public ResponseObject Reservar() throws SQLException {
         try {
             //SE ESTABLECE UNA COMUNICACION CON LA BASE DE DATOS
             oCon.Conectar();
@@ -103,8 +106,8 @@ public class Reserva {
             //SE TERMINA DE PREPARAR LA CONSULTA REEMPLAZANDO LOS SIGNOS DE INTERROGACION POR CADA DATO CORRESPONDIENTE
             oCon.comando.setInt(1, idCancha);
             oCon.comando.setInt(2, idUsuario);
-            oCon.comando.setInt(3, estado);
-            oCon.comando.setTimestamp(4, fecha);
+            oCon.comando.setInt(3, idReservaEstado);
+            oCon.comando.setTimestamp(4, fechaHora);
             oCon.comando.setInt(5, 1);
             //UNA VEZ DEFINIDA LA CONSULTA, ES EJECUTADA POR EL MOTOR
             oCon.EjecutarComando();
@@ -163,11 +166,11 @@ public class Reserva {
         this.idReservaEstado = idReservaEstado;
     }
 
-    public Timespan getFechaHora() {
-        return (Timespan) fechaHora;
+    public Timestamp getFechaHora() {
+        return fechaHora;
     }
 
-    public void setFechaHora(Timespan fechaHora) {
+    public void setFechaHora(Timestamp fechaHora) {
         this.fechaHora = (Timestamp) fechaHora;
     }
 
@@ -178,4 +181,6 @@ public class Reserva {
     public void setDuracion(int duracion) {
         this.duracion = duracion;
     }
+
+
 }
