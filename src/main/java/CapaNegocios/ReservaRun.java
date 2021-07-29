@@ -23,7 +23,6 @@ public class ReservaRun implements Runnable{
         try{
             this.resultado = this.reserva.Reservar();
         }catch (Exception e) {
-            System.out.println("Error-{{{{{{{{{{{{{{{{{{{{{{");
             e.printStackTrace();
         }
         System.out.println("Hilo principal finalizado.");
