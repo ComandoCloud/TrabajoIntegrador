@@ -50,6 +50,28 @@ public class Reserva {
         }
         return null;
     }
+    
+    public ResponseObject VaciarReservas() throws SQLException{
+        try {
+            //SE ESTABLECE UNA COMUNICACION CON LA BASE DE DATOS
+            oCon.Conectar();
+            //SE CREA UNA ESTRUCTURA DE CONSULTA SQL, EN ESTE CASO UN UPDATE
+            oCon.CrearComando("update reservas set borrado=1");
+            //UNA VEZ DEFINIDA LA CONSULTA, ES EJECUTADA POR EL MOTOR
+            oCon.EjecutarComando();
+            //CIERRA A CONEXION A LA BBDD
+            oCon.Desconectar();
+            //RETORNA UN OBJETO CREADO PARA ALMACENAR MAS DE UN TIPO DE RESPUESTA
+            return new ResponseObject("Reservas eliminadas correctamente", 0, null);
+        } catch (SQLException e) {
+            //SI LLEGO A ESTE PUNTO ES PORQUE HUBO UNA EXCPCION (UN ERROR AL INSERTAR EL REGISTRO O PREPARAR LA CONSULTA), ENTONCES CERRAMOS LA CONEXION
+            oCon.Desconectar();
+            //RETORNA UN OBJETO CREADO PARA ALMACENAR MAS DE UN TIPO DE RESPUESTA, EN ESTE CASO DEVUELVE EL MENSAJE DE LA EXEPCION Y UN CODIGO QUE HACE REFERENCUA A LA MISMA
+            return new ResponseObject("Error: " + e.toString(), -1);
+
+        }   
+    }
+
 
     //METODO PARA ARMAR LA GRILLA DE HORARIOS, GENERO UNA ESCTRUCTURA DE DOS COLUMNAS POR AHORA, LA HORA, Y EL ESTADO
     public ResponseObject getHorarios(int idCancha, String fecha) throws SQLException, ParseException {

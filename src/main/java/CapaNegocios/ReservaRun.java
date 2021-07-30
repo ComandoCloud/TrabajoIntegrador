@@ -25,7 +25,7 @@ public class ReservaRun implements Runnable{
         }catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Hilo principal finalizado.");
+        System.out.println("Hilo secundario finalizado.");
 
     }
 }
