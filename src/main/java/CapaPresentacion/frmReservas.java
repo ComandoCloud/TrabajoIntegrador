@@ -58,7 +58,7 @@ public class frmReservas extends javax.swing.JFrame {
         txtAno = new javax.swing.JTextField();
         btnReprogramar = new javax.swing.JButton();
         btnLiberar = new javax.swing.JButton();
-        btnLiberar1 = new javax.swing.JButton();
+        btnLiberar2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -170,16 +170,16 @@ public class frmReservas extends javax.swing.JFrame {
             }
         });
 
-        btnLiberar1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnLiberar1.setText("Liberar Todas las Reservas");
-        btnLiberar1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnLiberar2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLiberar2.setText("Liberar Todas las Reservas");
+        btnLiberar2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnLiberar1MouseClicked(evt);
+                btnLiberar2MouseClicked(evt);
             }
         });
-        btnLiberar1.addActionListener(new java.awt.event.ActionListener() {
+        btnLiberar2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLiberar1ActionPerformed(evt);
+                btnLiberar2ActionPerformed(evt);
             }
         });
 
@@ -217,7 +217,7 @@ public class frmReservas extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(btnReprogramar)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnLiberar1)))
+                                    .addComponent(btnLiberar2)))
                             .addComponent(btnVerDisponibilidad, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
@@ -243,7 +243,7 @@ public class frmReservas extends javax.swing.JFrame {
                 .addGroup(pnlContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnReprogramar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLiberar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLiberar1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnLiberar2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -297,9 +297,13 @@ public class frmReservas extends javax.swing.JFrame {
         if (Usuario.getoUsuario().getTipoPersona() == 1) {
             btnLiberar.setVisible(true);
             btnLiberar.setEnabled(true);
+            btnLiberar2.setVisible(true);
+            btnLiberar2.setEnabled(true);
         } else {
             btnLiberar.setVisible(false);
             btnLiberar.setEnabled(false);
+            btnLiberar2.setVisible(false);
+            btnLiberar2.setEnabled(false);
 
         }
     }
@@ -404,7 +408,7 @@ public class frmReservas extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLiberarActionPerformed
 
-    private void btnLiberar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLiberar1MouseClicked
+    private void btnLiberar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLiberar2MouseClicked
     try {
             //LLAMA AL METODO QUE ELIMINA TODAS LAS RESERVAS
             ResponseObject oRes = oReserva.VaciarReservas();
@@ -416,11 +420,11 @@ public class frmReservas extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error " + e.toString(), "Mensaje al sistema", JOptionPane.ERROR);
         }        
-    }//GEN-LAST:event_btnLiberar1MouseClicked
+    }//GEN-LAST:event_btnLiberar2MouseClicked
 
-    private void btnLiberar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberar1ActionPerformed
+    private void btnLiberar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberar2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnLiberar1ActionPerformed
+    }//GEN-LAST:event_btnLiberar2ActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -441,7 +445,7 @@ public class frmReservas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLiberar;
-    private javax.swing.JButton btnLiberar1;
+    private javax.swing.JButton btnLiberar2;
     private javax.swing.JButton btnReprogramar;
     private javax.swing.JButton btnVerDisponibilidad;
     private javax.swing.JComboBox<Cancha> cboCancha;
